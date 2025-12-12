@@ -1,0 +1,16 @@
+[project]
+name = "my-fastapi-template"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "alembic>=1.16.5",
+    "asyncpg>=0.30.0",
+    "eralchemy>=1.6.0",
+    "fastapi[standard]>=0.116.2",
+    "pydantic-settings>=2.10.1",
+    "redis>=6.4.0",
+    "tenacity>=9.1.2",
+    "uvicorn>=0.36.0",
+]
