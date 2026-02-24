@@ -49,14 +49,25 @@ class StudentProfile(Base):
     )
 
     matric_number: Mapped[str] = mapped_column(String(50), unique=True)
-    year_of_admission: Mapped[int] = mapped_column(Integer)
-    admission_session: Mapped[str] = mapped_column(String(20))
+    admission_session_id: Mapped[UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("session.id")
+    )
     status: Mapped[Status] = mapped_column(
         Enum(Status, name="status", create_type=True)
     )
 
     user: Mapped["User"] = relationship("User", back_populates="student_profile", lazy="noload")
-    courses: Mapped[list["CourseStudent"]] = relationship("CourseStudent", back_populates="student", lazy="noload")
+    course_students: Mapped[list["CourseStudent"]] = relationship(
+        "CourseStudent", back_populates="student", lazy="noload"
+    )
+
+    task_students: Mapped[list["TaskStudent"]] = relationship(
+        "TaskStudent", back_populates="student"
+    )
+    message_students: Mapped[list["MessageStudent"]] = relationship(
+        "MessageStudent", back_populates="student"
+    )
 
 
 class LecturerProfile(Base):
@@ -81,5 +92,9 @@ class LecturerProfile(Base):
         Enum(Status, name="status", create_type=True)
     )
 
-    user: Mapped["User"] = relationship("User", back_populates="lecturer_profile", lazy="noload")
-    courses: Mapped[list["CourseLecturer"]] = relationship("CourseLecturer", back_populates="lecturer", lazy="noload")
+    user: Mapped["User"] = relationship(
+        "User", back_populates="lecturer_profile", lazy="noload"
+    )
+    course_lecturers: Mapped[list["CourseLecturer"]] = relationship(
+        "CourseLecturer", back_populates="lecturer", lazy="noload"
+    )

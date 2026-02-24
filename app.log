@@ -1,0 +1,131 @@
+{"timestamp": "2025-12-19 21:53:32", "name": "app.core.logger", "level": "INFO", "message": "Logging configured. Level set to INFO.", "file": "logger.py", "line": 78, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "uvicorn.error", "level": "INFO", "message": "Started server process [60]", "file": "server.py", "line": 84, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "uvicorn.error", "level": "INFO", "message": "Waiting for application startup.", "file": "on.py", "line": 48, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "app.api.main", "level": "INFO", "message": "Service startup sequence initiated.", "file": "main.py", "line": 43, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "select pg_catalog.version()", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[raw sql] ()", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "select current_schema()", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[raw sql] ()", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "show standard_conforming_strings", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[raw sql] ()", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "BEGIN (implicit)", "file": "base.py", "line": 2702, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[generated in 0.00041s] ('user', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[cached since 0.004249s ago] ('student_profile', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[cached since 0.005195s ago] ('lecturer_profile', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[cached since 0.006056s ago] ('school', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[cached since 0.00691s ago] ('faculty', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[cached since 0.00774s ago] ('department', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[cached since 0.008672s ago] ('session', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[cached since 0.009474s ago] ('semester', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[cached since 0.01014s ago] ('course', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[cached since 0.01099s ago] ('course_offering', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[cached since 0.01169s ago] ('course_lecturer', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[cached since 0.01241s ago] ('course_student', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[cached since 0.01316s ago] ('class_session', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[cached since 0.01386s ago] ('attendance', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[cached since 0.01455s ago] ('message', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[cached since 0.01541s ago] ('task', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[cached since 0.01605s ago] ('task_student', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_type.typname 
+FROM pg_catalog.pg_type JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_type.typnamespace 
+WHERE pg_catalog.pg_type.typname = $1::VARCHAR AND pg_catalog.pg_type_is_visible(pg_catalog.pg_type.oid) AND pg_catalog.pg_namespace.nspname != $2::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[generated in 0.00032s] ('user_type', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_type.typname 
+FROM pg_catalog.pg_type JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_type.typnamespace 
+WHERE pg_catalog.pg_type.typname = $1::VARCHAR AND pg_catalog.pg_type_is_visible(pg_catalog.pg_type.oid) AND pg_catalog.pg_namespace.nspname != $2::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[cached since 0.002848s ago] ('status', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_type.typname 
+FROM pg_catalog.pg_type JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_type.typnamespace 
+WHERE pg_catalog.pg_type.typname = $1::VARCHAR AND pg_catalog.pg_type_is_visible(pg_catalog.pg_type.oid) AND pg_catalog.pg_namespace.nspname != $2::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[cached since 0.004843s ago] ('rank', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_type.typname 
+FROM pg_catalog.pg_type JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_type.typnamespace 
+WHERE pg_catalog.pg_type.typname = $1::VARCHAR AND pg_catalog.pg_type_is_visible(pg_catalog.pg_type.oid) AND pg_catalog.pg_namespace.nspname != $2::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[cached since 0.00679s ago] ('title', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_type.typname 
+FROM pg_catalog.pg_type JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_type.typnamespace 
+WHERE pg_catalog.pg_type.typname = $1::VARCHAR AND pg_catalog.pg_type_is_visible(pg_catalog.pg_type.oid) AND pg_catalog.pg_namespace.nspname != $2::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[cached since 0.00971s ago] ('degree', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_type.typname 
+FROM pg_catalog.pg_type JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_type.typnamespace 
+WHERE pg_catalog.pg_type.typname = $1::VARCHAR AND pg_catalog.pg_type_is_visible(pg_catalog.pg_type.oid) AND pg_catalog.pg_namespace.nspname != $2::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[cached since 0.01197s ago] ('semester_enum', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_type.typname 
+FROM pg_catalog.pg_type JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_type.typnamespace 
+WHERE pg_catalog.pg_type.typname = $1::VARCHAR AND pg_catalog.pg_type_is_visible(pg_catalog.pg_type.oid) AND pg_catalog.pg_namespace.nspname != $2::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[cached since 0.01407s ago] ('class_session_status', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_type.typname 
+FROM pg_catalog.pg_type JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_type.typnamespace 
+WHERE pg_catalog.pg_type.typname = $1::VARCHAR AND pg_catalog.pg_type_is_visible(pg_catalog.pg_type.oid) AND pg_catalog.pg_namespace.nspname != $2::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[cached since 0.01602s ago] ('attendance_status', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_type.typname 
+FROM pg_catalog.pg_type JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_type.typnamespace 
+WHERE pg_catalog.pg_type.typname = $1::VARCHAR AND pg_catalog.pg_type_is_visible(pg_catalog.pg_type.oid) AND pg_catalog.pg_namespace.nspname != $2::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[cached since 0.01782s ago] ('task_type', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_type.typname 
+FROM pg_catalog.pg_type JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_type.typnamespace 
+WHERE pg_catalog.pg_type.typname = $1::VARCHAR AND pg_catalog.pg_type_is_visible(pg_catalog.pg_type.oid) AND pg_catalog.pg_namespace.nspname != $2::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[cached since 0.01967s ago] ('event_status', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "SELECT pg_catalog.pg_type.typname 
+FROM pg_catalog.pg_type JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_type.typnamespace 
+WHERE pg_catalog.pg_type.typname = $1::VARCHAR AND pg_catalog.pg_type_is_visible(pg_catalog.pg_type.oid) AND pg_catalog.pg_namespace.nspname != $2::VARCHAR", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "[cached since 0.02174s ago] ('task_student_status', 'pg_catalog')", "file": "base.py", "line": 1846, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "sqlalchemy.engine.Engine", "level": "INFO", "message": "COMMIT", "file": "base.py", "line": 2708, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:53:32", "name": "uvicorn.error", "level": "INFO", "message": "Application startup complete.", "file": "on.py", "line": 62, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:54:07", "name": "uvicorn.error", "level": "INFO", "message": "Shutting down", "file": "server.py", "line": 264, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:54:07", "name": "uvicorn.error", "level": "INFO", "message": "Waiting for application shutdown.", "file": "on.py", "line": 67, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:54:07", "name": "app.api.main", "level": "INFO", "message": "Service shutdown sequence initiated.", "file": "main.py", "line": 64, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:54:07", "name": "app.api.main", "level": "INFO", "message": "Shutdown sequence complete.", "file": "main.py", "line": 70, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:54:07", "name": "uvicorn.error", "level": "INFO", "message": "Application shutdown complete.", "file": "on.py", "line": 76, "correlation_id": "None"}
+{"timestamp": "2025-12-19 21:54:07", "name": "uvicorn.error", "level": "INFO", "message": "Finished server process [60]", "file": "server.py", "line": 94, "correlation_id": "None"}

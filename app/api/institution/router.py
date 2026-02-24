@@ -1,7 +1,7 @@
 import logging
 
 from app.api.institution.dependencies import InstitutionServiceDep
-from app.api.institution.schema import DepartmentCreate, FacultyCreate, FacultyOut, FacultyOutDetailed, SchoolCreate, SchoolOut, SchoolOutDetailed
+from app.api.institution.schema import DepartmentCreate, DepartmentOut, FacultyCreate, FacultyOut, FacultyOutDetailed, SchoolCreate, SchoolOut, SchoolOutDetailed, SemesterAndSessionCreate, SessionOut, SessionOutDetailed
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.responses import ORJSONResponse
 from pydantic import UUID4
@@ -25,7 +25,8 @@ School
 
 @institution_router.post(
     "/school",
-    status_code=status.HTTP_201_CREATED, summary="Create a new school"
+    status_code=status.HTTP_201_CREATED, summary="Create a new school",
+    tags=["Admin"]
 )
 async def create_school(
     school_data: SchoolCreate,
@@ -66,7 +67,8 @@ Faculty
 
 @institution_router.post(
     "/faculty",
-    status_code=status.HTTP_201_CREATED, summary="Create a new faculty"
+    status_code=status.HTTP_201_CREATED, summary="Create a new faculty",
+    tags=["Admin"]
 )
 async def create_faculty(
     faculty_data: FacultyCreate,
@@ -77,6 +79,12 @@ async def create_faculty(
 
 
 @institution_router.get("/faculties")
+async def get_faculties_(
+    institution_service: InstitutionServiceDep,
+) -> list[FacultyOut]:
+    return await institution_service.get_faculties()
+
+
 @institution_router.get("/{school_id}/faculties")
 async def get_faculties(
     institution_service: InstitutionServiceDep,
@@ -109,7 +117,8 @@ Department
 
 @institution_router.post(
     "/department",
-    status_code=status.HTTP_201_CREATED, summary="Create a new department"
+    status_code=status.HTTP_201_CREATED, summary="Create a new department",
+    tags=["Admin"]
 )
 async def create_department(
     department_data: DepartmentCreate,
@@ -120,20 +129,23 @@ async def create_department(
 
 
 @institution_router.get("/departments")
-@institution_router.get("{faculty_id}/departments")
-async def get_departments(
+async def get_departments_(
     institution_service: InstitutionServiceDep,
-    faculty_id: UUID4 | None = None
-) -> list[SchoolOut]:
-    departments = await institution_service.get_departments(faculty_id)
-    return departments
+    school_id: UUID4 | None = None,
+    faculty_id: UUID4 | None = None,
+    skip: int | None = None,
+    limit: int | None = None
+) -> list[DepartmentOut]:
+    return await institution_service.get_departments(
+        faculty_id, school_id, skip=skip, limit=limit
+    )
 
 
 @institution_router.get("/departments/{department_id}")
 async def get_department(
     department_id: UUID4,
     institution_service: InstitutionServiceDep,
-) -> SchoolOutDetailed:
+) -> DepartmentOut:
     department = await institution_service.get_department(department_id)
     if not department:
         raise HTTPException(
@@ -141,3 +153,47 @@ async def get_department(
             detail="Department not found"
         )
     return department
+
+
+
+"""
+======================================================================
+Session
+======================================================================
+"""
+
+@institution_router.post(
+    "/session",
+    status_code=status.HTTP_201_CREATED, summary="Create a new session",
+    tags=["Admin"]
+)
+async def create_session(
+    session_data: SemesterAndSessionCreate,
+    institution_service: InstitutionServiceDep
+) -> SessionOut:
+    res = await institution_service.create_session(session_data)
+    return res
+
+@institution_router.get("/session")
+async def get_sessions(
+    institution_service: InstitutionServiceDep,
+    limit: int | None = None, skip: int | None = None
+) -> list[SessionOut]:
+    sessions = await institution_service.get_sessions(
+        limit=limit, skip=skip
+    )
+    return sessions
+
+
+@institution_router.get("/session/{session_id}")
+async def get_session(
+    session_id: UUID4,
+    institution_service: InstitutionServiceDep,
+) -> SessionOutDetailed:
+    session = await institution_service.get_session(session_id)
+    if not session:
+        raise HTTPException(
+            status_code=404,
+            detail="Session not found"
+        )
+    return session

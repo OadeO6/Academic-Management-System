@@ -6,9 +6,11 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "alembic>=1.16.5",
+    "asgi-correlation-id>=4.3.4",
     "asyncpg>=0.30.0",
     "eralchemy>=1.6.0",
     "fastapi[standard]>=0.116.2",
+    "orjson>=3.11.5",
     "pydantic-settings>=2.10.1",
     "redis>=6.4.0",
     "tenacity>=9.1.2",

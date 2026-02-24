@@ -1,5 +1,6 @@
 import logging
 import logging.config
+from asgi_correlation_id.log_filters import CorrelationIdFilter
 import os
 import sys
 
@@ -9,11 +10,23 @@ from .config import settings
 LOGGING_CONFIG = {
     "version": 1,
     "disable_existing_loggers": False,
+    'filters': {
+        "correlation_id": {
+            "()": CorrelationIdFilter,
+            "uuid_length": 32
+        }
+    },
     "formatters": {
         "standard": {
-            "format": "%(asctime)s - %(process)d - %(levelname)s - %(name)s - %(message)s",
+            # "format": "%(asctime)s - %(process)d - %(levelname)s + %(name)s - %(message)s",
+            "format": "%(asctime)s - %(process)d - %(levelname)s + %(name)s - %(message)s [%(correlation_id)s]",
             "datefmt": "%Y-%m-%d %H:%M:%S",
         },
+        "json": {
+            "format": '{"timestamp": "%(asctime)s", "name": "%(name)s", "level": "%(levelname)s", "message": "%(message)s", "file": "%(filename)s", "line": %(lineno)d, "correlation_id": "%(correlation_id)s"}',
+            "datefmt": "%Y-%m-%d %H:%M:%S"
+        }
+
     },
     "handlers": {
         "console": {
@@ -21,6 +34,16 @@ LOGGING_CONFIG = {
             "formatter": "standard",
             "level": "DEBUG",
             "stream": sys.stdout,
+            "filters": ["correlation_id"],
+        },
+        "file": {
+            "class": "logging.handlers.RotatingFileHandler",
+            # "formatter": "detailed",
+            "formatter": "json",
+            "filename": "app.log",
+            "maxBytes": 10485760,  # 10MB
+            "filters": ["correlation_id"],
+            "backupCount": 5
         },
     },
     "loggers": {

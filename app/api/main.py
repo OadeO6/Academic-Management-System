@@ -1,19 +1,25 @@
 import asyncio
+from time import time
 import logging
 from contextlib import asynccontextmanager
 
-from app.api.common.models import Base
-from fastapi import FastAPI, HTTPException, Request
+from app.api.common.schema import rebuild_schema
+from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.responses import JSONResponse
 from fastapi.security import HTTPBearer
 from starlette.middleware.base import BaseHTTPMiddleware
 from fastapi.openapi.utils import get_openapi
+from asgi_correlation_id import CorrelationIdMiddleware
 
+
+from app.api.common.models import Base
+from app.exceptions import CustomError
 from app.api.common.utils import use_redis
 from app.core.db_con import check_db_health, init_db
 
 from .user.router import user_router
 from .institution.router import institution_router
+from .course.router import course_router
 from ..core.redis_con import RedisConnectionError, close_redis_pool, connect_redis_pool
 from ..core.logger import setup_logging
 from ..core.config import settings
@@ -109,6 +115,50 @@ def custom_openapi():
 app.openapi = custom_openapi
 
 
+class TimingMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        start_time = time()
+        response = await call_next(request)
+        process_time = time() - start_time
+        response.headers["X-Process-Time"] = str(process_time)
+        return response
+
+
+app.add_middleware(CorrelationIdMiddleware)
+app.add_middleware(TimingMiddleware)
+
+
+
+@app.exception_handler(CustomError)
+async def custom_global_exception_handler(_: Request, exc: CustomError):
+    error =  exc.name if exc.name else "Internal Server Error"
+    logger.error(f"Custon exception {error}", exc_info=exc)
+
+    return JSONResponse(
+        status_code=exc.code if exc.code else 500,
+        content={
+            "status_code": exc.code or 500,
+            "error": exc.message
+            # "detail": str(exc)
+        },
+    )
+
+
+
+@app.exception_handler(Exception)
+async def global_exception_handler(_: Request, exc: Exception):
+    logger.error("Unhandled exception", exc_info=exc)
+
+    return JSONResponse(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        content={
+            "status_code": 500,
+            "error": "Internal Server Error"
+            # "detail": str(exc)
+        },
+    )
+
+
 @app.get("/")
 async def read_root():
     return JSONResponse(content={"value": "hello world!"})
@@ -130,3 +180,5 @@ async def health_check():
 
 app.include_router(user_router)
 app.include_router(institution_router)
+app.include_router(course_router)
+rebuild_schema()
