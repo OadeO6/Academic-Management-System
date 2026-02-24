@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lecturer AI Tutor Page</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#137fec",
+          "background-light": "#f6f7f8",
+          "background-dark": "#101922",
+        },
+        fontFamily: { "display": ["Lexend", "sans-serif"] },
+        borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+      },
+    },
+  }
+</script>
+<style>
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  .material-symbols-outlined.fill {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+
+  /* ── Keyframes ── */
+  @keyframes fadeSlideRight {
+    from { opacity: 0; transform: translateX(-28px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes fadeSlideDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeSlideLeft {
+    from { opacity: 0; transform: translateX(28px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes msgBotIn {
+    from { opacity: 0; transform: translateX(-20px) scale(0.97); }
+    to   { opacity: 1; transform: translateX(0) scale(1); }
+  }
+  @keyframes msgUserIn {
+    from { opacity: 0; transform: translateX(20px) scale(0.97); }
+    to   { opacity: 1; transform: translateX(0) scale(1); }
+  }
+  @keyframes navItemIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes pulseRing {
+    0%   { box-shadow: 0 0 0 0 rgba(19,127,236,0.4); }
+    70%  { box-shadow: 0 0 0 8px rgba(19,127,236,0); }
+    100% { box-shadow: 0 0 0 0 rgba(19,127,236,0); }
+  }
+  @keyframes avatarPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(19,127,236,0.3); }
+    50%       { box-shadow: 0 0 0 6px rgba(19,127,236,0); }
+  }
+  @keyframes ripple {
+    to { transform: scale(4); opacity: 0; }
+  }
+  @keyframes floatBg {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50%       { transform: translateY(-14px) rotate(4deg); }
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes typingDot {
+    0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+    40%            { transform: translateY(-6px); opacity: 1; }
+  }
+  @keyframes shimmer {
+    0%   { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  @keyframes toolbarIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes badgePop {
+    0%   { transform: scale(0.7); opacity: 0; }
+    70%  { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  @keyframes glowPulse {
+    0%, 100% { opacity: 0.05; }
+    50%       { opacity: 0.10; }
+  }
+  @keyframes toastSlide {
+    0%   { transform: translateX(-50%) translateY(70px) scale(0.95); opacity: 0; }
+    15%  { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+    80%  { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateX(-50%) translateY(70px) scale(0.95); opacity: 0; }
+  }
+  @keyframes sendBounce {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(0.88) rotate(-5deg); }
+    70%  { transform: scale(1.1) rotate(3deg); }
+    100% { transform: scale(1) rotate(0deg); }
+  }
+  @keyframes checkmarkDraw {
+    from { stroke-dashoffset: 30; opacity: 0; }
+    to   { stroke-dashoffset: 0; opacity: 1; }
+  }
+
+  /* ── Entrance ── */
+  aside.sidebar { animation: fadeSlideRight 0.5s ease both; }
+  .main-header  { animation: fadeSlideDown 0.45s 0.2s ease both; }
+  .chat-section { animation: fadeSlideUp 0.5s 0.35s ease both; }
+  aside.right-panel { animation: fadeSlideLeft 0.5s 0.25s ease both; }
+
+  .nav-item { animation: navItemIn 0.4s ease both; }
+  .nav-item:nth-child(1) { animation-delay: 0.2s; }
+  .nav-item:nth-child(2) { animation-delay: 0.32s; }
+
+  /* ── Messages ── */
+  .msg-bot {
+    animation: msgBotIn 0.45s ease both;
+    opacity: 0;
+    animation-fill-mode: both;
+  }
+  .msg-user {
+    animation: msgUserIn 0.45s ease both;
+    opacity: 0;
+    animation-fill-mode: both;
+  }
+  .msg-bot:nth-child(2)  { animation-delay: 0.5s; }
+  .msg-bot:nth-child(4)  { animation-delay: 0.65s; }
+  .msg-user:nth-child(3) { animation-delay: 0.58s; }
+
+  .msg-bubble {
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .msg-bubble:hover {
+    box-shadow: 0 6px 20px rgba(0,0,0,0.09);
+    transform: translateY(-1px);
+  }
+
+  /* ── AI avatar glow ── */
+  .ai-avatar {
+    animation: avatarPulse 2.5s ease-in-out infinite;
+    transition: transform 0.25s ease;
+  }
+  .ai-avatar:hover { transform: scale(1.12); }
+
+  /* ── Lecturer toolbar ── */
+  .lecturer-toolbar {
+    animation: toolbarIn 0.4s 0.9s ease both;
+    opacity: 0;
+    animation-fill-mode: both;
+  }
+  .tool-btn {
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+  }
+  .tool-btn:hover { transform: translateY(-1px); }
+  .tool-btn:active { transform: scale(0.95); }
+
+  /* ── Ripple ── */
+  .ripple-wrap { position: relative; overflow: hidden; }
+  .ripple-effect {
+    position: absolute;
+    border-radius: 50%;
+    width: 60px; height: 60px;
+    margin-top: -30px; margin-left: -30px;
+    background: rgba(255,255,255,0.35);
+    animation: ripple 0.5s ease-out forwards;
+    pointer-events: none;
+  }
+
+  /* ── Send button ── */
+  .send-btn {
+    transition: background-color 0.2s ease, transform 0.15s ease;
+  }
+  .send-btn:hover { transform: scale(1.08); animation: pulseRing 1s infinite; }
+  .send-btn:active { animation: sendBounce 0.35s ease; }
+
+  /* ── Shimmer on Save Config ── */
+  .btn-save-config {
+    background: linear-gradient(90deg, #137fec 0%, #0ea5e9 40%, #137fec 60%, #137fec 100%);
+    background-size: 200% auto;
+    transition: transform 0.15s ease;
+  }
+  .btn-save-config:hover { animation: shimmer 1.2s linear infinite; transform: translateY(-1px); }
+  .btn-save-config:active { transform: scale(0.97); }
+
+  /* ── Reset button ── */
+  .btn-reset {
+    transition: background-color 0.2s ease, transform 0.15s ease, color 0.2s ease;
+  }
+  .btn-reset:hover { transform: translateY(-1px); }
+  .btn-reset:active { transform: scale(0.97); }
+
+  /* ── Right panel controls ── */
+  .panel-section {
+    animation: fadeSlideUp 0.4s ease both;
+    opacity: 0;
+    animation-fill-mode: both;
+  }
+  .panel-section:nth-child(1) { animation-delay: 0.4s; }
+  .panel-section:nth-child(2) { animation-delay: 0.55s; }
+  .panel-section:nth-child(3) { animation-delay: 0.7s; }
+  .panel-section:nth-child(4) { animation-delay: 0.85s; }
+
+  .kb-item {
+    transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .kb-item:hover {
+    border-color: rgba(19,127,236,0.5);
+    transform: translateX(2px);
+    box-shadow: 0 2px 8px rgba(19,127,236,0.08);
+  }
+
+  /* ── Typing indicator ── */
+  .typing-dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #94a3b8;
+    animation: typingDot 1.2s ease-in-out infinite;
+  }
+  .typing-dot:nth-child(2) { animation-delay: 0.15s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.3s; }
+
+  /* ── Textarea focus ── */
+  .chat-input:focus {
+    box-shadow: 0 0 0 3px rgba(19,127,236,0.18) !important;
+    border-color: #137fec !important;
+    transition: box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+
+  /* ── Floating orbs ── */
+  .bg-orb {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(90px);
+    z-index: 0;
+    animation: glowPulse 6s ease-in-out infinite;
+  }
+  .bg-orb-1 {
+    width: 380px; height: 380px;
+    background: #137fec;
+    top: -100px; right: 320px;
+    animation: floatBg 10s ease-in-out infinite, glowPulse 6s ease-in-out infinite;
+    opacity: 0.05;
+  }
+  .bg-orb-2 {
+    width: 280px; height: 280px;
+    background: #22d3ee;
+    bottom: -70px; left: 280px;
+    animation: floatBg 13s 4s ease-in-out infinite, glowPulse 8s 2s ease-in-out infinite;
+    opacity: 0.04;
+  }
+
+  /* ── Profile avatar ring ── */
+  .profile-avatar {
+    animation: avatarPulse 3s 2s ease-in-out infinite;
+    transition: transform 0.25s ease;
+  }
+  .profile-avatar:hover { transform: scale(1.1); }
+
+  /* ── Nav hover ── */
+  nav a {
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  }
+  nav a:hover { transform: translateX(3px); }
+
+  /* ── Checkbox animate ── */
+  input[type="checkbox"] {
+    transition: transform 0.15s ease;
+  }
+  input[type="checkbox"]:checked { animation: badgePop 0.25s ease; }
+
+  /* ── Range sliders ── */
+  input[type="range"] {
+    transition: opacity 0.2s ease;
+  }
+  input[type="range"]:hover { opacity: 0.85; }
+
+  /* ── Toast ── */
+  #toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    display: none;
+    pointer-events: none;
+  }
+  #toast.show {
+    display: flex;
+    animation: toastSlide 3s ease forwards;
+  }
+
+  /* ── Spinner ── */
+  .spinner { animation: spin 0.7s linear infinite; display: inline-block; }
+
+  /* Time badge */
+  .time-badge { animation: badgePop 0.4s 0.45s ease both; opacity: 0; animation-fill-mode: both; }
+
+  /* Textarea auto-grow feel */
+  .chat-input { transition: height 0.2s ease; }
+
+  /* Dark mode */
+  .theme-toggle-icon { transition: transform 0.4s ease; }
+  .theme-toggle-icon:hover { transform: rotate(20deg) scale(1.1); }
+</style>
+</head>
+<body class="font-display">
+
+<!-- Background orbs -->
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+
+<!-- Toast -->
+<div id="toast" class="items-center gap-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-3 rounded-xl shadow-2xl text-sm font-semibold">
+  <span class="material-symbols-outlined fill text-green-400 dark:text-green-600" style="font-size:20px;">check_circle</span>
+  <span id="toast-msg">Done!</span>
+</div>
+
+<div class="relative flex h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-hidden" style="z-index:1;">
+<div class="flex h-full grow flex-row">
+
+  <!-- Left Sidebar -->
+  <aside class="sidebar flex h-full w-64 flex-col justify-between border-r border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-background-dark flex-shrink-0 z-20">
+    <div class="flex flex-col gap-4">
+      <div class="flex gap-3 items-center">
+        <div class="profile-avatar bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-primary/20"
+          style='background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTvqfXRSSuXfjEPSaUAvOYfGzmvRB0jlHY8Q&s");'></div>
+        <div class="flex flex-col">
+          <h1 class="text-slate-900 dark:text-slate-100 text-base font-medium leading-normal">Dr. Lecturer</h1>
+          <p class="text-slate-500 dark:text-slate-400 text-sm font-normal leading-normal">Lecturer</p>
+        </div>
+      </div>
+      <nav class="flex flex-col gap-2 mt-4">
+        <a class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/10 hover:text-primary text-slate-700 dark:text-slate-300 dark:hover:text-primary" href="LecDASH.html">
+          <span class="material-symbols-outlined">dashboard</span>
+          <p class="text-sm font-medium leading-normal">Dashboard</p>
+        </a>
+        <a class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary" href="#">
+          <span class="material-symbols-outlined fill">smart_toy</span>
+          <p class="text-sm font-medium leading-normal">AI Tutor</p>
+        </a>
+      </nav>
+    </div>
+    <div class="flex flex-col gap-1">
+      <button id="themeToggle" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/10 hover:text-primary text-slate-700 dark:text-slate-300 dark:hover:text-primary w-full text-left">
+        <span id="themeIcon" class="theme-toggle-icon material-symbols-outlined">dark_mode</span>
+        <p id="themeLabel" class="text-sm font-medium leading-normal">Dark Mode</p>
+      </button>
+      <a class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/10 hover:text-primary text-slate-700 dark:text-slate-300 dark:hover:text-primary" href="Lecsets.html">
+        <span class="material-symbols-outlined">settings</span>
+        <p class="text-sm font-medium leading-normal">Settings</p>
+      </a>
+      <a class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-red-500/10 hover:text-red-500 text-slate-700 dark:text-slate-300 dark:hover:text-red-500" href="#">
+        <span class="material-symbols-outlined">logout</span>
+        <p class="text-sm font-medium leading-normal">Logout</p>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="flex flex-1 flex-col h-full relative overflow-hidden">
+
+    <!-- Header -->
+    <header class="main-header h-16 flex items-center justify-between px-6 border-b border-slate-200 bg-white dark:bg-background-dark dark:border-slate-800 flex-shrink-0">
+      <div class="flex items-center gap-4">
+        <h1 class="text-xl font-bold text-slate-900 dark:text-slate-100">AI Tutor</h1>
+        <span class="h-6 w-px bg-slate-200 dark:bg-slate-700"></span>
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-slate-500 text-[20px]">school</span>
+          <span class="text-sm font-medium text-slate-600 dark:text-slate-300">ECE101: Intro to Machine Learning</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <button id="resetBtn" class="btn-reset ripple-wrap flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-700 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800 text-sm font-medium">
+          <span class="material-symbols-outlined text-[18px]">history</span>
+          Reset Session
+        </button>
+        <button id="saveConfigBtn" class="btn-save-config ripple-wrap flex items-center gap-2 px-3 py-1.5 rounded-lg text-white text-sm font-medium">
+          <span id="saveConfigIcon" class="material-symbols-outlined text-[18px]">save</span>
+          <span id="saveConfigLabel">Save Config</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+
+      <!-- Chat Section -->
+      <section class="chat-section flex flex-col flex-1 bg-slate-50 dark:bg-[#0B1116] relative overflow-hidden">
+        <div id="chatMessages" class="flex-1 overflow-y-auto p-6 space-y-6">
+
+          <!-- Timestamp -->
+          <div class="flex justify-center">
+            <span class="time-badge text-xs font-medium text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">Today, 9:41 AM</span>
+          </div>
+
+          <!-- Bot message 1 -->
+          <div class="msg-bot flex gap-4 max-w-3xl">
+            <div class="ai-avatar flex-shrink-0 size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+              <span class="material-symbols-outlined fill">smart_toy</span>
+            </div>
+            <div class="flex flex-col gap-2">
+              <div class="flex items-baseline gap-2">
+                <span class="text-sm font-semibold text-slate-900 dark:text-slate-100">AI Tutor</span>
+                <span class="text-xs text-slate-500">Student Simulation Mode</span>
+              </div>
+              <div class="msg-bubble p-4 bg-white dark:bg-background-dark border border-slate-200 dark:border-slate-800 rounded-2xl rounded-tl-none text-slate-700 dark:text-slate-300 text-sm leading-relaxed shadow-sm">
+                <p>Hello Dr. User. I am initializing the student simulation for <strong>CS101</strong>. Based on the selected parameters, I will respond as a helpful tutor using only the materials from Weeks 1-8.</p>
+                <p class="mt-2">Try asking me a question a student might have about <em>Neural Networks</em> to test my constraints.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- User message -->
+          <div class="msg-user flex gap-4 max-w-3xl ml-auto flex-row-reverse">
+            <div class="flex-shrink-0 size-10 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 flex items-center justify-center overflow-hidden"
+              style='background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTdmrjoiXGVFEcd1cX9Arb1itXTr2u8EKNpw&s"); background-size: cover;'>
+            </div>
+            <div class="flex flex-col gap-2 items-end">
+              <div class="flex items-baseline gap-2">
+                <span class="text-sm font-semibold text-slate-900 dark:text-slate-100">You</span>
+              </div>
+              <div class="msg-bubble p-4 bg-primary text-white rounded-2xl rounded-tr-none text-sm leading-relaxed shadow-sm">
+                <p>Can you explain why we need activation functions? Use a simple analogy.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bot message 2 -->
+          <div class="msg-bot flex gap-4 max-w-3xl">
+            <div class="ai-avatar flex-shrink-0 size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+              <span class="material-symbols-outlined fill">smart_toy</span>
+            </div>
+            <div class="flex flex-col gap-2">
+              <div class="flex items-baseline gap-2">
+                <span class="text-sm font-semibold text-slate-900 dark:text-slate-100">AI Tutor</span>
+              </div>
+              <div class="msg-bubble p-4 bg-white dark:bg-background-dark border border-slate-200 dark:border-slate-800 rounded-2xl rounded-tl-none text-slate-700 dark:text-slate-300 text-sm leading-relaxed shadow-sm">
+                <p>Certainly! Think of a neural network like a complex plumbing system in a house. Without activation functions, the pipes are just straight lines—water (data) flows through linearly, and you can only build simple structures.</p>
+                <p class="mt-2">Activation functions act like the <strong>valves and bends</strong> in the pipes. They allow the system to make decisions—like "only let water through if the pressure is high enough" (similar to a ReLU function). This non-linearity allows the network to learn complex, curved patterns instead of just straight lines.</p>
+              </div>
+              <!-- Lecturer toolbar -->
+              <div class="lecturer-toolbar flex items-center gap-2 mt-1">
+                <span class="text-xs font-medium text-slate-400 uppercase tracking-wide">Lecturer Tools:</span>
+                <button class="tool-btn text-xs flex items-center gap-1 px-2 py-1 rounded hover:bg-green-50 dark:hover:bg-green-900/20 text-slate-600 dark:text-slate-400 hover:text-green-600 dark:hover:text-green-400" onclick="handleTool('approve', this)">
+                  <span class="material-symbols-outlined text-[14px]">check_circle</span> Approve
+                </button>
+                <button class="tool-btn text-xs flex items-center gap-1 px-2 py-1 rounded hover:bg-blue-50 dark:hover:bg-blue-900/20 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400" onclick="handleTool('edit', this)">
+                  <span class="material-symbols-outlined text-[14px]">edit_note</span> Edit Response
+                </button>
+                <button class="tool-btn text-xs flex items-center gap-1 px-2 py-1 rounded hover:bg-red-50 dark:hover:bg-red-900/20 text-red-500" onclick="handleTool('flag', this)">
+                  <span class="material-symbols-outlined text-[14px]">flag</span> Flag Inaccuracy
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Typing indicator (hidden by default) -->
+          <div id="typingIndicator" class="msg-bot flex gap-4 max-w-3xl" style="display:none!important">
+            <div class="ai-avatar flex-shrink-0 size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+              <span class="material-symbols-outlined fill">smart_toy</span>
+            </div>
+            <div class="flex flex-col gap-2">
+              <span class="text-sm font-semibold text-slate-900 dark:text-slate-100">AI Tutor</span>
+              <div class="p-4 bg-white dark:bg-background-dark border border-slate-200 dark:border-slate-800 rounded-2xl rounded-tl-none shadow-sm flex items-center gap-1.5 h-12">
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Input Area -->
+        <div class="p-6 bg-white border-t border-slate-200 dark:bg-background-dark dark:border-slate-800 flex-shrink-0 z-10" style="animation: fadeSlideUp 0.4s 0.7s ease both; opacity:0; animation-fill-mode:both;">
+          <div class="flex flex-col gap-3 max-w-4xl mx-auto">
+            <div class="relative">
+              <textarea id="chatInput" class="chat-input w-full pl-4 pr-12 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-background-dark text-slate-900 dark:text-slate-100 focus:outline-none resize-none h-14 transition-all duration-200" placeholder="Ask Academia AI tutor..."></textarea>
+              <button id="sendBtn" class="send-btn absolute right-2 top-2 p-1.5 rounded-lg bg-primary text-white">
+                <span class="material-symbols-outlined text-[20px]">send</span>
+              </button>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 dark:text-slate-400">
+              <p>Press <kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-mono text-[10px]">Enter</kbd> to send, <kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-mono text-[10px]">Shift+Enter</kbd> for new line</p>
+              <div class="flex gap-4">
+                <label class="flex items-center gap-2 cursor-pointer hover:text-primary transition-colors duration-200 hover:-translate-y-0.5 transform">
+                  <span class="material-symbols-outlined text-[16px]">upload_file</span>
+                  Upload Test Case
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer hover:text-primary transition-colors duration-200 hover:-translate-y-0.5 transform">
+                  <span class="material-symbols-outlined text-[16px]">mic</span>
+                  Voice Input
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Panel -->
+      <aside class="right-panel w-80 flex flex-col border-l border-slate-200 bg-white dark:bg-background-dark dark:border-slate-800 overflow-y-auto flex-shrink-0">
+        <div class="p-6 flex flex-col gap-8">
+
+          <!-- Course Context -->
+          <div class="panel-section flex flex-col gap-3">
+            <h3 class="text-sm font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wide">Course Context</h3>
+            <div class="relative">
+              <select class="w-full appearance-none rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-background-dark py-2.5 pl-3 pr-10 text-sm font-medium text-slate-700 dark:text-slate-200 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all duration-200 hover:border-primary/50">
+                <option>ECE101: Intro to Machine Learning</option>
+                <option>ECE203: Adv Cognitive Psychology</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-500">
+                <span class="material-symbols-outlined">expand_more</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Knowledge Base -->
+          <div class="panel-section flex flex-col gap-3">
+            <div class="flex justify-between items-center">
+              <h3 class="text-sm font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wide">Knowledge Base</h3>
+              <button class="text-xs text-primary hover:underline transition-opacity duration-200 hover:opacity-70">Manage</button>
+            </div>
+            <p class="text-xs text-slate-500">Select materials the AI should use for answers.</p>
+            <div class="flex flex-col gap-3 mt-1">
+              <label class="kb-item flex items-start gap-3 p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 cursor-pointer">
+                <input checked class="mt-1 rounded border-slate-300 text-primary focus:ring-primary accent-primary" type="checkbox"/>
+                <div class="flex flex-col">
+                  <span class="text-sm font-medium text-slate-800 dark:text-slate-200">Lecture Slides</span>
+                  <span class="text-xs text-slate-500">Weeks 1-8 currently active</span>
+                </div>
+              </label>
+              <label class="kb-item flex items-start gap-3 p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 cursor-pointer">
+                <input checked class="mt-1 rounded border-slate-300 text-primary focus:ring-primary accent-primary" type="checkbox"/>
+                <div class="flex flex-col">
+                  <span class="text-sm font-medium text-slate-800 dark:text-slate-200">Textbook</span>
+                  <span class="text-xs text-slate-500">Introduction to ML, Ch 1-5</span>
+                </div>
+              </label>
+              <label class="kb-item flex items-start gap-3 p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 cursor-pointer opacity-75">
+                <input class="mt-1 rounded border-slate-300 text-primary focus:ring-primary accent-primary" type="checkbox"/>
+                <div class="flex flex-col">
+                  <span class="text-sm font-medium text-slate-800 dark:text-slate-200">Past Assignments</span>
+                  <span class="text-xs text-slate-500">Solutions and rubrics</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Response Style -->
+          <div class="panel-section flex flex-col gap-4">
+            <h3 class="text-sm font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wide">Response Style</h3>
+            <div class="flex flex-col gap-2">
+              <div class="flex justify-between text-xs text-slate-500 font-medium">
+                <span>Concise</span><span>Detailed</span>
+              </div>
+              <input class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer dark:bg-slate-700 accent-primary" max="100" min="0" type="range" value="70"/>
+            </div>
+            <div class="flex flex-col gap-2">
+              <div class="flex justify-between text-xs text-slate-500 font-medium">
+                <span>Direct Answer</span><span>Socratic (Guide)</span>
+              </div>
+              <input class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer dark:bg-slate-700 accent-primary" max="100" min="0" type="range" value="80"/>
+            </div>
+          </div>
+
+          
+          <div class="panel-section flex flex-col gap-3">
+            <h3 class="text-sm font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wide">System Instructions</h3>
+            <textarea class="w-full p-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-xs text-slate-700 dark:text-slate-300 focus:ring-1 focus:ring-primary focus:border-primary resize-none h-24 transition-all duration-200 focus:outline-none" placeholder="Add specific instructions for the AI (e.g., 'Always remind students to check the syllabus first')."></textarea>
+          </div>
+
+        </div>
+      </aside>
+
+    </div>
+  </main>
+</div>
+</div>
+
+<script>
+  // ── Dark mode ──
+  const html = document.documentElement;
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    html.classList.toggle('dark');
+    const dark = html.classList.contains('dark');
+    document.getElementById('themeIcon').textContent  = dark ? 'light_mode' : 'dark_mode';
+    document.getElementById('themeLabel').textContent = dark ? 'Light Mode' : 'Dark Mode';
+  });
+
+  // ── Toast ──
+  function showToast(msg, icon = 'check_circle') {
+    const toast = document.getElementById('toast');
+    document.getElementById('toast-msg').textContent = msg;
+    toast.classList.remove('show');
+    void toast.offsetWidth;
+    toast.classList.add('show');
+    toast.addEventListener('animationend', () => toast.classList.remove('show'), { once: true });
+  }
+
+  // ── Ripple helper ──
+  function addRipple(btn, e) {
+    const rect = btn.getBoundingClientRect();
+    const r = document.createElement('span');
+    r.className = 'ripple-effect';
+    r.style.left = (e.clientX - rect.left) + 'px';
+    r.style.top  = (e.clientY - rect.top)  + 'px';
+    btn.appendChild(r);
+    r.addEventListener('animationend', () => r.remove());
+  }
+  document.querySelectorAll('.ripple-wrap').forEach(btn => {
+    btn.addEventListener('click', e => addRipple(btn, e));
+  });
+
+  // ── Save Config ──
+  document.getElementById('saveConfigBtn').addEventListener('click', function(e) {
+    addRipple(this, e);
+    const icon = document.getElementById('saveConfigIcon');
+    const label = document.getElementById('saveConfigLabel');
+    icon.className = 'spinner material-symbols-outlined text-[18px]';
+    icon.textContent = 'sync';
+    label.textContent = 'Saving…';
+    setTimeout(() => {
+      icon.className = 'material-symbols-outlined text-[18px]';
+      icon.textContent = 'check';
+      label.textContent = 'Saved!';
+      showToast('Configuration saved!');
+      setTimeout(() => {
+        icon.textContent = 'save';
+        label.textContent = 'Save Config';
+      }, 2000);
+    }, 1100);
+  });
+
+  // ── Reset ──
+  document.getElementById('resetBtn').addEventListener('click', function(e) {
+    addRipple(this, e);
+    showToast('Session reset successfully!');
+  });
+
+  // ── Lecturer tool buttons ──
+  function handleTool(action, btn) {
+    if (action === 'approve') {
+      btn.classList.add('text-green-600', 'dark:text-green-400', 'bg-green-50', 'dark:bg-green-900/20');
+      btn.querySelector('.material-symbols-outlined').classList.add('fill');
+      showToast('Response approved!');
+    } else if (action === 'edit') {
+      showToast('Editing response…');
+    } else if (action === 'flag') {
+      btn.classList.add('bg-red-50', 'dark:bg-red-900/20');
+      showToast('Inaccuracy flagged for review.');
+    }
+  }
+
+  // ── Chat send ──
+  const chatInput = document.getElementById('chatInput');
+  const sendBtn   = document.getElementById('sendBtn');
+  const messages  = document.getElementById('chatMessages');
+  const typing    = document.getElementById('typingIndicator');
+
+  const botReplies = [
+    "Great question! Based on the lecture materials from Week 3, this concept builds directly on what we covered about gradient descent. The key insight is that...",
+    "That's a common point of confusion. Think of it this way: the weights in a neural network are like the volume knobs on a mixing board — each one controls how much a particular feature influences the final output.",
+    "Referring to Chapter 4 of the textbook, the answer relates to the bias-variance tradeoff. Higher model complexity tends to reduce bias but increase variance, which is why regularization techniques like dropout are so useful.",
+    "Excellent! You're connecting the dots between supervised and unsupervised learning. The distinction really comes down to whether the training data has labeled outputs or not.",
+  ];
+  let replyIdx = 0;
+
+  function appendMessage(content, isUser) {
+    const wrap = document.createElement('div');
+    wrap.className = isUser
+      ? 'msg-user flex gap-4 max-w-3xl ml-auto flex-row-reverse'
+      : 'msg-bot flex gap-4 max-w-3xl';
+    wrap.style.animationDelay = '0s';
+
+    if (isUser) {
+      wrap.innerHTML = `
+        <div class="flex-shrink-0 size-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center overflow-hidden"
+          style='background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTdmrjoiXGVFEcd1cX9Arb1itXTr2u8EKNpw&s"); background-size: cover;'>
+        </div>
+        <div class="flex flex-col gap-2 items-end">
+          <div class="flex items-baseline gap-2"><span class="text-sm font-semibold text-slate-900 dark:text-slate-100">You</span></div>
+          <div class="msg-bubble p-4 bg-primary text-white rounded-2xl rounded-tr-none text-sm leading-relaxed shadow-sm">${content}</div>
+        </div>`;
+    } else {
+      wrap.innerHTML = `
+        <div class="ai-avatar flex-shrink-0 size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+          <span class="material-symbols-outlined fill">smart_toy</span>
+        </div>
+        <div class="flex flex-col gap-2">
+          <div class="flex items-baseline gap-2"><span class="text-sm font-semibold text-slate-900 dark:text-slate-100">AI Tutor</span></div>
+          <div class="msg-bubble p-4 bg-white dark:bg-background-dark border border-slate-200 dark:border-slate-800 rounded-2xl rounded-tl-none text-slate-700 dark:text-slate-300 text-sm leading-relaxed shadow-sm">${content}</div>
+        </div>`;
+    }
+    typing.before(wrap);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function sendMessage() {
+    const text = chatInput.value.trim();
+    if (!text) return;
+    chatInput.value = '';
+    chatInput.style.height = '56px';
+    appendMessage(text, true);
+
+    // Show typing
+    typing.style.removeProperty('display');
+    messages.scrollTop = messages.scrollHeight;
+
+    setTimeout(() => {
+      typing.style.setProperty('display', 'none', 'important');
+      const reply = botReplies[replyIdx % botReplies.length];
+      replyIdx++;
+      appendMessage(reply, false);
+    }, 1600);
+  }
+
+  sendBtn.addEventListener('click', (e) => {
+    addRipple(sendBtn, e);
+    sendMessage();
+  });
+
+  chatInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  // Auto-grow textarea
+  chatInput.addEventListener('input', () => {
+    chatInput.style.height = '56px';
+    chatInput.style.height = Math.min(chatInput.scrollHeight, 140) + 'px';
+  });
+</script>
+</body>
+</html>

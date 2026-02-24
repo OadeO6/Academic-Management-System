@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HOD Student List (Academia.)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<style>
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  @keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-28px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes slideInDown {
+    from { opacity: 0; transform: translateY(-18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes countUp {
+    from { opacity: 0; transform: translateY(10px) scale(0.88); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes fadeScaleIn {
+    from { opacity: 0; transform: scale(0.97); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @keyframes rowReveal {
+    from { opacity: 0; transform: translateX(-10px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes badgePop {
+    0%   { transform: scale(0.7); opacity: 0; }
+    70%  { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  @keyframes shimmer {
+    0%   { background-position: -400% center; }
+    100% { background-position: 400% center; }
+  }
+  @keyframes iconBounce {
+    0%, 100% { transform: translateY(0); }
+    40%       { transform: translateY(-4px); }
+    70%       { transform: translateY(-1px); }
+  }
+  @keyframes checkPop {
+    0%   { transform: scale(0) rotate(-10deg); opacity: 0; }
+    70%  { transform: scale(1.2) rotate(3deg); }
+    100% { transform: scale(1) rotate(0); opacity: 1; }
+  }
+  @keyframes dropdownOpen {
+    from { opacity: 0; transform: translateY(-8px) scale(0.96); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes filterPop {
+    0%   { transform: scale(0.88); opacity: 0; }
+    70%  { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  @keyframes pageReveal {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes bulkSlide {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .anim-sidebar  { animation: slideInLeft  0.48s cubic-bezier(.22,.68,0,1.15) both; }
+  .anim-heading  { animation: slideInDown  0.42s cubic-bezier(.22,.68,0,1.15) 0.10s both; }
+  .anim-stat     { animation: countUp      0.48s cubic-bezier(.22,.68,0,1.20) both; }
+  .anim-stat:nth-child(1) { animation-delay: 0.20s; }
+  .anim-stat:nth-child(2) { animation-delay: 0.32s; }
+  .anim-stat:nth-child(3) { animation-delay: 0.44s; }
+  .anim-toolbar  { animation: slideInDown  0.40s cubic-bezier(.22,.68,0,1.15) 0.38s both; }
+  .anim-table    { animation: fadeScaleIn  0.45s cubic-bezier(.22,.68,0,1.15) 0.48s both; }
+
+  .filter-chip { animation: filterPop 0.3s cubic-bezier(.22,.68,0,1.20) both; }
+  .filter-chip:nth-child(1) { animation-delay: 0.52s; }
+  .filter-chip:nth-child(2) { animation-delay: 0.60s; }
+  .filter-chip:nth-child(3) { animation-delay: 0.68s; }
+
+  .table-row { animation: rowReveal 0.36s cubic-bezier(.22,.68,0,1.15) both; opacity: 0; }
+  .table-row:nth-child(1) { animation-delay: 0.58s; }
+  .table-row:nth-child(2) { animation-delay: 0.69s; }
+  .table-row:nth-child(3) { animation-delay: 0.80s; }
+  .table-row:nth-child(4) { animation-delay: 0.91s; }
+
+  .status-badge { animation: badgePop 0.30s cubic-bezier(.22,.68,0,1.30) both; }
+  .table-row:nth-child(1) .status-badge { animation-delay: 0.66s; }
+  .table-row:nth-child(2) .status-badge { animation-delay: 0.77s; }
+  .table-row:nth-child(3) .status-badge { animation-delay: 0.88s; }
+  .table-row:nth-child(4) .status-badge { animation-delay: 0.99s; }
+
+  .page-item { animation: pageReveal 0.28s cubic-bezier(.22,.68,0,1.15) both; }
+  .page-item:nth-child(1) { animation-delay: 0.65s; }
+  .page-item:nth-child(2) { animation-delay: 0.70s; }
+  .page-item:nth-child(3) { animation-delay: 0.75s; }
+  .page-item:nth-child(4) { animation-delay: 0.80s; }
+  .page-item:nth-child(5) { animation-delay: 0.85s; }
+
+  aside a { transition: background 0.18s, color 0.18s, transform 0.15s; }
+  aside a:hover { transform: translateX(3px); }
+  .logo-icon { cursor: pointer; }
+  .logo-icon:hover { animation: iconBounce 0.5s ease; }
+
+  button { transition: transform 0.12s, box-shadow 0.15s, background 0.15s, color 0.15s; }
+  button:active { transform: scale(0.93) !important; }
+
+  .btn-export {
+    position: relative; overflow: hidden;
+    transition: transform 0.12s, box-shadow 0.2s;
+  }
+  .btn-export::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.28), transparent);
+    background-size: 200% auto;
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .btn-export:hover { box-shadow: 0 4px 16px rgba(19,127,236,0.38); transform: translateY(-1px); }
+  .btn-export:hover::after { opacity: 1; animation: shimmer 0.55s linear; }
+
+  .stat-card {
+    transition: transform 0.2s, box-shadow 0.22s;
+    position: relative; overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(19,127,236,0.05) 0%, transparent 65%);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .stat-card:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(19,127,236,0.1); }
+  .stat-card:hover::before { opacity: 1; }
+  .stat-card.at-risk:hover { box-shadow: 0 10px 28px rgba(239,68,68,0.12); }
+
+  .filter-chip { transition: background 0.16s, border 0.16s, color 0.16s, transform 0.14s, box-shadow 0.16s; }
+  .filter-chip:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0,0,0,0.08); }
+  .filter-chip.chip-active {
+    background: rgba(19,127,236,0.1) !important;
+    border: 1px solid rgba(19,127,236,0.35);
+    color: #137fec;
+  }
+
+  .search-input-wrap { transition: box-shadow 0.2s; border-radius: 0.5rem; }
+  .search-input-wrap:focus-within { box-shadow: 0 0 0 3px rgba(19,127,236,0.15); }
+
+  input[type="checkbox"] { transition: transform 0.12s; cursor: pointer; }
+  input[type="checkbox"]:hover { transform: scale(1.1); }
+  input[type="checkbox"]:checked { animation: checkPop 0.22s cubic-bezier(.22,.68,0,1.30); }
+
+  .table-row { transition: background 0.13s; cursor: pointer; }
+
+  .avatar-init { transition: transform 0.2s, box-shadow 0.2s; flex-shrink: 0; }
+  .table-row:hover .avatar-init { transform: scale(1.08); box-shadow: 0 0 0 2px rgba(19,127,236,0.3); }
+
+  .more-btn { transition: transform 0.15s, color 0.14s, background 0.14s; border-radius: 50%; padding: 4px; }
+  .more-btn:hover { transform: scale(1.2); color: #137fec; background: rgba(19,127,236,0.08); }
+
+  .bulk-bar { animation: bulkSlide 0.25s cubic-bezier(.22,.68,0,1.15) both; }
+
+  .highlight-match { background: rgba(19,127,236,0.15); border-radius: 2px; padding: 0 1px; }
+
+  .ctx-menu-popup { animation: dropdownOpen 0.2s cubic-bezier(.22,.68,0,1.15) both; transform-origin: top right; }
+
+  .page-link { transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.12s; display: flex; align-items: center; }
+  .page-link:hover:not(.page-active) { background: rgba(19,127,236,0.06); transform: translateY(-1px); }
+
+  .no-results { animation: fadeScaleIn 0.3s ease both; }
+  .progress-bar { transition: width 1s cubic-bezier(.22,.68,0,1.15); }
+</style>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: { "primary": "#137fec", "background-light": "#f6f7f8", "background-dark": "#101922" },
+        fontFamily: { "display": ["Lexend"] },
+        borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+      },
+    },
+  }
+</script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-800 dark:text-slate-200">
+<div class="relative flex min-h-screen w-full">
+
+  <aside class="anim-sidebar flex w-64 flex-shrink-0 flex-col gap-y-6 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-4">
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-primary logo-icon" style="font-size:28px;">school</span>
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white">Academia</h2>
+    </div>
+    <div class="flex flex-col justify-between h-full">
+      <div class="flex flex-col gap-2">
+        <a class="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800" href="HODDashboard.html">
+          <span class="material-symbols-outlined" style="font-size:22px;">dashboard</span>
+          <p class="text-sm font-medium">Dashboard</p>
+        </a>
+        <div class="flex items-center gap-3 rounded-lg bg-primary/10 px-3 py-2 text-primary">
+          <span class="material-symbols-outlined" style="font-size:22px;font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;">groups</span>
+          <p class="text-sm font-bold">Students</p>
+        </div>
+        <a class="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800" href="HODCourselist.html">
+          <span class="material-symbols-outlined" style="font-size:22px;">book</span>
+          <p class="text-sm font-medium">Courses</p>
+        </a>
+      </div>
+      <div class="flex flex-col gap-1 pt-4 border-t border-slate-200 dark:border-slate-800">
+        <a class="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800" href="HODSets.html">
+          <span class="material-symbols-outlined" style="font-size:22px;">settings</span>
+          <p class="text-sm font-medium">Settings</p>
+        </a>
+        <a class="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800" href="#">
+          <span class="material-symbols-outlined" style="font-size:22px;">logout</span>
+          <p class="text-sm font-medium">Logout</p>
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="flex-1 overflow-y-auto">
+    <div class="p-8 flex flex-col gap-6">
+
+      <div class="anim-heading flex flex-wrap items-center justify-between gap-4">
+        <div class="flex flex-col gap-1">
+          <p class="text-slate-900 dark:text-white text-3xl font-bold leading-tight tracking-tight">Department Student List</p>
+          <p class="text-slate-500 dark:text-slate-400 text-base font-normal leading-normal">View and manage all students in your department.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="stat-card anim-stat flex flex-col gap-3 rounded-xl p-6 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+          <div class="flex items-center justify-between">
+            <p class="text-slate-700 dark:text-slate-300 text-sm font-medium">Total Students</p>
+            <div class="p-2 rounded-lg bg-primary/10"><span class="material-symbols-outlined text-primary" style="font-size:18px;">groups</span></div>
+          </div>
+          <p class="text-slate-900 dark:text-white tracking-tight text-3xl font-bold" data-target="842">0</p>
+          <div class="h-1 w-full rounded-full bg-slate-100 dark:bg-slate-700 overflow-hidden">
+            <div class="progress-bar h-full bg-primary rounded-full" style="width:0%" data-width="100%"></div>
+          </div>
+        </div>
+        <div class="stat-card anim-stat flex flex-col gap-3 rounded-xl p-6 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+          <div class="flex items-center justify-between">
+            <p class="text-slate-700 dark:text-slate-300 text-sm font-medium">Active Enrollments</p>
+            <div class="p-2 rounded-lg bg-green-100 dark:bg-green-900/30"><span class="material-symbols-outlined text-green-600 dark:text-green-400" style="font-size:18px;">check_circle</span></div>
+          </div>
+          <p class="text-slate-900 dark:text-white tracking-tight text-3xl font-bold" data-target="798">0</p>
+          <div class="h-1 w-full rounded-full bg-slate-100 dark:bg-slate-700 overflow-hidden">
+            <div class="progress-bar h-full bg-green-500 rounded-full" style="width:0%" data-width="94.8%"></div>
+          </div>
+        </div>
+        <div class="stat-card at-risk anim-stat flex flex-col gap-3 rounded-xl p-6 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+          <div class="flex items-center justify-between">
+            <p class="text-slate-700 dark:text-slate-300 text-sm font-medium">At-Risk Students</p>
+            <div class="p-2 rounded-lg bg-red-100 dark:bg-red-900/30"><span class="material-symbols-outlined text-red-500" style="font-size:18px;">warning</span></div>
+          </div>
+          <p class="text-red-500 tracking-tight text-3xl font-bold" data-target="23">0</p>
+          <div class="h-1 w-full rounded-full bg-slate-100 dark:bg-slate-700 overflow-hidden">
+            <div class="progress-bar h-full bg-red-400 rounded-full" style="width:0%" data-width="2.7%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="bulk-bar" class="hidden bulk-bar items-center justify-between px-4 py-2.5 rounded-lg bg-primary/10 border border-primary/20">
+        <p class="text-primary text-sm font-semibold" id="bulk-count">0 selected</p>
+        <div class="flex gap-2">
+          <button class="text-xs font-semibold px-3 py-1.5 rounded-md bg-primary text-white hover:bg-primary/90">View Records</button>
+          <button id="bulk-remove-btn" class="text-xs font-semibold px-3 py-1.5 rounded-md bg-red-100 text-red-600 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400">Remove Selected</button>
+        </div>
+      </div>
+
+      <div class="anim-toolbar bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl">
+        <div class="flex flex-wrap items-center justify-between gap-4 p-4 border-b border-slate-200 dark:border-slate-800">
+          <div class="search-input-wrap relative flex-1 min-w-[280px]">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" style="font-size:20px;">search</span>
+            <input id="search-input" class="w-full h-10 pl-10 pr-4 rounded-lg border border-slate-300 dark:border-slate-700 bg-background-light dark:bg-background-dark focus:ring-0 focus:outline-none focus:border-primary transition-colors text-sm" placeholder="Search by name or matric number..." type="text"/>
+          </div>
+          <button class="btn-export flex cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-10 bg-primary text-white text-sm font-bold px-4 shadow-sm">
+            <span class="material-symbols-outlined export-icon" style="font-size:18px;">download</span>
+            <span class="export-label truncate">Export List</span>
+          </button>
+        </div>
+        <div class="flex flex-wrap gap-3 p-4">
+          <button class="filter-chip flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-slate-100 dark:bg-slate-800 pl-3 pr-2 text-slate-700 dark:text-slate-300">
+            <p class="text-sm font-medium">Program/Major</p>
+            <span class="material-symbols-outlined" style="font-size:20px;">arrow_drop_down</span>
+          </button>
+          <button class="filter-chip flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-slate-100 dark:bg-slate-800 pl-3 pr-2 text-slate-700 dark:text-slate-300">
+            <p class="text-sm font-medium">Enrollment Year</p>
+            <span class="material-symbols-outlined" style="font-size:20px;">arrow_drop_down</span>
+          </button>
+          <button id="status-chip" class="filter-chip flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-slate-100 dark:bg-slate-800 pl-3 pr-2 text-slate-700 dark:text-slate-300">
+            <p class="text-sm font-medium" id="status-chip-label">Status</p>
+            <span class="material-symbols-outlined" style="font-size:20px;">arrow_drop_down</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="status-dropdown" class="hidden fixed z-50 min-w-[170px] rounded-xl border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900 overflow-hidden ctx-menu-popup">
+        <button class="status-opt w-full text-left px-4 py-2.5 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" data-val="all">All Statuses</button>
+        <button class="status-opt w-full text-left px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" data-val="active">Active</button>
+        <button class="status-opt w-full text-left px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" data-val="on leave">On Leave</button>
+        <button class="status-opt w-full text-left px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" data-val="at risk">At Risk</button>
+      </div>
+
+      <div class="anim-table overflow-x-auto bg-white dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-800">
+        <table class="w-full text-sm text-left text-slate-500 dark:text-slate-400">
+          <thead class="text-xs text-slate-700 dark:text-slate-300 uppercase bg-slate-50 dark:bg-slate-800">
+            <tr>
+              <th class="p-4 w-12"><input id="select-all" class="rounded border-slate-300 dark:border-slate-600 bg-transparent text-primary focus:ring-primary" type="checkbox"/></th>
+              <th class="px-6 py-3 cursor-pointer hover:text-primary transition-colors select-none" data-sort="name"><div class="flex items-center gap-1">Student Name <span class="material-symbols-outlined" style="font-size:14px;">unfold_more</span></div></th>
+              <th class="px-6 py-3 cursor-pointer hover:text-primary transition-colors select-none" data-sort="matric"><div class="flex items-center gap-1">Matric No. <span class="material-symbols-outlined" style="font-size:14px;">unfold_more</span></div></th>
+              <th class="px-6 py-3">Program/Major</th>
+              <th class="px-6 py-3 text-center cursor-pointer hover:text-primary transition-colors select-none" data-sort="courses"><div class="flex items-center justify-center gap-1">Courses <span class="material-symbols-outlined" style="font-size:14px;">unfold_more</span></div></th>
+              <th class="px-6 py-3">Status</th>
+              <th class="px-6 py-3">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="table-body">
+            <tr class="table-row bg-white dark:bg-slate-900/50 border-b dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50" data-name="Student A" data-matric="21/0001" data-program="B.Eng. Electrical Engineering" data-courses="6" data-status="active">
+              <td class="p-4"><input class="row-check rounded border-slate-300 dark:border-slate-600 bg-transparent text-primary focus:ring-primary" type="checkbox"/></td>
+              <td class="px-6 py-4"><div class="flex items-center gap-3"><div class="avatar-init flex items-center justify-center size-8 rounded-full bg-primary/15 text-primary text-xs font-bold">SA</div><span class="font-medium text-slate-900 dark:text-white student-name">Student A</span></div></td>
+              <td class="px-6 py-4 font-mono text-xs student-matric">21/0001</td>
+              <td class="px-6 py-4">B.Eng. Electrical Engineering</td>
+              <td class="px-6 py-4 text-center"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-primary/10 text-primary">6</span></td>
+              <td class="px-6 py-4"><span class="status-badge inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"><span class="size-1.5 rounded-full bg-green-500 inline-block"></span>Active</span></td>
+              <td class="px-6 py-4"><button class="more-btn text-slate-500"><span class="material-symbols-outlined" style="font-size:20px;">more_horiz</span></button></td>
+            </tr>
+            <tr class="table-row bg-white dark:bg-slate-900/50 border-b dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50" data-name="Student B" data-matric="21/0002" data-program="B.Eng. Mechanical Engineering" data-courses="5" data-status="active">
+              <td class="p-4"><input class="row-check rounded border-slate-300 dark:border-slate-600 bg-transparent text-primary focus:ring-primary" type="checkbox"/></td>
+              <td class="px-6 py-4"><div class="flex items-center gap-3"><div class="avatar-init flex items-center justify-center size-8 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300 text-xs font-bold">SB</div><span class="font-medium text-slate-900 dark:text-white student-name">Student B</span></div></td>
+              <td class="px-6 py-4 font-mono text-xs student-matric">21/0002</td>
+              <td class="px-6 py-4">B.Eng. Mechanical Engineering</td>
+              <td class="px-6 py-4 text-center"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-primary/10 text-primary">5</span></td>
+              <td class="px-6 py-4"><span class="status-badge inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"><span class="size-1.5 rounded-full bg-green-500 inline-block"></span>Active</span></td>
+              <td class="px-6 py-4"><button class="more-btn text-slate-500"><span class="material-symbols-outlined" style="font-size:20px;">more_horiz</span></button></td>
+            </tr>
+            <tr class="table-row bg-white dark:bg-slate-900/50 border-b dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50" data-name="Student C" data-matric="21/0003" data-program="B.Eng. Civil Engineering" data-courses="6" data-status="on leave">
+              <td class="p-4"><input class="row-check rounded border-slate-300 dark:border-slate-600 bg-transparent text-primary focus:ring-primary" type="checkbox"/></td>
+              <td class="px-6 py-4"><div class="flex items-center gap-3"><div class="avatar-init flex items-center justify-center size-8 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300 text-xs font-bold">SC</div><span class="font-medium text-slate-900 dark:text-white student-name">Student C</span></div></td>
+              <td class="px-6 py-4 font-mono text-xs student-matric">21/0003</td>
+              <td class="px-6 py-4">B.Eng. Civil Engineering</td>
+              <td class="px-6 py-4 text-center"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-primary/10 text-primary">6</span></td>
+              <td class="px-6 py-4"><span class="status-badge inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300"><span class="size-1.5 rounded-full bg-yellow-500 inline-block"></span>On Leave</span></td>
+              <td class="px-6 py-4"><button class="more-btn text-slate-500"><span class="material-symbols-outlined" style="font-size:20px;">more_horiz</span></button></td>
+            </tr>
+            <tr class="table-row bg-white dark:bg-slate-900/50 hover:bg-slate-50 dark:hover:bg-slate-800/50" data-name="Student D" data-matric="21/0004" data-program="B.Eng. Computer Engineering" data-courses="5" data-status="at risk">
+              <td class="p-4"><input class="row-check rounded border-slate-300 dark:border-slate-600 bg-transparent text-primary focus:ring-primary" type="checkbox"/></td>
+              <td class="px-6 py-4"><div class="flex items-center gap-3"><div class="avatar-init flex items-center justify-center size-8 rounded-full bg-red-100 text-red-600 dark:bg-red-900/40 dark:text-red-300 text-xs font-bold">SD</div><span class="font-medium text-slate-900 dark:text-white student-name">Student D</span></div></td>
+              <td class="px-6 py-4 font-mono text-xs student-matric">21/0004</td>
+              <td class="px-6 py-4">B.Eng. Computer Engineering</td>
+              <td class="px-6 py-4 text-center"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-primary/10 text-primary">5</span></td>
+              <td class="px-6 py-4"><span class="status-badge inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300"><span class="size-1.5 rounded-full bg-red-500 inline-block"></span>At Risk</span></td>
+              <td class="px-6 py-4"><button class="more-btn text-slate-500"><span class="material-symbols-outlined" style="font-size:20px;">more_horiz</span></button></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div id="no-results" class="hidden no-results py-16 text-center">
+          <span class="material-symbols-outlined text-slate-300 dark:text-slate-700" style="font-size:48px;">manage_search</span>
+          <p class="text-slate-500 dark:text-slate-400 mt-2 text-sm font-medium">No students match your search</p>
+        </div>
+
+        <nav class="flex items-center justify-between p-4 border-t border-slate-100 dark:border-slate-800">
+          <span class="text-sm font-normal text-slate-500 dark:text-slate-400" id="result-count">Showing <span class="font-semibold text-slate-900 dark:text-white">1–4</span> of <span class="font-semibold text-slate-900 dark:text-white">842</span></span>
+          <ul class="inline-flex items-center gap-1">
+            <li class="page-item"><a class="page-link px-3 h-8 text-sm text-slate-500 bg-white dark:bg-slate-900/50 border border-slate-300 dark:border-slate-700 rounded-lg" href="#">Previous</a></li>
+            <li class="page-item"><a class="page-link px-3 h-8 text-sm text-slate-500 bg-white dark:bg-slate-900/50 border border-slate-300 dark:border-slate-700 rounded-lg" href="#">1</a></li>
+            <li class="page-item"><a class="page-active page-link px-3 h-8 text-sm text-primary bg-primary/10 border border-primary rounded-lg font-semibold" href="#">2</a></li>
+            <li class="page-item"><a class="page-link px-3 h-8 text-sm text-slate-500 bg-white dark:bg-slate-900/50 border border-slate-300 dark:border-slate-700 rounded-lg" href="#">3</a></li>
+            <li class="page-item"><a class="page-link px-3 h-8 text-sm text-slate-500 bg-white dark:bg-slate-900/50 border border-slate-300 dark:border-slate-700 rounded-lg" href="#">Next</a></li>
+          </ul>
+        </nav>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div id="ctx-menu" class="hidden fixed z-50 min-w-[165px] rounded-xl border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900 overflow-hidden ctx-menu-popup">
+  <button class="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"><span class="material-symbols-outlined" style="font-size:17px;">visibility</span> View Profile</button>
+  <button class="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"><span class="material-symbols-outlined" style="font-size:17px;">edit</span> Edit Record</button>
+  <button class="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"><span class="material-symbols-outlined" style="font-size:17px;">swap_horiz</span> Change Status</button>
+  <div class="border-t border-slate-100 dark:border-slate-800"></div>
+  <button class="ctx-remove w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"><span class="material-symbols-outlined" style="font-size:17px;">person_remove</span> Remove Student</button>
+</div>
+
+<script>
+  const searchInput    = document.getElementById('search-input');
+  const tableBody      = document.getElementById('table-body');
+  const noResults      = document.getElementById('no-results');
+  const resultCount    = document.getElementById('result-count');
+  const selectAll      = document.getElementById('select-all');
+  const bulkBar        = document.getElementById('bulk-bar');
+  const bulkCount      = document.getElementById('bulk-count');
+  const bulkRemove     = document.getElementById('bulk-remove-btn');
+  const statusDropdown = document.getElementById('status-dropdown');
+  const statusChip     = document.getElementById('status-chip');
+  const statusLabel    = document.getElementById('status-chip-label');
+  const ctxMenu        = document.getElementById('ctx-menu');
+  let ctxTarget = null, activeStatus = 'all';
+
+  function getRows() { return [...tableBody.querySelectorAll('tr.table-row')]; }
+
+  function updateBulkBar() {
+    const checked = tableBody.querySelectorAll('.row-check:checked');
+    if (checked.length > 0) {
+      bulkBar.classList.remove('hidden'); bulkBar.classList.add('flex');
+      bulkCount.textContent = checked.length + ' selected';
+    } else {
+      bulkBar.classList.add('hidden'); bulkBar.classList.remove('flex');
+    }
+  }
+
+  function filterRows() {
+    const q = searchInput.value.toLowerCase();
+    let visible = 0;
+    getRows().forEach((row, i) => {
+      const nameEl = row.querySelector('.student-name'), matricEl = row.querySelector('.student-matric');
+      const matchQ = !q || row.dataset.name.toLowerCase().includes(q) || row.dataset.matric.toLowerCase().includes(q);
+      const matchS = activeStatus === 'all' || row.dataset.status === activeStatus;
+      if (matchQ && matchS) {
+        row.classList.remove('hidden');
+        row.style.animation = 'none';
+        requestAnimationFrame(() => { row.style.animation = `rowReveal 0.3s cubic-bezier(.22,.68,0,1.15) ${i*0.05}s both`; });
+        visible++;
+        [nameEl, matricEl].forEach(el => {
+          if (!el) return;
+          const orig = el.dataset.orig || el.textContent.trim(); el.dataset.orig = orig;
+          if (q) { const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi'); el.innerHTML = orig.replace(re, '<mark class="highlight-match">$1</mark>'); }
+          else el.textContent = orig;
+        });
+      } else { row.classList.add('hidden'); }
+    });
+    noResults.classList.toggle('hidden', visible > 0);
+    resultCount.innerHTML = visible === 0 ? 'No results found' : `Showing <span class="font-semibold text-slate-900 dark:text-white">1–${visible}</span> of <span class="font-semibold text-slate-900 dark:text-white">842</span>`;
+  }
+
+  searchInput.addEventListener('input', filterRows);
+
+  selectAll.addEventListener('change', () => {
+    getRows().forEach(r => { if (!r.classList.contains('hidden')) r.querySelector('.row-check').checked = selectAll.checked; });
+    updateBulkBar();
+  });
+  tableBody.addEventListener('change', e => { if (e.target.classList.contains('row-check')) updateBulkBar(); });
+  getRows().forEach(row => {
+    row.addEventListener('click', e => {
+      if (e.target.closest('input') || e.target.closest('button')) return;
+      const cb = row.querySelector('.row-check'); cb.checked = !cb.checked; updateBulkBar();
+    });
+  });
+
+  function collapseRow(row) {
+    row.style.transition = 'transform 0.2s, opacity 0.2s';
+    row.style.transform  = 'translateX(12px) scale(0.97)'; row.style.opacity = '0';
+    setTimeout(() => {
+      row.style.maxHeight = row.offsetHeight + 'px'; row.style.overflow = 'hidden';
+      row.style.transition = 'max-height 0.3s ease, padding 0.3s ease';
+      requestAnimationFrame(() => { row.style.maxHeight = '0'; row.style.padding = '0'; });
+      setTimeout(() => row.remove(), 320);
+    }, 180);
+  }
+
+  bulkRemove.addEventListener('click', () => {
+    tableBody.querySelectorAll('.row-check:checked').forEach(cb => collapseRow(cb.closest('tr')));
+    selectAll.checked = false; updateBulkBar();
+  });
+
+  statusChip.addEventListener('click', e => {
+    e.stopPropagation();
+    const rect = statusChip.getBoundingClientRect();
+    statusDropdown.style.top  = (rect.bottom + window.scrollY + 4) + 'px';
+    statusDropdown.style.left = rect.left + 'px';
+    statusDropdown.classList.toggle('hidden');
+    statusDropdown.style.animation = 'none';
+    requestAnimationFrame(() => { statusDropdown.style.animation = ''; });
+  });
+
+  document.querySelectorAll('.status-opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      activeStatus = opt.dataset.val;
+      statusLabel.textContent = activeStatus === 'all' ? 'Status' : opt.textContent.trim();
+      statusChip.classList.toggle('chip-active', activeStatus !== 'all');
+      statusDropdown.classList.add('hidden'); filterRows();
+    });
+  });
+
+  document.querySelectorAll('.more-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation(); ctxTarget = btn.closest('tr');
+      const rect = btn.getBoundingClientRect();
+      ctxMenu.classList.remove('hidden');
+      ctxMenu.style.animation = 'none';
+      requestAnimationFrame(() => { ctxMenu.style.animation = ''; });
+      ctxMenu.style.top  = (rect.bottom + window.scrollY + 4) + 'px';
+      ctxMenu.style.left = (rect.right - 165) + 'px';
+    });
+  });
+
+  document.querySelector('.ctx-remove').addEventListener('click', () => { if (ctxTarget) collapseRow(ctxTarget); ctxMenu.classList.add('hidden'); });
+  document.addEventListener('click', () => { ctxMenu.classList.add('hidden'); statusDropdown.classList.add('hidden'); });
+
+  document.querySelectorAll('th[data-sort]').forEach(th => {
+    let asc = true;
+    th.addEventListener('click', () => {
+      const key = th.dataset.sort, rows = getRows();
+      rows.sort((a, b) => {
+        const av = key === 'courses' ? +a.dataset.courses : (a.dataset[key] || '');
+        const bv = key === 'courses' ? +b.dataset.courses : (b.dataset[key] || '');
+        if (key === 'courses') return asc ? av - bv : bv - av;
+        return asc ? av.localeCompare(bv) : bv.localeCompare(av);
+      });
+      asc = !asc;
+      rows.forEach((r, i) => { tableBody.appendChild(r); r.style.animation = 'none'; requestAnimationFrame(() => { r.style.animation = `rowReveal 0.3s cubic-bezier(.22,.68,0,1.15) ${i*0.05}s both`; }); });
+    });
+  });
+
+  document.querySelectorAll('[data-target]').forEach(el => {
+    const target = parseInt(el.dataset.target), dur = 1000, t0 = performance.now();
+    function update(now) {
+      const p = Math.min((now - t0) / dur, 1), ease = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(ease * target);
+      if (p < 1) requestAnimationFrame(update); else el.textContent = target;
+    }
+    setTimeout(() => requestAnimationFrame(update), 350);
+  });
+
+  document.querySelectorAll('.progress-bar[data-width]').forEach((bar, i) => {
+    setTimeout(() => { bar.style.width = bar.dataset.width; }, 500 + i * 130);
+  });
+
+  document.querySelector('.btn-export').addEventListener('click', function() {
+    const label = this.querySelector('.export-label'), icon = this.querySelector('.export-icon');
+    label.textContent = 'Exporting…'; icon.textContent = 'hourglass_top'; this.disabled = true;
+    setTimeout(() => {
+      label.textContent = '✓ Done!'; icon.textContent = 'check'; this.style.background = '#16a34a';
+      setTimeout(() => { label.textContent = 'Export List'; icon.textContent = 'download'; this.style.background = ''; this.disabled = false; }, 1600);
+    }, 900);
+  });
+</script>
+</body>
+</html>

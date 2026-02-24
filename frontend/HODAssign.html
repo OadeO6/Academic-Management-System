@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Academia - Assign Course to Lecturer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Lexend', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex h-screen overflow-hidden">
+
+<aside class="w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col">
+<div class="p-6 flex items-center gap-3">
+<div class="size-10 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">school</span>
+</div>
+<div>
+<h1 class="font-bold text-lg leading-tight">Academia</h1>
+<p class="text-xs text-slate-500 font-medium uppercase tracking-wider">HOD Dashboard</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1 overflow-y-auto custom-scrollbar">
+<a class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="HODDashboard.html">
+<span class="material-symbols-outlined text-[22px]">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+
+<a class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="HODLecturerlist.html">
+<span class="material-symbols-outlined text-[22px]">groups</span>
+<span class="text-sm font-medium">Lecturers</span>
+</a>
+
+</nav>
+<div class="p-4 mt-auto border-t border-slate-200 dark:border-slate-800">
+<a class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">logout</span>
+<span class="text-sm font-medium">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col overflow-hidden">
+<!-- Header Bar -->
+<header class="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8">
+<div class="flex items-center gap-2 text-slate-500 text-sm">
+<span>Courses</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-slate-900 dark:text-slate-100 font-medium">Assign Lecturer</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="size-8 rounded-full bg-primary/20 flex items-center justify-center text-primary border border-primary/30">
+<span class="material-symbols-outlined text-lg">person</span>
+</div>
+</div>
+</header>
+
+<div class="flex-1 overflow-y-auto p-8 custom-scrollbar">
+<div class="max-w-6xl mx-auto space-y-8">
+<!-- Page Title -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h2 class="text-3xl font-bold tracking-tight">Assign Course to Lecturer</h2>
+<p class="text-slate-500 mt-1">Manage and allocate academic staff to department courses.</p>
+</div>
+</div>
+
+<div class="bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="p-6">
+<div class="flex items-center gap-3 mb-6">
+<div class="size-8 bg-primary/10 rounded flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">search_check</span>
+</div>
+<h3 class="font-semibold text-lg">Select Department Course</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+<div class="space-y-2">
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Choose a course to manage its assignments</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg">book</span>
+</div>
+<select class="block w-full pl-10 pr-10 py-3 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg focus:ring-primary focus:border-primary text-sm transition-all appearance-none cursor-pointer">
+<option disabled="" selected="" value="">Search or select a course...</option>
+<option value="cs202">ECE202 - Data Structures</option>
+<option value="cs301">ECE301 - Algorithm Design</option>
+<option value="cs101">ECE101 - Intro to Programming</option>
+<option value="math205">MATH205 - Discrete Mathematics</option>
+</select>
+<div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-slate-400">
+<span class="material-symbols-outlined text-lg">expand_more</span>
+</div>
+</div>
+</div>
+<div class="hidden md:block">
+<div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-4 border border-dashed border-slate-300 dark:border-slate-700 flex items-center gap-4">
+<div class="size-16 rounded bg-slate-200 dark:bg-slate-700 flex-shrink-0 bg-cover bg-center" data-alt="Abstract course category icon" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDeluf2WGckC0Cn_yupVJqhlrC-C3_wAcMJpmw0EmVxP_0A-Y-xEyJX7l5gSQzAH-QTLuBjp5f83vcNmd5KvyRcm0BkY-eP3U5v1dIKy3J0HvbrOQhlkcIZVqm9M-6ONFRpoCrgGNBVVlOQIISFgMSNzy9rFO1NdG58Z_HbfX-ILMzfAHNl9WKdvvl2woGeFnSFhoG5W6lDpUllpw6cketewzk-z9gpa-HhNdea_R3T5KPMKIyLb_b03UsPl2P3vLj-4FMw4esA-Seu')"></div>
+<div>
+<p class="text-sm font-medium text-slate-600 dark:text-slate-400">Current Context</p>
+<p class="font-bold text-slate-900 dark:text-slate-100">CS202 - Data Structures</p>
+<p class="text-xs text-slate-500 mt-1">2 Lecturers Assigned • 4 Sections</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+<div class="bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col">
+<div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-8 bg-green-500/10 rounded flex items-center justify-center text-green-600">
+<span class="material-symbols-outlined text-lg">assignment_ind</span>
+</div>
+<h3 class="font-semibold text-lg">Currently Assigned</h3>
+</div>
+<span class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-bold px-2 py-1 rounded-full">2 LECTURERS</span>
+</div>
+<div class="p-6 space-y-4 flex-1">
+
+<div class="flex items-center justify-between p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700 group">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div>
+<p class="font-semibold text-sm">Lecturer A</p>
+<p class="text-xs text-slate-500">ID: L-4402 • Dept: CS</p>
+</div>
+</div>
+<button class="text-slate-400 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20" title="Remove assignment">
+<span class="material-symbols-outlined text-xl">person_remove</span>
+</button>
+</div>
+
+<div class="flex items-center justify-between p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700 group">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div>
+<p class="font-semibold text-sm">Lecturer B</p>
+<p class="text-xs text-slate-500">ID: L-1290 • Dept: CS</p>
+</div>
+</div>
+<button class="text-slate-400 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20" title="Remove assignment">
+<span class="material-symbols-outlined text-xl">person_remove</span>
+</button>
+</div>
+<div class="pt-4 text-center">
+<p class="text-xs text-slate-400">Only assigned lecturers can manage grades for this course.</p>
+</div>
+</div>
+</div>
+
+<div class="bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col">
+<div class="p-6 border-b border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-3 mb-4">
+<div class="size-8 bg-primary/10 rounded flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-lg">person_add</span>
+</div>
+<h3 class="font-semibold text-lg">Assign New Lecturer</h3>
+</div>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+<span class="material-symbols-outlined text-lg">search</span>
+</span>
+<input class="block w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg focus:ring-primary focus:border-primary text-sm transition-all" placeholder="Search by name or staff ID..." type="text"/>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto max-h-[400px] p-6 space-y-3 custom-scrollbar">
+
+<div class="flex items-center justify-between p-3 border border-slate-100 dark:border-slate-800 rounded-lg hover:border-primary/30 hover:bg-primary/5 transition-all group">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div>
+<p class="font-medium text-sm">Lecturer C</p>
+<p class="text-xs text-slate-500">ID: L-8821 • Software Eng.</p>
+</div>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white text-xs font-bold py-1.5 px-3 rounded-lg transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">add</span>
+                                        Assign
+                                    </button>
+</div>
+
+<div class="flex items-center justify-between p-3 border border-slate-100 dark:border-slate-800 rounded-lg hover:border-primary/30 hover:bg-primary/5 transition-all group">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div>
+<p class="font-medium text-sm">Lecturer D</p>
+<p class="text-xs text-slate-500">ID: L-5512 • AI Research</p>
+</div>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white text-xs font-bold py-1.5 px-3 rounded-lg transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">add</span>
+                                        Assign
+                                    </button>
+</div>
+
+<div class="flex items-center justify-between p-3 border border-slate-100 dark:border-slate-800 rounded-lg opacity-50 cursor-not-allowed bg-slate-50 dark:bg-slate-800/20">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div>
+<p class="font-medium text-sm">Lecturer A</p>
+<p class="text-xs text-slate-500">Already Assigned</p>
+</div>
+</div>
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">ASSIGNED</span>
+</div>
+
+<div class="flex items-center justify-between p-3 border border-slate-100 dark:border-slate-800 rounded-lg hover:border-primary/30 hover:bg-primary/5 transition-all group">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div>
+<p class="font-medium text-sm">Lecturer E</p>
+<p class="text-xs text-slate-500">ID: L-3022 • Cyber Security</p>
+</div>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white text-xs font-bold py-1.5 px-3 rounded-lg transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">add</span>
+                                        Assign
+                                    </button>
+</div>
+</div>
+<div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-b-lg border-t border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-2 text-xs text-slate-500">
+<span class="material-symbols-outlined text-sm">info</span>
+<span>Only staff from the same faculty are shown by default.</span>
+</div>
+</div>
+</div>
+</div>
+
+<div class="flex justify-end gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+<button class="px-6 py-2.5 rounded-lg text-sm font-semibold border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                            Cancel Changes
+                        </button>
+<button class="px-8 py-2.5 rounded-lg text-sm font-semibold bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all">
+                            Save Assignments
+                        </button>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+
+</body></html>

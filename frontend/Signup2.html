@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Academia Sign-Up Part 2 (Student Details)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries">
+  function showSuccess() {
+    const overlay = document.getElementById('successOverlay');
+    const modal = document.getElementById('successModal');
+    const circle = document.querySelector('#checkSvg circle');
+    const tick = document.querySelector('#checkSvg polyline');
+    const bar = document.getElementById('successBar');
+
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        modal.style.transform = 'scale(1)';
+        modal.style.opacity = '1';
+        circle.style.strokeDashoffset = '0';
+        tick.style.strokeDashoffset = '0';
+        setTimeout(() => { bar.style.width = '100%'; }, 100);
+      });
+    });
+
+    setTimeout(() => {
+      document.getElementById('pageRoot').classList.add('page-exit');
+      setTimeout(() => { window.location.href = 'LoginPage.html'; }, 350);
+    }, 2700);
+  }
+</script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#137fec",
+          "background-light": "#f6f7f8",
+          "background-dark": "#101922",
+        },
+        fontFamily: { "display": ["Lexend", "sans-serif"] },
+        borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+      },
+    },
+  }
+
+  function showSuccess() {
+    const overlay = document.getElementById('successOverlay');
+    const modal = document.getElementById('successModal');
+    const circle = document.querySelector('#checkSvg circle');
+    const tick = document.querySelector('#checkSvg polyline');
+    const bar = document.getElementById('successBar');
+
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        modal.style.transform = 'scale(1)';
+        modal.style.opacity = '1';
+        circle.style.strokeDashoffset = '0';
+        tick.style.strokeDashoffset = '0';
+        setTimeout(() => { bar.style.width = '100%'; }, 100);
+      });
+    });
+
+    setTimeout(() => {
+      document.getElementById('pageRoot').classList.add('page-exit');
+      setTimeout(() => { window.location.href = 'LoginPage.html'; }, 350);
+    }, 2700);
+  }
+</script>
+<style>
+  :root {
+    --primary: #137fec;
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  }
+
+  .form-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2394a3b8'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+    background-size: 1.25em 1.25em;
+    padding-right: 2.5rem;
+  }
+
+  
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .anim { opacity: 0; animation: fadeUp 0.6s var(--ease) forwards; }
+  .d1 { animation-delay: 0.05s; }
+  .d2 { animation-delay: 0.12s; }
+  .d3 { animation-delay: 0.20s; }
+  .d4 { animation-delay: 0.28s; }
+  .d5 { animation-delay: 0.36s; }
+  .d6 { animation-delay: 0.44s; }
+  .d7 { animation-delay: 0.52s; }
+
+  
+  @keyframes spinIn {
+    from { opacity: 0; transform: rotate(-180deg) scale(0.4); }
+    to   { opacity: 1; transform: rotate(0deg) scale(1); }
+  }
+  .logo-icon { animation: spinIn 0.7s var(--ease) forwards 0.05s; opacity: 0; }
+
+  
+  @keyframes slideRight {
+    from { opacity: 0; transform: translateX(-12px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  .logo-text { animation: slideRight 0.5s var(--ease) forwards 0.25s; opacity: 0; }
+
+  
+  @keyframes fillBar {
+    from { width: 50%; }
+    to   { width: 100%; }
+  }
+  .progress-fill { animation: fillBar 0.9s var(--ease) forwards 0.4s; width: 50%; }
+
+  
+  @keyframes badgePop {
+    0%   { transform: scale(0.7); opacity: 0; }
+    70%  { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .step-badge { animation: badgePop 0.5s var(--ease) forwards 0.5s; opacity: 0; }
+
+  
+  .form-input, .form-select {
+    transition: border-color 0.22s ease, box-shadow 0.22s ease;
+  }
+  .form-input:focus, .form-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(19,127,236,0.18);
+  }
+
+  
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(30px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .card { animation: cardIn 0.65s var(--ease) forwards 0.15s; opacity: 0; }
+
+  
+  @keyframes orbA {
+    0%,100% { transform: translateY(0) scale(1); }
+    50%      { transform: translateY(-20px) scale(1.05); }
+  }
+  @keyframes orbB {
+    0%,100% { transform: translateY(0) scale(1); }
+    50%      { transform: translateY(18px) scale(0.96); }
+  }
+  .orb-a { animation: orbA 9s ease-in-out infinite; }
+  .orb-b { animation: orbB 12s ease-in-out infinite 2s; }
+
+  
+  #backBtn {
+    transition: background-color 0.18s ease, transform 0.18s ease, color 0.18s ease;
+  }
+  #backBtn:hover { background-color: #f1f5f9; transform: translateX(-3px); }
+  #backBtn:hover .back-icon { transform: translateX(-3px); }
+  .back-icon { transition: transform 0.2s ease; }
+
+  
+  #submitBtn {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  }
+  #submitBtn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent 20%, rgba(255,255,255,0.2) 50%, transparent 80%);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+  }
+  #submitBtn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(19,127,236,0.35); }
+  #submitBtn:hover::after { transform: translateX(100%); }
+  #submitBtn:hover .fwd-icon { transform: translateX(4px); }
+  #submitBtn:active { transform: translateY(0); }
+  .fwd-icon { transition: transform 0.2s ease; }
+
+  
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.35);
+    transform: scale(0);
+    animation: ripple-anim 0.55s linear;
+    pointer-events: none;
+  }
+  @keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
+
+  
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20%      { transform: translateX(-6px); }
+    40%      { transform: translateX(6px); }
+    60%      { transform: translateX(-4px); }
+    80%      { transform: translateX(4px); }
+  }
+  .shake { animation: shake 0.4s ease; }
+
+  
+  @keyframes pageOut {
+    to { opacity: 0; transform: scale(0.97); }
+  }
+  .page-exit { animation: pageOut 0.35s var(--ease) forwards; }
+
+  
+  .footer-link { transition: color 0.15s ease; }
+  .footer-link:hover { color: var(--primary); }
+
+  
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .session-item {
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #94a3b8;
+    scroll-snap-align: center;
+    cursor: pointer;
+    transition: color 0.2s ease, font-size 0.2s ease, font-weight 0.2s ease;
+    user-select: none;
+    border-radius: 6px;
+  }
+  .session-item.active { color: #137fec; font-size: 1.15rem; font-weight: 700; }
+  .session-item:not(.active):hover { color: #0d141b; }
+  #sessionPicker.open { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(19,127,236,0.18); }
+  #sessionDropdown.visible { animation: dropIn 0.25s var(--ease) forwards; }
+  @keyframes dropIn {
+    from { opacity: 0; transform: translateY(-6px) scaleY(0.96); transform-origin: top; }
+    to   { opacity: 1; transform: translateY(0) scaleY(1); }
+  }
+</style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-200">
+
+  
+  <div class="fixed inset-0 pointer-events-none overflow-hidden">
+    <div class="orb-a absolute -top-32 -right-32 w-96 h-96 rounded-full bg-primary opacity-5 blur-3xl"></div>
+    <div class="orb-b absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-blue-400 opacity-5 blur-3xl"></div>
+  </div>
+
+  <div id="pageRoot" class="relative flex min-h-screen w-full flex-col items-center justify-center overflow-x-hidden p-4 sm:p-6 lg:p-8">
+    <div class="w-full max-w-2xl">
+
+      
+      <div class="anim d1 mb-8 flex justify-center">
+        <div class="flex items-center gap-3">
+          <span class="logo-icon material-symbols-outlined text-primary text-4xl">school</span>
+          <h1 class="logo-text text-3xl font-bold text-slate-900 dark:text-white">Academia</h1>
+        </div>
+      </div>
+
+      
+      <div class="card flex flex-col rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-background-dark/50 shadow-lg shadow-slate-200/60 dark:shadow-none">
+
+        
+        <div class="anim d2 p-6 md:p-8 border-b border-slate-200 dark:border-slate-800">
+          <div class="flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-medium text-slate-800 dark:text-slate-200">Step 2 of 2</p>
+              <span class="step-badge inline-flex items-center gap-1 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+                <span class="material-symbols-outlined" style="font-size:14px;">check_circle</span>
+                Almost done!
+              </span>
+            </div>
+            <div class="rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+              <div class="progress-fill h-2 rounded-full bg-primary"></div>
+            </div>
+            <p class="text-sm text-slate-500 dark:text-slate-400">Student Details</p>
+          </div>
+        </div>
+
+        
+        <div class="p-6 md:p-8">
+
+          
+          <div class="anim d3 mb-8 flex flex-col gap-2">
+            <p class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">Complete Your Student Profile</p>
+            <p class="text-base text-slate-500 dark:text-slate-400">Please provide your academic details to finish setting up your account.</p>
+          </div>
+
+          
+          <div class="flex flex-col gap-6">
+
+            
+            <div class="anim d4">
+              <label class="flex flex-col">
+                <p class="pb-2 text-sm font-medium text-slate-800 dark:text-slate-200">Matric Number</p>
+                <input id="matricInput" class="form-input h-12 w-full flex-1 resize-none overflow-hidden rounded-lg border border-slate-300 bg-background-light px-4 text-base placeholder:text-slate-400 dark:border-slate-700 dark:bg-slate-900/50 dark:placeholder:text-slate-500" placeholder="Enter your Matriculation Number" type="text"/>
+              </label>
+            </div>
+
+            
+            <div class="anim d5 flex flex-col gap-6 sm:flex-row">
+              <div class="flex flex-1 flex-col">
+                <p class="pb-2 text-sm font-medium text-slate-800 dark:text-slate-200">Admission Session</p>
+                <div id="sessionPicker" class="relative h-12 rounded-lg border border-slate-300 bg-background-light dark:border-slate-700 dark:bg-slate-900/50 cursor-pointer select-none overflow-hidden transition-all duration-200" style="transition: border-color 0.22s ease, box-shadow 0.22s ease;">
+                  <div id="sessionDisplay" class="flex h-full items-center justify-between px-4 text-base text-slate-800 dark:text-slate-300">
+                    <span id="sessionLabel" class="text-slate-400">Select admission session</span>
+                    <span class="material-symbols-outlined text-slate-400 transition-transform duration-300" id="sessionChevron" style="font-size:20px;">expand_more</span>
+                  </div>
+                </div>
+
+                <div id="sessionDropdown" class="hidden mt-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl overflow-hidden z-50" style="position:relative;">
+                  <div class="flex items-center gap-2 px-4 py-2 border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50">
+                    <span class="material-symbols-outlined text-slate-400" style="font-size:16px;">calendar_month</span>
+                    <span class="text-xs font-medium text-slate-500 dark:text-slate-400">Scroll to pick year</span>
+                  </div>
+                  <div id="sessionScroller" class="relative overflow-hidden" style="height: 168px;">
+                    <div class="absolute inset-x-0 top-0 h-14 pointer-events-none z-10" style="background: linear-gradient(to bottom, white 0%, transparent 100%);"></div>
+                    <div class="absolute inset-x-0 bottom-0 h-14 pointer-events-none z-10" style="background: linear-gradient(to top, white 0%, transparent 100%);"></div>
+                    <div class="absolute inset-x-0 z-10" style="top: 56px; height: 56px; border-top: 2px solid #137fec22; border-bottom: 2px solid #137fec22; background: rgba(19,127,236,0.06); pointer-events:none; border-radius:4px;"></div>
+                    <div id="sessionList" class="overflow-y-auto h-full scrollbar-hide" style="scroll-snap-type: y mandatory; padding: 56px 0;">
+                    </div>
+                  </div>
+                  <div class="px-4 py-3 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+                    <button id="sessionConfirm" type="button" class="rounded-lg bg-primary px-4 py-1.5 text-sm font-semibold text-white transition hover:bg-primary/90">Select</button>
+                  </div>
+                </div>
+                <input type="hidden" id="sessionSelect" name="sessionSelect"/>
+              </div>
+              <label class="flex flex-1 flex-col">
+                <p class="pb-2 text-sm font-medium text-slate-800 dark:text-slate-200">Level</p>
+                <select id="levelSelect" class="form-select h-12 w-full flex-1 appearance-none resize-none overflow-hidden rounded-lg border border-slate-300 bg-background-light px-4 text-base text-slate-800 dark:border-slate-700 dark:bg-slate-900/50 dark:text-slate-300">
+                  <option value="" disabled selected>Select your current level</option>
+                  <option value="100">100 Level</option>
+                  <option value="200">200 Level</option>
+                  <option value="300">300 Level</option>
+                  <option value="400">400 Level</option>
+                  <option value="500">500 Level</option>
+                </select>
+              </label>
+            </div>
+
+            
+            <div class="anim d6 mt-4 flex flex-col-reverse items-center gap-4 sm:flex-row sm:justify-between">
+              <button id="backBtn" type="button" class="flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-lg px-6 text-sm font-semibold text-slate-600 dark:text-slate-300">
+                <span class="back-icon material-symbols-outlined text-xl">arrow_back</span>
+                <span>Back</span>
+              </button>
+
+              <button id="submitBtn" type="button" class="flex h-12 w-full items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-primary px-6 text-sm font-semibold text-white sm:w-auto focus:outline-none focus:ring-2 focus:ring-primary/50">
+                <span>Submit</span>
+                <span class="fwd-icon material-symbols-outlined text-xl">arrow_forward</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="anim d7 mt-8 text-center text-sm text-slate-500 dark:text-slate-400">
+        <p>© 2024 Academia. All rights reserved. |
+          <a class="footer-link text-primary hover:underline" href="#">Privacy Policy</a> |
+          <a class="footer-link text-primary hover:underline" href="#">Terms of Service</a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+<script>
+  const submitBtn = document.getElementById('submitBtn');
+  const backBtn   = document.getElementById('backBtn');
+
+  function shake(el) {
+    el.classList.add('shake');
+    setTimeout(() => el.classList.remove('shake'), 400);
+  }
+
+  submitBtn.addEventListener('click', function (e) {
+    const rect = submitBtn.getBoundingClientRect();
+    const ripple = document.createElement('span');
+    ripple.classList.add('ripple');
+    const size = Math.max(rect.width, rect.height);
+    ripple.style.width = ripple.style.height = size + 'px';
+    ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+    ripple.style.top  = (e.clientY - rect.top  - size / 2) + 'px';
+    submitBtn.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+
+    const matric  = document.getElementById('matricInput').value.trim();
+    const session = document.getElementById('sessionSelect').value;
+    const level   = document.getElementById('levelSelect').value;
+
+    if (!matric) {
+      shake(document.getElementById('matricInput').closest('label'));
+      document.getElementById('matricInput').focus();
+      return;
+    }
+
+    if (!session) {
+      shake(document.getElementById('sessionPicker').parentElement);
+      return;
+    }
+
+    if (!level) {
+      shake(document.getElementById('levelSelect').closest('label'));
+      return;
+    }
+
+    showSuccess();
+  });
+
+  backBtn.addEventListener('click', function () {
+    document.getElementById('pageRoot').classList.add('page-exit');
+    setTimeout(() => { window.location.href = 'Signup.html'; }, 350);
+  });
+
+  
+  (function () {
+    const ITEM_H = 56;
+    const currentYear = new Date().getFullYear();
+    const years = [];
+    for (let y = currentYear; y >= 2000; y--) {
+      years.push(`${y}/${y + 1}`);
+    }
+
+    const picker    = document.getElementById('sessionPicker');
+    const dropdown  = document.getElementById('sessionDropdown');
+    const list      = document.getElementById('sessionList');
+    const label     = document.getElementById('sessionLabel');
+    const chevron   = document.getElementById('sessionChevron');
+    const hidden    = document.getElementById('sessionSelect');
+    const confirmBtn = document.getElementById('sessionConfirm');
+
+    let selectedIndex = 0;
+    let tempIndex = 0;
+    let isOpen = false;
+
+    years.forEach((session, i) => {
+      const item = document.createElement('div');
+      item.classList.add('session-item');
+      item.textContent = session;
+      item.dataset.index = i;
+      if (i === 0) item.classList.add('active');
+      item.addEventListener('click', () => {
+        tempIndex = i;
+        list.scrollTo({ top: i * ITEM_H, behavior: 'smooth' });
+        updateActive(i);
+      });
+      list.appendChild(item);
+    });
+
+    function updateActive(idx) {
+      document.querySelectorAll('.session-item').forEach((el, i) => {
+        el.classList.toggle('active', i === idx);
+      });
+      tempIndex = idx;
+    }
+
+    let scrollTimer;
+    list.addEventListener('scroll', () => {
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => {
+        const idx = Math.round(list.scrollTop / ITEM_H);
+        list.scrollTo({ top: idx * ITEM_H, behavior: 'smooth' });
+        updateActive(idx);
+      }, 80);
+    });
+
+    function open() {
+      isOpen = true;
+      dropdown.classList.remove('hidden');
+      requestAnimationFrame(() => dropdown.classList.add('visible'));
+      picker.classList.add('open');
+      chevron.style.transform = 'rotate(180deg)';
+      list.scrollTop = selectedIndex * ITEM_H;
+      updateActive(selectedIndex);
+    }
+
+    function close(confirm) {
+      isOpen = false;
+      if (confirm) {
+        selectedIndex = tempIndex;
+        label.textContent = years[selectedIndex];
+        label.style.color = '';
+        hidden.value = years[selectedIndex];
+      }
+      dropdown.classList.remove('visible');
+      setTimeout(() => dropdown.classList.add('hidden'), 220);
+      picker.classList.remove('open');
+      chevron.style.transform = 'rotate(0deg)';
+    }
+
+    picker.addEventListener('click', () => isOpen ? close(false) : open());
+    confirmBtn.addEventListener('click', () => close(true));
+
+    document.addEventListener('click', (e) => {
+      if (isOpen && !picker.contains(e.target) && !dropdown.contains(e.target)) {
+        close(false);
+      }
+    });
+  })();
+
+  function showSuccess() {
+    const overlay = document.getElementById('successOverlay');
+    const modal = document.getElementById('successModal');
+    const circle = document.querySelector('#checkSvg circle');
+    const tick = document.querySelector('#checkSvg polyline');
+    const bar = document.getElementById('successBar');
+
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        modal.style.transform = 'scale(1)';
+        modal.style.opacity = '1';
+        circle.style.strokeDashoffset = '0';
+        tick.style.strokeDashoffset = '0';
+        setTimeout(() => { bar.style.width = '100%'; }, 100);
+      });
+    });
+
+    setTimeout(() => {
+      document.getElementById('pageRoot').classList.add('page-exit');
+      setTimeout(() => { window.location.href = 'LoginPage.html'; }, 350);
+    }, 2700);
+  }
+</script>
+
+  <div id="successOverlay" class="fixed inset-0 z-50 flex items-center justify-center p-4" style="display:none !important;">
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" id="successBg"></div>
+    <div id="successModal" class="relative z-10 w-full max-w-sm rounded-2xl bg-white dark:bg-slate-900 shadow-2xl p-8 flex flex-col items-center text-center" style="transform: scale(0.8); opacity: 0; transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), opacity 0.4s ease;">
+      <div id="successIconWrap" class="mb-5 flex items-center justify-center rounded-full bg-primary/10" style="width:80px;height:80px;">
+        <svg id="checkSvg" viewBox="0 0 52 52" width="48" height="48">
+          <circle cx="26" cy="26" r="24" fill="none" stroke="#137fec" stroke-width="3" stroke-dasharray="151" stroke-dashoffset="151" style="transition: stroke-dashoffset 0.6s ease 0.2s; transform-origin: center; transform: rotate(-90deg);"/>
+          <polyline points="14,27 22,35 38,19" fill="none" stroke="#137fec" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="40" stroke-dashoffset="40" style="transition: stroke-dashoffset 0.4s ease 0.7s;"/>
+        </svg>
+      </div>
+      <h2 class="text-2xl font-black text-slate-900 dark:text-white mb-2">Registration Successful!</h2>
+      <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Your account has been created. Redirecting you to login...</p>
+      <div class="w-full rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden h-1.5">
+        <div id="successBar" class="h-full rounded-full bg-primary" style="width:0%; transition: width 2.5s linear;"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

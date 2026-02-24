@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Academia Login Page - Blue Design, Sign Up & Forgot Password Links</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .slide-in-left {
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        .slide-in-right {
+            animation: slideInRight 0.8s ease-out;
+        }
+
+        .scale-in {
+            animation: scaleIn 0.6s ease-out;
+        }
+
+        .float-animate {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .form-field {
+            animation: slideInUp 0.6s ease-out backwards;
+        }
+
+        .form-field:nth-child(1) { animation-delay: 0.1s; }
+        .form-field:nth-child(2) { animation-delay: 0.2s; }
+        .form-field:nth-child(3) { animation-delay: 0.3s; }
+        .form-field:nth-child(4) { animation-delay: 0.4s; }
+        .form-field:nth-child(5) { animation-delay: 0.5s; }
+
+        .input-focus {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .input-focus:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(10, 42, 91, 0.1);
+        }
+
+        .input-icon {
+            transition: all 0.3s ease;
+        }
+
+        .input-focus:focus ~ .input-icon,
+        .input-focus:focus + div .input-icon {
+            color: #0A2A5B;
+            transform: scale(1.1);
+        }
+
+        .button-animate {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .button-animate::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .button-animate:hover::before {
+            left: 100%;
+        }
+
+        .button-animate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(10, 42, 91, 0.3);
+        }
+
+        .button-animate:active {
+            transform: translateY(0);
+        }
+
+        .link-animate {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .link-animate::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #0A2A5B;
+            transition: width 0.3s ease;
+        }
+
+        .link-animate:hover::after {
+            width: 100%;
+        }
+
+        .title-animate {
+            animation: slideInUp 0.8s ease-out 0.2s backwards;
+        }
+
+        .subtitle-animate {
+            animation: slideInUp 0.8s ease-out 0.4s backwards;
+        }
+
+        .image-animate {
+            animation: scaleIn 1s ease-out 0.3s backwards;
+        }
+
+        .select-focus {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .select-focus:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(10, 42, 91, 0.1);
+        }
+
+        .label-animate {
+            transition: all 0.3s ease;
+        }
+
+        .form-field:focus-within .label-animate {
+            color: #0A2A5B;
+            transform: translateX(2px);
+        }
+
+        .ripple-effect {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ripple-effect::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .ripple-effect:active::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        .icon-bounce {
+            transition: transform 0.3s ease;
+        }
+
+        .input-focus:focus + div .icon-bounce {
+            animation: bounce 0.5s ease;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .footer-link {
+            animation: slideInUp 0.8s ease-out 0.6s backwards;
+        }
+
+        .glow-on-hover {
+            transition: all 0.3s ease;
+        }
+
+        .glow-on-hover:hover {
+            box-shadow: 0 0 20px rgba(10, 42, 91, 0.3);
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        .shimmer-bg {
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0A2A5B",
+                        "background-light": "#F0F2F5",
+                        "background-dark": "#101922",
+                        "accent": "#D4A017"
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="font-display fade-in">
+    <div class="relative flex min-h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-x-hidden">
+        <div class="layout-container flex h-full grow flex-col">
+            <div class="flex flex-1">
+                <div class="flex w-full flex-col lg:flex-row">
+                    <div class="relative flex flex-col items-center justify-center w-full lg:w-1/2 bg-slate-50 dark:bg-slate-900 p-8 lg:p-12 slide-in-left">
+                        <div class="flex flex-col gap-6 text-center lg:text-left max-w-md">
+                            <div class="w-full bg-center bg-no-repeat aspect-square bg-contain float-animate image-animate" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD9SeBr66IDeBS_FrkdhOa0RUsHikZdCtgu06m4dduOaIhfOzq-BFejdhsNR1dzSA7d8g1gOY1AkA9J490dXoPK5w_PEz1xHY5Ok6LIuCiIMCDf51VqLovaoJ9Iire9uyTeY64ZbTylQGtv6Ji8fCft6f_1reZgcKgrqDhRbu28SwIMzC0P8bvPmn25wpeMZ95kJ7EDxTlSkS3au6obPBOvWhisuPt6ig9RGvRqtn4CvNeeNvUNhW2xpS_9681vCVragbSgske9Gs_X");'></div>
+                            <div class="flex flex-col gap-2">
+                                <h1 class="text-primary dark:text-white text-4xl font-black leading-tight tracking-tight sm:text-5xl title-animate">
+                                    Academia
+                                </h1>
+                                <h2 class="text-slate-600 dark:text-slate-300 text-base font-normal leading-normal sm:text-lg subtitle-animate">
+                                    The Future of Academic Management.
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex w-full items-center justify-center bg-background-light dark:bg-background-dark lg:w-1/2 p-8 lg:p-12 slide-in-right">
+                        <div class="layout-content-container flex flex-col max-w-md flex-1">
+                            <div class="w-full">
+                                <h1 class="text-slate-900 dark:text-white tracking-tight text-3xl font-bold leading-tight pb-6 text-left scale-in">System Login</h1>
+                                <form action="#" class="space-y-4" method="POST" id="loginForm">
+                                    <div class="form-field flex flex-wrap items-end gap-4">
+                                        <label class="flex flex-col min-w-40 flex-1">
+                                            <p class="label-animate text-slate-800 dark:text-slate-200 text-sm font-medium leading-normal pb-2">University Email</p>
+                                            <div class="flex w-full flex-1 items-stretch rounded-lg glow-on-hover">
+                                                <div class="text-slate-500 flex border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 items-center justify-center pl-4 rounded-l-lg border-r-0">
+                                                    <span aria-hidden="true" class="material-symbols-outlined input-icon icon-bounce">mail</span>
+                                                </div>
+                                                <input class="input-focus form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 h-12 placeholder:text-slate-400 dark:placeholder:text-slate-500 p-3 rounded-l-none text-base font-normal leading-normal" placeholder="Enter your university email" type="email" value="" required/>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div class="form-field flex flex-wrap items-end gap-4">
+                                        <label class="flex flex-col min-w-40 flex-1">
+                                            <p class="label-animate text-slate-800 dark:text-slate-200 text-sm font-medium leading-normal pb-2">Phone Number</p>
+                                            <div class="flex w-full flex-1 items-stretch rounded-lg glow-on-hover">
+                                                <div class="text-slate-500 flex border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 items-center justify-center pl-4 rounded-l-lg border-r-0">
+                                                    <span aria-hidden="true" class="material-symbols-outlined input-icon icon-bounce">phone</span>
+                                                </div>
+                                                <input class="input-focus form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 h-12 placeholder:text-slate-400 dark:placeholder:text-slate-500 p-3 rounded-l-none text-base font-normal leading-normal" placeholder="Enter your phone number" type="tel" value="" required/>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div class="form-field flex flex-wrap items-end gap-4">
+                                        <label class="flex flex-col min-w-40 flex-1">
+                                            <p class="label-animate text-slate-800 dark:text-slate-200 text-sm font-medium leading-normal pb-2">User Type</p>
+                                            <div class="relative w-full glow-on-hover">
+                                                <div class="text-slate-500 absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+                                                    <span aria-hidden="true" class="material-symbols-outlined input-icon">person</span>
+                                                </div>
+                                                <select class="select-focus form-select appearance-none w-full rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 h-12 placeholder:text-slate-400 dark:placeholder:text-slate-500 pl-12 pr-4 text-base font-normal leading-normal" required>
+                                                    <option value="" selected>Select your role</option>
+                                                    <option value="hod">HOD</option>
+                                                    <option value="lecturer">Lecturer</option>
+                                                
+                                                    <option value="student">Student</option>
+                                                </select>
+                                                <div class="text-slate-500 absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                                                    <span aria-hidden="true" class="material-symbols-outlined">expand_more</span>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div class="form-field flex flex-wrap items-end gap-4">
+                                        <label class="flex flex-col min-w-40 flex-1">
+                                            <p class="label-animate text-slate-800 dark:text-slate-200 text-sm font-medium leading-normal pb-2">Department</p>
+                                            <div class="relative w-full glow-on-hover">
+                                                <div class="text-slate-500 absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+                                                    <span aria-hidden="true" class="material-symbols-outlined input-icon">school</span>
+                                                </div>
+                                                <select class="select-focus form-select appearance-none w-full rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 h-12 placeholder:text-slate-400 dark:placeholder:text-slate-500 pl-12 pr-4 text-base font-normal leading-normal" required>
+                                                    <option value="" selected>Select your department</option>
+                                                    <option value="me">Mechanical Engineering</option>
+                                                    <option value="ae">Aerospace Engineering</option>
+                                                    <option value="ece">Electronics & Computer Engineering</option>
+                                                    <option value="che">Chemical Engineering</option>
+                                                </select>
+                                                <div class="text-slate-500 absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                                                    <span aria-hidden="true" class="material-symbols-outlined">expand_more</span>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div class="form-field pt-4">
+                                        <button class="button-animate ripple-effect flex w-full items-center justify-center rounded-lg bg-primary h-12 text-base font-bold text-white hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-background-dark transition-colors duration-300" type="submit">
+                                            <span id="buttonText">Submit</span>
+                                        </button>
+                                    </div>
+                                </form>
+                                <div class="text-center pt-6 space-y-4 footer-link">
+                                    <p class="text-sm text-slate-600 dark:text-slate-400">Don't have an account? <a class="link-animate font-semibold text-primary hover:underline" href="Signup.html">Sign Up</a></p>
+                                    <a class="link-animate text-sm text-primary hover:underline inline-block" href="ForgottenPassword.html">Forgot Password?</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const button = this.querySelector('button[type="submit"]');
+            const buttonText = document.getElementById('buttonText');
+            const originalText = buttonText.textContent;
+            
+            buttonText.textContent = 'Logging in...';
+            button.style.transform = 'scale(0.95)';
+            
+            setTimeout(() => {
+                buttonText.textContent = '✓ Success!';
+                button.style.background = '#10b981';
+                
+                setTimeout(() => {
+                    buttonText.textContent = originalText;
+                    button.style.background = '';
+                    button.style.transform = '';
+                }, 2000);
+            }, 1500);
+        });
+
+        const inputs = document.querySelectorAll('.input-focus');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                const icon = this.previousElementSibling?.querySelector('.input-icon') || 
+                           this.parentElement.querySelector('.input-icon');
+                if (icon) {
+                    icon.style.color = '#0A2A5B';
+                }
+            });
+            
+            input.addEventListener('blur', function() {
+                const icon = this.previousElementSibling?.querySelector('.input-icon') || 
+                           this.parentElement.querySelector('.input-icon');
+                if (icon) {
+                    icon.style.color = '';
+                }
+            });
+        });
+
+        const selects = document.querySelectorAll('.select-focus');
+        selects.forEach(select => {
+            select.addEventListener('focus', function() {
+                const icon = this.parentElement.querySelector('.input-icon');
+                if (icon) {
+                    icon.style.color = '#0A2A5B';
+                }
+            });
+            
+            select.addEventListener('blur', function() {
+                const icon = this.parentElement.querySelector('.input-icon');
+                if (icon) {
+                    icon.style.color = '';
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Academia Login Page Loaded');
+        });
+    </script>
+</body>
+</html>

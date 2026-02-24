@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Academia - Lecturer Calendar</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: { primary:"#137fec","background-light":"#f6f7f8","background-dark":"#101922" },
+        fontFamily: { display:["Lexend","sans-serif"] },
+        borderRadius: { DEFAULT:"0.25rem",lg:"0.5rem",xl:"0.75rem",full:"9999px" }
+      }
+    }
+  };
+</script>
+<style>
+  :root {
+    --primary: #137fec;
+    --primary-light: #dbeafe;
+    --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  body { font-family:'Lexend',sans-serif; }
+
+  
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(20px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity:0; }
+    to   { opacity:1; }
+  }
+  @keyframes popIn {
+    0%   { opacity:0; transform:scale(0.88) translateY(8px); }
+    70%  { transform:scale(1.03) translateY(-2px); }
+    100% { opacity:1; transform:scale(1) translateY(0); }
+  }
+  @keyframes slideInRight {
+    from { opacity:0; transform:translateX(-18px); }
+    to   { opacity:1; transform:translateX(0); }
+  }
+  @keyframes checkPop {
+    0%   { transform:scale(0); }
+    60%  { transform:scale(1.3); }
+    100% { transform:scale(1); }
+  }
+  @keyframes shimmer {
+    0%   { background-position:-200% 0; }
+    100% { background-position:200% 0; }
+  }
+  @keyframes pulseDot {
+    0%,100% { opacity:1; transform:scale(1); }
+    50%     { opacity:0.5; transform:scale(0.8); }
+  }
+  @keyframes slideDown {
+    from { opacity:0; transform:translateY(-10px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  @keyframes strikeThrough {
+    from { width:0; }
+    to   { width:100%; }
+  }
+  @keyframes toastIn {
+    from { opacity:0; transform:translateX(-50%) translateY(20px); }
+    to   { opacity:1; transform:translateX(-50%) translateY(0); }
+  }
+  @keyframes toastOut {
+    from { opacity:1; transform:translateX(-50%) translateY(0); }
+    to   { opacity:0; transform:translateX(-50%) translateY(20px); }
+  }
+
+  
+  .sidebar-anim   { animation: slideInRight 0.5s var(--ease-spring) both; }
+  .header-anim    { animation: fadeUp 0.45s var(--ease-spring) 0.1s both; }
+  .cal-anim       { animation: fadeUp 0.5s var(--ease-spring) 0.18s both; }
+  .stats-anim     { animation: fadeUp 0.5s var(--ease-spring) 0.28s both; }
+
+  
+  .cal-scroll {
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+  .cal-scroll::-webkit-scrollbar { width:5px; }
+  .cal-scroll::-webkit-scrollbar-track { background:transparent; }
+  .cal-scroll::-webkit-scrollbar-thumb { background:#cbd5e1; border-radius:99px; }
+  .cal-scroll::-webkit-scrollbar-thumb:hover { background:#94a3b8; }
+
+  
+  .cal-grid {
+    display:grid;
+    grid-template-columns: 72px repeat(5,1fr);
+    min-width:680px;
+  }
+  .time-gutter {
+    font-size:.68rem; color:#94a3b8;
+    text-align:right; padding-right:10px;
+    padding-top:4px;
+    border-right:1px solid #e2e8f0;
+    height:64px; user-select:none;
+  }
+  .hour-cell {
+    border-bottom:1px solid #e2e8f0;
+    border-right:1px solid #e2e8f0;
+    height:64px; position:relative;
+    cursor:crosshair;
+    transition:background 0.12s;
+  }
+  .hour-cell:hover { background:#f8fafc; }
+  .hour-cell:last-child { border-right:none; }
+
+  
+  .event-block {
+    position:absolute;
+    left:3px; right:3px;
+    border-radius:9px;
+    border-left-width:3px;
+    border-left-style:solid;
+    padding:7px 9px 7px 9px;
+    cursor:pointer;
+    overflow:hidden;
+    z-index:10;
+    transition:
+      box-shadow 0.22s var(--ease-spring),
+      transform  0.18s var(--ease-spring),
+      opacity    0.18s ease,
+      filter     0.22s ease;
+    animation: popIn 0.42s var(--ease-spring) both;
+  }
+  .event-block::before {
+    content:'';
+    position:absolute; inset:0;
+    background:linear-gradient(135deg,rgba(255,255,255,0.4) 0%,rgba(255,255,255,0) 60%);
+    border-radius:inherit;
+    pointer-events:none;
+  }
+  .event-block:hover {
+    box-shadow:0 10px 30px -6px rgba(0,0,0,0.18);
+    transform:translateY(-2px) scale(1.012);
+    z-index:20;
+  }
+  .event-block:active { transform:translateY(0) scale(0.98); }
+
+  
+  .event-block.done {
+    filter:grayscale(0.45) brightness(0.9);
+  }
+  .event-block.done .ev-title {
+    position:relative;
+    color:#94a3b8 !important;
+  }
+  .event-block.done .ev-title::after {
+    content:'';
+    position:absolute;
+    left:0; top:50%;
+    height:1.5px; background:currentColor;
+    animation: strikeThrough 0.3s ease both;
+    width:100%;
+  }
+
+  
+  .check-btn {
+    position:absolute; top:7px; right:7px;
+    width:20px; height:20px; border-radius:50%;
+    border:2px solid currentColor;
+    display:flex; align-items:center; justify-content:center;
+    transition:background 0.2s, transform 0.15s, opacity 0.15s;
+    opacity:0;
+    font-size:12px;
+    background:transparent;
+    cursor:pointer;
+    z-index:5;
+  }
+  .event-block:hover .check-btn { opacity:0.85; }
+  .check-btn:hover { opacity:1 !important; transform:scale(1.15); }
+  .event-block.done .check-btn {
+    opacity:1;
+    background:currentColor;
+  }
+  .check-icon {
+    display:none;
+    animation: checkPop 0.3s var(--ease-spring) both;
+  }
+  .event-block.done .check-icon { display:flex; align-items:center; justify-content:center; }
+
+  
+  .day-today .day-num {
+    background:var(--primary);
+    color:white;
+    width:32px; height:32px;
+    border-radius:50%;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    animation:popIn 0.5s var(--ease-spring) 0.3s both;
+  }
+  .day-today .day-name { color:var(--primary) !important; }
+
+  
+  .modal-bg {
+    position:fixed; inset:0;
+    background:rgba(15,25,40,0.5);
+    backdrop-filter:blur(6px);
+    z-index:100;
+    display:flex; align-items:center; justify-content:center;
+    animation:fadeIn 0.2s ease both;
+  }
+  .modal-box {
+    background:white;
+    border-radius:18px;
+    width:100%; max-width:460px;
+    padding:28px 28px 24px;
+    box-shadow:0 40px 100px -20px rgba(0,0,0,0.35);
+    animation:popIn 0.38s var(--ease-spring) both;
+  }
+
+  
+  .color-dot {
+    width:22px; height:22px; border-radius:50%;
+    cursor:pointer; border:2px solid transparent;
+    transition:transform 0.15s, border-color 0.15s;
+    flex-shrink:0;
+  }
+  .color-dot:hover { transform:scale(1.2); }
+  .color-dot.selected { border-color:#1e293b; transform:scale(1.2); }
+
+  
+  .toast {
+    position:fixed; bottom:28px; left:50%;
+    transform:translateX(-50%);
+    background:#1e293b; color:white;
+    padding:10px 22px; border-radius:99px;
+    font-size:13px; font-weight:500; letter-spacing:0.01em;
+    z-index:300; white-space:nowrap;
+    box-shadow:0 8px 24px -4px rgba(0,0,0,0.3);
+    animation:toastIn 0.35s var(--ease-spring) both;
+    pointer-events:none;
+  }
+  .toast.out { animation:toastOut 0.3s ease both; }
+
+  
+  .stat-card {
+    transition:box-shadow 0.2s, transform 0.2s;
+    cursor:default;
+  }
+  .stat-card:hover {
+    box-shadow:0 8px 24px -6px rgba(0,0,0,0.12);
+    transform:translateY(-2px);
+  }
+
+  
+  .nav-active {
+    background:rgba(19,127,236,0.12);
+    color:var(--primary);
+  }
+
+  
+  .notif-dot {
+    animation:pulseDot 1.6s ease-in-out infinite;
+  }
+
+  
+  .form-inp {
+    width:100%;
+    border:1px solid #e2e8f0;
+    border-radius:9px;
+    padding:9px 12px;
+    font-size:13px;
+    background:#f8fafc;
+    font-family:'Lexend',sans-serif;
+    outline:none;
+    transition:border-color 0.15s, box-shadow 0.15s;
+  }
+  .form-inp:focus {
+    border-color:var(--primary);
+    box-shadow:0 0 0 3px rgba(19,127,236,0.12);
+  }
+</style>
+</head>
+<body class="bg-background-light text-slate-900 min-h-screen">
+
+<div class="flex h-screen overflow-hidden">
+
+  
+  <aside class="sidebar-anim w-64 flex-shrink-0 border-r border-slate-200 bg-white flex flex-col">
+    <div class="p-6 flex items-center gap-3">
+      <div class="size-10 bg-primary rounded-lg flex items-center justify-center text-white shadow-lg shadow-primary/30">
+        <span class="material-symbols-outlined text-2xl">school</span>
+      </div>
+      <div>
+        <h1 class="text-xl font-bold tracking-tight">Academia</h1>
+        <p class="text-xs text-slate-500 font-medium">Lecturer </p>
+      </div>
+    </div>
+
+    <nav class="flex-1 px-4 py-2 space-y-0.5">
+      <a href="LecDASH.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors text-sm font-medium">
+        <span class="material-symbols-outlined text-slate-500">dashboard</span> Dashboard
+      </a>
+      <a href="#" class="nav-active flex items-center gap-3 px-3 py-2 rounded-lg transition-colors text-sm font-bold">
+        <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">calendar_today</span> Calendar
+      </a>
+      <a href="LecAttend.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors text-sm font-medium">
+        <span class="material-symbols-outlined text-slate-500">task_alt</span> Attendance
+      </a>
+      <a href="Lecsets.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors text-sm font-medium">
+        <span class="material-symbols-outlined text-slate-500">settings</span> Settings
+      </a>
+      <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors text-sm font-medium">
+        <span class="material-symbols-outlined text-slate-500">logout</span> Logout
+      </a>
+    </nav>
+
+    
+    <div class="px-4 pb-3">
+      <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2 px-1">This Week</p>
+      <div id="mini-list" class="space-y-1"></div>
+    </div>
+
+    <div class="p-4 border-t border-slate-200">
+      <div class="flex items-center gap-3 p-2.5 bg-slate-50 rounded-xl">
+        <div class="size-10 rounded-full bg-primary/15 flex items-center justify-center text-primary">
+          <span class="material-symbols-outlined">person</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-bold truncate">Dr. Aris Thorne</p>
+          <p class="text-[10px] text-slate-500 truncate font-medium uppercase tracking-wider">Computer Engineering</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  
+  <main class="flex-1 flex flex-col overflow-hidden">
+
+    
+    <header class="header-anim h-16 border-b border-slate-200 bg-white px-6 flex items-center justify-between z-20 flex-shrink-0">
+      <div class="flex items-center gap-4">
+        <h2 id="month-label" class="text-xl font-bold transition-all duration-300"></h2>
+        <div class="flex items-center bg-slate-100 p-1 rounded-lg gap-0.5">
+          <button onclick="shiftWeek(-1)" class="p-1.5 hover:bg-white rounded-md transition-all hover:shadow-sm">
+            <span class="material-symbols-outlined text-lg leading-none">chevron_left</span>
+          </button>
+          <button onclick="goToday()" class="px-3 py-1 text-xs font-bold uppercase tracking-wider hover:bg-white rounded-md transition-all hover:shadow-sm">Today</button>
+          <button onclick="shiftWeek(1)" class="p-1.5 hover:bg-white rounded-md transition-all hover:shadow-sm">
+            <span class="material-symbols-outlined text-lg leading-none">chevron_right</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="openAdd()" class="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg shadow-primary/25 hover:bg-primary/90 active:scale-95 transition-all">
+          <span class="material-symbols-outlined text-lg">add</span>
+          <span>Schedule Event</span>
+        </button>
+        <div class="h-8 w-px bg-slate-200 mx-1"></div>
+        <button class="p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors relative">
+          <span class="material-symbols-outlined">notifications</span>
+          <span class="notif-dot absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white"></span>
+        </button>
+      </div>
+    </header>
+
+    
+    <div class="cal-anim flex-1 overflow-hidden flex flex-col">
+      
+      <div id="day-headers" class="bg-white border-b border-slate-200 z-10 flex-shrink-0" style="padding-left:72px; display:grid; grid-template-columns:repeat(5,1fr);"></div>
+
+      
+      <div class="cal-scroll flex-1 bg-white px-4 pb-4">
+        <div class="border border-slate-200 rounded-xl overflow-hidden shadow-sm mt-3" style="min-width:680px;">
+          <div id="cal-body" class="cal-grid"></div>
+        </div>
+
+        
+        <div class="stats-anim mt-7 grid grid-cols-3 gap-5" style="min-width:680px;">
+          <div class="stat-card bg-white p-5 border border-slate-200 rounded-xl flex items-center gap-4">
+            <div class="size-12 bg-primary/10 rounded-full flex items-center justify-center text-primary flex-shrink-0">
+              <span class="material-symbols-outlined">menu_book</span>
+            </div>
+            <div>
+              <p class="text-slate-500 text-xs font-medium uppercase tracking-wider">Total Hours</p>
+              <p id="stat-hours" class="text-2xl font-bold transition-all">—</p>
+            </div>
+          </div>
+          <div class="stat-card bg-white p-5 border border-slate-200 rounded-xl flex items-center gap-4">
+            <div class="size-12 bg-emerald-500/10 rounded-full flex items-center justify-center text-emerald-500 flex-shrink-0">
+              <span class="material-symbols-outlined">task_alt</span>
+            </div>
+            <div>
+              <p class="text-slate-500 text-xs font-medium uppercase tracking-wider">Completed</p>
+              <p id="stat-done" class="text-2xl font-bold transition-all">—</p>
+            </div>
+          </div>
+          <div class="stat-card bg-white p-5 border border-slate-200 rounded-xl flex items-center gap-4">
+            <div class="size-12 bg-amber-500/10 rounded-full flex items-center justify-center text-amber-500 flex-shrink-0">
+              <span class="material-symbols-outlined">pending_actions</span>
+            </div>
+            <div>
+              <p class="text-slate-500 text-xs font-medium uppercase tracking-wider">Upcoming</p>
+              <p id="stat-upcoming" class="text-2xl font-bold transition-all">—</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="modal" class="modal-bg hidden">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="flex items-center justify-between mb-5">
+      <h3 id="modal-heading" class="text-lg font-bold">Schedule Event</h3>
+      <button onclick="closeModal()" class="p-1.5 hover:bg-slate-100 rounded-lg transition-colors">
+        <span class="material-symbols-outlined text-slate-500">close</span>
+      </button>
+    </div>
+
+    <div class="space-y-3">
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">Course Code</label>
+          <input id="f-code" class="form-inp" type="text" placeholder="CS101"/>
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">Day</label>
+          <select id="f-day" class="form-inp">
+            <option value="0">Monday</option>
+            <option value="1">Tuesday</option>
+            <option value="2">Wednesday</option>
+            <option value="3">Thursday</option>
+            <option value="4">Friday</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">Event Title</label>
+        <input id="f-title" class="form-inp" type="text" placeholder="e.g. Introduction to Programming"/>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">Start (hour, 8–17)</label>
+          <input id="f-start" class="form-inp" type="number" min="8" max="17" value="9"/>
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">Duration (hrs)</label>
+          <input id="f-dur" class="form-inp" type="number" min="1" max="4" value="2"/>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">Location</label>
+        <input id="f-loc" class="form-inp" type="text" placeholder="Room 102 / Lab A"/>
+      </div>
+
+      <div>
+        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">Color</label>
+        <div id="color-row" class="flex gap-2 flex-wrap"></div>
+      </div>
+    </div>
+
+    <div class="flex gap-2.5 mt-6">
+      <button id="del-btn" onclick="deleteEvent()" class="hidden flex-1 border border-red-200 text-red-500 rounded-lg py-2.5 text-sm font-bold hover:bg-red-50 transition-colors">
+        Delete
+      </button>
+      <button onclick="closeModal()" class="flex-1 border border-slate-200 text-slate-600 rounded-lg py-2.5 text-sm font-bold hover:bg-slate-50 transition-colors">
+        Cancel
+      </button>
+      <button onclick="saveEvent()" class="flex-1 bg-primary text-white rounded-lg py-2.5 text-sm font-bold hover:bg-primary/90 transition-colors shadow-lg shadow-primary/25 active:scale-95">
+        Save
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+
+const PALETTE = {
+  blue:   { bg:'#dbeafe', border:'#137fec', text:'#1d4ed8' },
+  green:  { bg:'#d1fae5', border:'#10b981', text:'#065f46' },
+  amber:  { bg:'#fef3c7', border:'#f59e0b', text:'#78350f' },
+  indigo: { bg:'#e0e7ff', border:'#6366f1', text:'#3730a3' },
+  rose:   { bg:'#ffe4e6', border:'#f43f5e', text:'#9f1239' },
+  teal:   { bg:'#ccfbf1', border:'#14b8a6', text:'#115e59' },
+};
+
+let events = [
+  { id:1, code:'CS101', title:'Intro to Programming',    day:0, start:9,  dur:2, loc:'Room 102',  color:'blue',   done:false },
+  { id:2, code:'CS305', title:'Artificial Intelligence', day:2, start:10, dur:2, loc:'Lab A',     color:'green',  done:false },
+  { id:3, code:'CS202', title:'Data Structures',         day:1, start:13, dur:2, loc:'Room 304',  color:'amber',  done:false },
+  { id:4, code:'DB410', title:'Database Management',     day:3, start:14, dur:2, loc:'Room 201',  color:'indigo', done:false },
+];
+let nextId = 10;
+let weekOffset = 0;
+let editingId = null;
+let pickedColor = 'blue';
+
+const DAYS  = ['Mon','Tue','Wed','Thu','Fri'];
+const HOURS = Array.from({length:11},(_,i)=>i+8); 
+
+function getMonday(offset=0) {
+  const now = new Date();
+  const d = now.getDay(); 
+  const diff = now.getDate() - d + (d===0 ? -6 : 1);
+  const m = new Date(now);
+  m.setDate(diff + offset*7);
+  m.setHours(0,0,0,0);
+  return m;
+}
+function addDays(d,n){ const r=new Date(d); r.setDate(r.getDate()+n); return r; }
+function monthLabel(d){ return d.toLocaleString('default',{month:'long'})+' '+d.getFullYear(); }
+function fmt12(h){ return (h>12?h-12:h)+':00 '+(h<12?'AM':'PM'); }
+function todayColIndex(){
+  const d=new Date().getDay(); 
+  return d===0?-1:d-1; 
+}
+function isThisWeek(){ return weekOffset===0; }
+
+function render() {
+  const monday = getMonday(weekOffset);
+  const todayCol = isThisWeek() ? todayColIndex() : -1;
+
+  
+  document.getElementById('month-label').textContent = monthLabel(monday);
+
+  
+  const hdr = document.getElementById('day-headers');
+  hdr.innerHTML = '';
+  DAYS.forEach((name,i)=>{
+    const date = addDays(monday,i);
+    const isToday = i===todayCol;
+    const div = document.createElement('div');
+    div.className = `p-3 text-center border-r border-slate-200 animation: slideDown 0.3s ease ${i*50}ms both ${isToday?'day-today':''}`;
+    div.style.animation = `slideDown 0.35s var(--ease-spring) ${i*40}ms both`;
+    div.innerHTML = `
+      <p class="text-[10px] font-bold uppercase tracking-widest day-name ${isToday?'text-primary':'text-slate-400'}">${name}</p>
+      <p class="text-xl font-bold day-num mt-0.5">${date.getDate()}</p>`;
+    if(isToday) div.querySelector('.day-num').style.cssText='background:var(--primary);color:white;width:32px;height:32px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:1.1rem;';
+    hdr.appendChild(div);
+  });
+
+  
+  const body = document.getElementById('cal-body');
+  body.innerHTML = '';
+  HOURS.forEach(hour => {
+    
+    const tg = document.createElement('div');
+    tg.className = 'time-gutter';
+    tg.textContent = fmt12(hour);
+    body.appendChild(tg);
+    
+    DAYS.forEach((_,dayIdx)=>{
+      const cell = document.createElement('div');
+      cell.className = `hour-cell${dayIdx===4?' border-r-0':''}`;
+      cell.dataset.hour = hour;
+      cell.dataset.day  = dayIdx;
+      cell.title = `Double-click to add event at ${fmt12(hour)}`;
+      cell.addEventListener('dblclick', () => openAdd(dayIdx, hour));
+      body.appendChild(cell);
+    });
+  });
+
+  
+  events.forEach((ev,idx) => {
+    placeEvent(ev, idx*60);
+  });
+
+  updateStats();
+  renderMiniList();
+}
+
+function placeEvent(ev, delayMs=0) {
+  const body = document.getElementById('cal-body');
+  const cells = body.querySelectorAll(`.hour-cell[data-day="${ev.day}"][data-hour="${ev.start}"]`);
+  if(!cells.length) return;
+  const cell = cells[0];
+  const col  = PALETTE[ev.color] || PALETTE.blue;
+  const h    = ev.dur * 64 - 6;
+
+  const block = document.createElement('div');
+  block.className = `event-block${ev.done?' done':''}`;
+  block.id = `ev-${ev.id}`;
+  block.style.cssText = `top:3px;height:${h}px;background:${col.bg};border-left-color:${col.border};color:${col.text};animation-delay:${delayMs}ms;`;
+  block.innerHTML = `
+    <button class="check-btn" onclick="event.stopPropagation();toggleDone(${ev.id})" title="Mark complete">
+      <span class="material-symbols-outlined check-icon" style="font-size:12px;color:white;line-height:1">check</span>
+    </button>
+    <p class="text-[10px] font-bold uppercase tracking-wide truncate pr-6">${ev.code}</p>
+    <p class="ev-title text-xs font-semibold truncate mt-0.5 pr-6">${ev.title}</p>
+    <div class="flex items-center gap-1 mt-1.5 opacity-60">
+      <span class="material-symbols-outlined" style="font-size:12px">location_on</span>
+      <span class="text-[10px]">${ev.loc}</span>
+    </div>`;
+  block.addEventListener('click', () => openEdit(ev.id));
+  cell.appendChild(block);
+}
+
+function toggleDone(id) {
+  const ev = events.find(e=>e.id===id);
+  if(!ev) return;
+  ev.done = !ev.done;
+  const block = document.getElementById(`ev-${id}`);
+  if(block) block.classList.toggle('done', ev.done);
+  updateStats();
+  showToast(ev.done ? `✓ ${ev.code} marked complete` : `${ev.code} unmarked`);
+}
+
+function updateStats() {
+  const total = events.length;
+  const done  = events.filter(e=>e.done).length;
+  const hours = events.reduce((s,e)=>s+e.dur,0);
+  animStat('stat-hours',   hours+' hrs');
+  animStat('stat-done',    done);
+  animStat('stat-upcoming',total-done);
+}
+function animStat(id,val) {
+  const el = document.getElementById(id);
+  el.style.opacity='0'; el.style.transform='translateY(-6px)';
+  setTimeout(()=>{
+    el.textContent=val;
+    el.style.transition='opacity .22s ease,transform .22s ease';
+    el.style.opacity='1'; el.style.transform='translateY(0)';
+  },140);
+}
+
+function renderMiniList() {
+  const list = document.getElementById('mini-list');
+  list.innerHTML='';
+  events.forEach(ev=>{
+    const col=PALETTE[ev.color]||PALETTE.blue;
+    const li=document.createElement('div');
+    li.className='flex items-center gap-2 px-1 py-1 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors';
+    li.style.animation='slideInRight 0.4s var(--ease-spring) both';
+    li.innerHTML=`
+      <span style="width:7px;height:7px;border-radius:50%;background:${col.border};flex-shrink:0;"></span>
+      <span class="text-[11px] text-slate-600 truncate flex-1">${ev.code} · ${DAYS[ev.day]}</span>
+      ${ev.done?'<span class="material-symbols-outlined text-emerald-500" style="font-size:14px">check_circle</span>':''}`;
+    li.onclick=()=>openEdit(ev.id);
+    list.appendChild(li);
+  });
+}
+
+function shiftWeek(dir) {
+  weekOffset += dir;
+  animateOut(()=>render());
+}
+function goToday() {
+  weekOffset=0;
+  animateOut(()=>render());
+}
+function animateOut(cb) {
+  const body=document.getElementById('cal-body');
+  body.style.opacity='0'; body.style.transform='translateY(8px)';
+  body.style.transition='opacity .18s ease,transform .18s ease';
+  setTimeout(()=>{
+    cb();
+    body.style.opacity='1'; body.style.transform='translateY(0)';
+  },180);
+}
+
+function scrollToHour(h) {
+  const scroller = document.querySelector('.cal-scroll');
+  if(!scroller) return;
+  const idx = h-8;
+  scroller.scrollTo({ top: idx*64, behavior:'smooth' });
+}
+
+function buildColorRow(selected) {
+  const row = document.getElementById('color-row');
+  row.innerHTML = '';
+  Object.entries(PALETTE).forEach(([key,col])=>{
+    const dot=document.createElement('div');
+    dot.className=`color-dot${key===selected?' selected':''}`;
+    dot.style.background=col.border;
+    dot.dataset.key=key;
+    dot.title=key;
+    dot.onclick=()=>{
+      pickedColor=key;
+      row.querySelectorAll('.color-dot').forEach(d=>d.classList.toggle('selected',d.dataset.key===key));
+    };
+    row.appendChild(dot);
+  });
+}
+
+function openAdd(day=0, hour=9) {
+  editingId=null; pickedColor='blue';
+  document.getElementById('modal-heading').textContent='Schedule Event';
+  document.getElementById('del-btn').classList.add('hidden');
+  document.getElementById('f-code').value='';
+  document.getElementById('f-title').value='';
+  document.getElementById('f-day').value=day;
+  document.getElementById('f-start').value=hour;
+  document.getElementById('f-dur').value=2;
+  document.getElementById('f-loc').value='';
+  buildColorRow('blue');
+  document.getElementById('modal').classList.remove('hidden');
+}
+function openEdit(id) {
+  const ev=events.find(e=>e.id===id);
+  if(!ev) return;
+  editingId=id; pickedColor=ev.color;
+  document.getElementById('modal-heading').textContent='Edit Event';
+  document.getElementById('del-btn').classList.remove('hidden');
+  document.getElementById('f-code').value=ev.code;
+  document.getElementById('f-title').value=ev.title;
+  document.getElementById('f-day').value=ev.day;
+  document.getElementById('f-start').value=ev.start;
+  document.getElementById('f-dur').value=ev.dur;
+  document.getElementById('f-loc').value=ev.loc;
+  buildColorRow(ev.color);
+  document.getElementById('modal').classList.remove('hidden');
+}
+function closeModal() {
+  document.getElementById('modal').classList.add('hidden');
+  editingId=null;
+}
+document.getElementById('modal').addEventListener('click', closeModal);
+
+function saveEvent() {
+  const code  = document.getElementById('f-code').value.trim()||'EVT';
+  const title = document.getElementById('f-title').value.trim()||'Untitled';
+  const day   = parseInt(document.getElementById('f-day').value);
+  const start = parseInt(document.getElementById('f-start').value);
+  const dur   = parseInt(document.getElementById('f-dur').value);
+  const loc   = document.getElementById('f-loc').value.trim()||'TBD';
+  if(start<8||start>17){ showToast('⚠ Start hour must be 8–17'); return; }
+  if(dur<1||dur>4){ showToast('⚠ Duration must be 1–4 hrs'); return; }
+  if(editingId!==null){
+    const ev=events.find(e=>e.id===editingId);
+    Object.assign(ev,{code,title,day,start,dur,loc,color:pickedColor});
+    showToast('Event updated ✓');
+  } else {
+    events.push({id:nextId++,code,title,day,start,dur,loc,color:pickedColor,done:false});
+    showToast('Event added ✓');
+  }
+  closeModal();
+  render();
+}
+function deleteEvent() {
+  if(editingId===null) return;
+  const ev=events.find(e=>e.id===editingId);
+  events=events.filter(e=>e.id!==editingId);
+  closeModal(); render();
+  showToast(`"${ev?.code}" deleted`);
+}
+
+let toastTimer;
+function showToast(msg) {
+  clearTimeout(toastTimer);
+  let t=document.querySelector('.toast');
+  if(t) t.remove();
+  t=document.createElement('div');
+  t.className='toast'; t.textContent=msg;
+  document.body.appendChild(t);
+  toastTimer=setTimeout(()=>{
+    t.classList.add('out');
+    setTimeout(()=>t.remove(),350);
+  },2600);
+}
+
+render();
+setTimeout(()=>scrollToHour(8),120);
+</script>
+</body>
+</html>

@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HOD Settings Page</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<style>
+  :root {
+    --primary: #137fec;
+    --primary-glow: rgba(19,127,236,0.25);
+    --bg-light: #f6f7f8;
+    --surface-light: #ffffff;
+    --text-light: #0d141b;
+    --subtext-light: #4c739a;
+    --border-light: #e7edf3;
+    --primary-bg-light: #e7f2fe;
+  }
+
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    transition: font-variation-settings 0.3s ease;
+  }
+
+  /* ─── Page Load Animations ─── */
+  @keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-32px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes slideInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.92); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @keyframes shimmer {
+    0%   { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  @keyframes pulse-ring {
+    0%   { box-shadow: 0 0 0 0 var(--primary-glow); }
+    70%  { box-shadow: 0 0 0 10px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-4px); }
+  }
+  @keyframes spin-once {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  @keyframes badge-pop {
+    0%   { transform: scale(0); opacity: 0; }
+    60%  { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  @keyframes check-draw {
+    from { stroke-dashoffset: 30; }
+    to   { stroke-dashoffset: 0; }
+  }
+  @keyframes toast-in {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes toast-out {
+    from { opacity: 1; transform: translateY(0) scale(1); }
+    to   { opacity: 0; transform: translateY(10px) scale(0.95); }
+  }
+  @keyframes progress-fill {
+    from { width: 0%; }
+  }
+  @keyframes ripple {
+    0%   { transform: scale(0); opacity: 0.5; }
+    100% { transform: scale(4); opacity: 0; }
+  }
+
+  /* Aside */
+  aside {
+    animation: slideInLeft 0.55s cubic-bezier(0.22,1,0.36,1) both;
+  }
+  /* Header */
+  header {
+    animation: slideInDown 0.45s 0.1s cubic-bezier(0.22,1,0.36,1) both;
+  }
+  /* Cards */
+  .card-anim-1 { animation: fadeUp 0.55s 0.2s cubic-bezier(0.22,1,0.36,1) both; }
+  .card-anim-2 { animation: fadeUp 0.55s 0.32s cubic-bezier(0.22,1,0.36,1) both; }
+  .card-anim-3 { animation: fadeUp 0.55s 0.44s cubic-bezier(0.22,1,0.36,1) both; }
+
+  /* Nav items stagger */
+  nav a { animation: fadeUp 0.4s both; opacity: 0; }
+  nav a:nth-child(1) { animation-delay: 0.25s; }
+  nav a:nth-child(2) { animation-delay: 0.32s; }
+  nav a:nth-child(3) { animation-delay: 0.39s; }
+  nav a:nth-child(4) { animation-delay: 0.46s; }
+
+  /* Profile avatar float */
+  .avatar-wrapper { animation: float 4s ease-in-out infinite; }
+
+  /* ─── Card hover lift ─── */
+  .card-hover {
+    transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+    will-change: transform;
+  }
+  .card-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(19,127,236,0.08), 0 2px 8px rgba(0,0,0,0.06);
+    border-color: var(--primary) !important;
+  }
+
+  /* ─── Input focus glow ─── */
+  .fancy-input {
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+  }
+  .fancy-input:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px var(--primary-glow);
+    outline: none;
+  }
+
+  /* ─── Toggle switch ─── */
+  .toggle-track {
+    transition: background-color 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+  .toggle-thumb {
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s ease;
+    width: 20px; height: 20px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px; left: 2px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  }
+  .toggle-input:checked ~ .toggle-track { background-color: var(--primary); }
+  .toggle-input:checked ~ .toggle-track .toggle-thumb { transform: translateX(20px); }
+  .toggle-input:focus ~ .toggle-track { box-shadow: 0 0 0 3px var(--primary-glow); }
+  .toggle-wrap:hover .toggle-thumb { box-shadow: 0 2px 8px rgba(0,0,0,0.25); }
+
+  /* ─── Buttons ─── */
+  .btn-primary {
+    position: relative; overflow: hidden;
+    transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(19,127,236,0.35);
+  }
+  .btn-primary:active { transform: translateY(0) scale(0.97); }
+  .btn-primary .ripple-el {
+    position: absolute; border-radius: 50%;
+    background: rgba(255,255,255,0.35);
+    pointer-events: none;
+    animation: ripple 0.6s ease-out forwards;
+  }
+  .btn-secondary {
+    transition: background-color 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
+  }
+  .btn-secondary:hover { transform: translateY(-1px); }
+  .btn-secondary:active { transform: translateY(0) scale(0.97); }
+
+  /* Edit avatar button */
+  .avatar-edit-btn {
+    transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease, background-color 0.2s ease;
+  }
+  .avatar-edit-btn:hover {
+    transform: scale(1.2) rotate(10deg);
+    box-shadow: 0 4px 16px rgba(19,127,236,0.4);
+  }
+  .avatar-edit-btn:active { transform: scale(1.05) rotate(5deg); }
+
+  /* Nav link hover */
+  nav a {
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease, padding-left 0.2s ease;
+  }
+  nav a:hover { padding-left: 16px !important; }
+  nav a:hover .material-symbols-outlined { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+
+  /* Active nav */
+  .nav-active .material-symbols-outlined { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+
+  /* Setting rows */
+  .setting-row {
+    transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .setting-row:hover {
+    transform: translateX(4px);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  }
+  .setting-row .icon-wrap {
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .setting-row:hover .icon-wrap { transform: scale(1.15) rotate(-5deg); }
+
+  /* Password strength bar */
+  .strength-bar-fill {
+    height: 100%; border-radius: 4px;
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1), background-color 0.3s ease;
+  }
+
+  /* Toast */
+  #toast {
+    position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 20px; border-radius: 12px;
+    background: #0d141b; color: white;
+    font-size: 14px; font-weight: 500;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    opacity: 0; pointer-events: none;
+    font-family: 'Lexend', sans-serif;
+  }
+  #toast.show { animation: toast-in 0.4s cubic-bezier(0.22,1,0.36,1) forwards; pointer-events: auto; }
+  #toast.hide { animation: toast-out 0.3s ease forwards; }
+
+  /* Shimmer on logo text */
+  .logo-shimmer {
+    background: linear-gradient(90deg, #0d141b 30%, var(--primary) 50%, #0d141b 70%);
+    background-size: 200% auto;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s linear infinite;
+  }
+
+  /* Password requirements check items */
+  .req-item {
+    transition: color 0.3s ease, transform 0.3s ease;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .req-item.met { color: #22c55e; }
+  .req-item .req-icon { transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); font-size: 14px; }
+  .req-item.met .req-icon { transform: scale(1.2); }
+
+  /* Section title underline */
+  .section-title {
+    position: relative; display: inline-block;
+  }
+  .section-title::after {
+    content: '';
+    position: absolute; bottom: -4px; left: 0;
+    height: 2px; width: 0;
+    background: var(--primary);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+  .card-hover:hover .section-title::after { width: 100%; }
+
+  /* Scroll-in observer */
+  .observe-in { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .observe-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* Avatar ring pulse on hover */
+  .avatar-ring {
+    transition: box-shadow 0.3s ease;
+  }
+  .avatar-ring:hover {
+    animation: pulse-ring 1s ease-out infinite;
+  }
+
+  /* Logout hover */
+  .logout-link {
+    transition: background-color 0.2s ease, color 0.2s ease, padding-left 0.2s ease;
+  }
+  .logout-link:hover { color: #ef4444 !important; padding-left: 16px !important; }
+  .logout-link:hover .material-symbols-outlined { color: #ef4444; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #d1dde8; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+</style>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#137fec",
+          "background-light": "#f6f7f8",
+          "background-dark": "#101922",
+          "surface-light": "#ffffff",
+          "surface-dark": "#182531",
+          "text-light": "#0d141b",
+          "text-dark": "#e7edf3",
+          "subtext-light": "#4c739a",
+          "subtext-dark": "#a0b3c6",
+          "border-light": "#e7edf3",
+          "border-dark": "#2c3e4a",
+          "primary-bg-light": "#e7f2fe",
+          "primary-bg-dark": "rgba(19, 127, 236, 0.2)",
+        },
+        fontFamily: { "display": ["Lexend", "sans-serif"] },
+        borderRadius: {"DEFAULT": "0.5rem","lg": "0.75rem","xl": "1rem","full": "9999px"},
+      },
+    },
+  }
+</script>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark">
+
+<!-- Toast notification -->
+<div id="toast">
+  <span class="material-symbols-outlined" style="color:#22c55e;font-size:20px;">check_circle</span>
+  <span id="toast-msg">Changes saved successfully!</span>
+</div>
+
+<div class="relative flex h-auto min-h-screen w-full flex-col">
+<div class="flex h-full w-full">
+
+<!-- ─── Sidebar ─── -->
+<aside class="flex-shrink-0 w-64 bg-surface-light dark:bg-surface-dark border-r border-border-light dark:border-border-dark flex flex-col justify-between p-4">
+  <div class="flex flex-col gap-6">
+    <!-- Logo -->
+    <div class="flex items-center gap-2 px-3 text-primary">
+      <span class="material-symbols-outlined text-3xl" id="logo-icon" style="transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);">school</span>
+      <h1 class="text-lg font-bold leading-tight logo-shimmer">Academia</h1>
+    </div>
+    <div class="flex flex-col gap-4">
+      <!-- Profile -->
+      <div class="flex items-center gap-3 px-1">
+        <div class="avatar-wrapper avatar-ring">
+          <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12 border-2 border-primary/20" style='background-image: url("https://lasu.edu.ng/home/profile_pics/355-1595850382.jpg");'></div>
+        </div>
+        <div class="flex flex-col" style="animation: fadeUp 0.4s 0.3s both;">
+          <h2 class="text-text-light dark:text-text-dark text-base font-medium leading-normal">Dr. Yussuff Abayomi</h2>
+          <p class="text-subtext-light dark:text-subtext-dark text-sm font-normal leading-normal">Head of Department</p>
+        </div>
+      </div>
+      <!-- Nav -->
+      <nav class="flex flex-col gap-1">
+        <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-black/5 text-subtext-light" href="HODDashboard.html">
+          <span class="material-symbols-outlined">dashboard</span>
+          <p class="text-text-light text-sm font-medium leading-normal">Dashboard</p>
+        </a>
+        <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-black/5 text-subtext-light" href="HODCourselist.html">
+          <span class="material-symbols-outlined">book</span>
+          <p class="text-text-light text-sm font-medium leading-normal">Courses</p>
+        </a>
+        <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-black/5 text-subtext-light" href="HODLecturerlist.html">
+          <span class="material-symbols-outlined">co_present</span>
+          <p class="text-text-light text-sm font-medium leading-normal">Lecturers</p>
+        </a>
+        <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-black/5 text-subtext-light" href="HODStudentlist.html">
+          <span class="material-symbols-outlined">school</span>
+          <p class="text-text-light text-sm font-medium leading-normal">Students</p>
+        </a>
+      </nav>
+    </div>
+  </div>
+  <!-- Bottom nav -->
+  <div class="flex flex-col gap-1" style="animation: fadeUp 0.4s 0.55s both; opacity:0;">
+    <a class="nav-active flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary-bg-light text-primary" href="#" style="animation:none;opacity:1;">
+      <span class="material-symbols-outlined">settings</span>
+      <p class="text-sm font-semibold leading-normal">Settings</p>
+    </a>
+    <a class="logout-link flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-black/5 text-subtext-light" href="#">
+      <span class="material-symbols-outlined">logout</span>
+      <p class="text-text-light text-sm font-medium leading-normal">Logout</p>
+    </a>
+  </div>
+</aside>
+
+<!-- ─── Main ─── -->
+<main class="flex-1 flex flex-col">
+  <!-- Header -->
+  <header class="flex-shrink-0 flex items-center justify-between whitespace-nowrap border-b border-border-light px-10 py-4 bg-surface-light">
+    <div class="flex items-center gap-3 text-text-light">
+      <span class="material-symbols-outlined text-primary" style="font-size:28px;">settings</span>
+      <h2 class="text-text-light text-2xl font-bold leading-tight tracking-[-0.015em]">Settings</h2>
+    </div>
+  </header>
+
+  <div class="flex-1 overflow-y-auto p-8">
+    <div class="max-w-5xl mx-auto flex flex-col gap-8">
+
+      <!-- ── Profile Card ── -->
+      <div class="card-anim-1 card-hover bg-surface-light rounded-xl border border-border-light p-6 sm:p-8">
+        <div class="flex justify-between items-start mb-6">
+          <div>
+            <h3 class="section-title text-text-light text-lg font-bold leading-tight">Profile Information</h3>
+            <p class="text-subtext-light text-sm mt-2">Update your photo and personal details.</p>
+          </div>
+          <button class="btn-primary px-4 py-2 bg-primary text-white text-sm font-semibold rounded-lg" onclick="triggerSave(this, 'Profile saved!')">
+            Save Changes
+          </button>
+        </div>
+        <div class="flex flex-col md:flex-row gap-8">
+          <!-- Avatar -->
+          <div class="flex flex-col items-center gap-3">
+            <div class="relative size-32 avatar-wrapper avatar-ring" style="animation: float 4s ease-in-out infinite;">
+              <div id="avatar-img" class="bg-center bg-no-repeat bg-cover rounded-full w-full h-full border-4 border-background-light" style='background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPQHstFutlfl8tgZAtY8nDWucSWEvFM5AETQ&s");'></div>
+              <button class="avatar-edit-btn absolute bottom-0 right-0 p-2 bg-primary text-white rounded-full shadow-lg border-2 border-surface-light" onclick="triggerAvatarEdit()">
+                <span class="material-symbols-outlined" style="font-size:16px;">edit</span>
+              </button>
+              <input type="file" id="avatar-file" accept="image/*" class="hidden" onchange="previewAvatar(event)"/>
+            </div>
+            <p class="text-xs font-medium text-subtext-light">Allowed *.jpeg, *.jpg, *.png</p>
+          </div>
+          <!-- Fields -->
+          <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="flex flex-col gap-1.5 field-group">
+              <label class="text-text-light text-sm font-medium">First Name</label>
+              <input class="fancy-input px-4 py-2.5 rounded-lg bg-background-light border border-transparent text-text-light text-sm font-normal" type="text" value="Yussuff"/>
+            </div>
+            <div class="flex flex-col gap-1.5 field-group">
+              <label class="text-text-light text-sm font-medium">Last Name</label>
+              <input class="fancy-input px-4 py-2.5 rounded-lg bg-background-light border border-transparent text-text-light text-sm font-normal" type="text" value="Abayomi Isiaka"/>
+            </div>
+            <div class="flex flex-col gap-1.5 sm:col-span-2 field-group">
+              <label class="text-text-light text-sm font-medium">Email Address</label>
+              <div class="relative">
+                <span class="material-symbols-outlined absolute left-3 top-2.5 text-subtext-light text-lg">mail</span>
+                <input class="fancy-input pl-10 pr-4 py-2.5 w-full rounded-lg bg-background-light border border-transparent text-text-light text-sm font-normal" type="email" value="yussuff.abayomi@lasu.edu.ng"/>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1.5 field-group">
+              <label class="text-text-light text-sm font-medium">Phone Number</label>
+              <input class="fancy-input px-4 py-2.5 rounded-lg bg-background-light border border-transparent text-text-light text-sm font-normal" type="tel" value="+234 800 000 0000"/>
+            </div>
+            <div class="flex flex-col gap-1.5 field-group">
+              <label class="text-text-light text-sm font-medium">Department</label>
+              <div class="relative">
+                <input class="px-4 py-2.5 w-full rounded-lg bg-background-light/50 border border-transparent text-subtext-light text-sm font-normal cursor-not-allowed" disabled type="text" value="ECE"/>
+                <span class="material-symbols-outlined absolute right-3 top-2.5 text-subtext-light text-sm">lock</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Department Config Card ── -->
+      <div class="card-anim-2 card-hover bg-surface-light rounded-xl border border-border-light p-6 sm:p-8">
+        <div class="mb-6">
+          <h3 class="section-title text-text-light text-lg font-bold leading-tight">Department Configuration</h3>
+          <p class="text-subtext-light text-sm mt-2">Manage global settings for the ECE department.</p>
+        </div>
+        <div class="space-y-4">
+
+          <!-- Toggle 1: AI Grading -->
+          <div class="setting-row flex items-center justify-between p-4 rounded-xl bg-background-light border border-transparent hover:border-border-light transition-all">
+            <div class="flex gap-4">
+              <div class="icon-wrap p-2.5 bg-primary/10 rounded-xl text-primary h-fit">
+                <span class="material-symbols-outlined">auto_awesome</span>
+              </div>
+              <div>
+                <h4 class="text-text-light font-semibold text-sm">AI Grading Assistance</h4>
+                <p class="text-subtext-light text-xs mt-1 max-w-md">Allow lecturers to use AI tools for preliminary grading and feedback generation on submitted assignments.</p>
+              </div>
+            </div>
+            <label class="toggle-wrap relative inline-flex items-center cursor-pointer flex-shrink-0 ml-4">
+              <input class="toggle-input sr-only" type="checkbox" checked onchange="animateToggle(this)"/>
+              <div class="toggle-track w-11 h-6 bg-primary rounded-full relative">
+                <div class="toggle-thumb" style="transform:translateX(20px);"></div>
+              </div>
+            </label>
+          </div>
+
+          <!-- Toggle 2: Auto-approve -->
+          <div class="setting-row flex items-center justify-between p-4 rounded-xl bg-background-light border border-transparent hover:border-border-light transition-all">
+            <div class="flex gap-4">
+              <div class="icon-wrap p-2.5 bg-orange-500/10 rounded-xl text-orange-500 h-fit">
+                <span class="material-symbols-outlined">group_add</span>
+              </div>
+              <div>
+                <h4 class="text-text-light font-semibold text-sm">Auto-Approve Student Registrations</h4>
+                <p class="text-subtext-light text-xs mt-1 max-w-md">Automatically approve new student registration requests if they have a valid university email domain.</p>
+              </div>
+            </div>
+            <label class="toggle-wrap relative inline-flex items-center cursor-pointer flex-shrink-0 ml-4">
+              <input class="toggle-input sr-only" type="checkbox" onchange="animateToggle(this)"/>
+              <div class="toggle-track w-11 h-6 bg-gray-200 rounded-full relative">
+                <div class="toggle-thumb"></div>
+              </div>
+            </label>
+          </div>
+
+          <!-- Toggle 3: Public Catalog -->
+          <div class="setting-row flex items-center justify-between p-4 rounded-xl bg-background-light border border-transparent hover:border-border-light transition-all">
+            <div class="flex gap-4">
+              <div class="icon-wrap p-2.5 bg-green-500/10 rounded-xl text-green-500 h-fit">
+                <span class="material-symbols-outlined">visibility</span>
+              </div>
+              <div>
+                <h4 class="text-text-light font-semibold text-sm">Public Course Catalog</h4>
+                <p class="text-subtext-light text-xs mt-1 max-w-md">Make the department's course syllabus and lecturer information visible to guests without login.</p>
+              </div>
+            </div>
+            <label class="toggle-wrap relative inline-flex items-center cursor-pointer flex-shrink-0 ml-4">
+              <input class="toggle-input sr-only" type="checkbox" checked onchange="animateToggle(this)"/>
+              <div class="toggle-track w-11 h-6 bg-primary rounded-full relative">
+                <div class="toggle-thumb" style="transform:translateX(20px);"></div>
+              </div>
+            </label>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── Security Card ── -->
+      <div class="card-anim-3 card-hover bg-surface-light rounded-xl border border-border-light p-6 sm:p-8">
+        <div class="mb-6">
+          <h3 class="section-title text-text-light text-lg font-bold leading-tight">Security</h3>
+          <p class="text-subtext-light text-sm mt-2">Ensure your account is using a long, random password to stay secure.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-1.5">
+              <label class="text-text-light text-sm font-medium">Current Password</label>
+              <div class="relative">
+                <input id="cur-pw" class="fancy-input px-4 py-2.5 pr-10 w-full rounded-lg bg-background-light border border-transparent text-text-light text-sm font-normal" placeholder="••••••••" type="password"/>
+                <button class="absolute right-3 top-2.5 text-subtext-light hover:text-primary transition-colors" onclick="togglePw('cur-pw',this)">
+                  <span class="material-symbols-outlined" style="font-size:18px;">visibility</span>
+                </button>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label class="text-text-light text-sm font-medium">New Password</label>
+              <div class="relative">
+                <input id="new-pw" class="fancy-input px-4 py-2.5 pr-10 w-full rounded-lg bg-background-light border border-transparent text-text-light text-sm font-normal" placeholder="••••••••" type="password" oninput="checkStrength(this.value)"/>
+                <button class="absolute right-3 top-2.5 text-subtext-light hover:text-primary transition-colors" onclick="togglePw('new-pw',this)">
+                  <span class="material-symbols-outlined" style="font-size:18px;">visibility</span>
+                </button>
+              </div>
+              <!-- Strength bar -->
+              <div class="mt-1">
+                <div class="flex justify-between items-center mb-1">
+                  <span class="text-xs text-subtext-light">Password strength</span>
+                  <span id="strength-label" class="text-xs font-medium text-subtext-light">—</span>
+                </div>
+                <div class="h-1.5 bg-background-light rounded-full overflow-hidden border border-border-light">
+                  <div id="strength-bar" class="strength-bar-fill" style="width:0%;background:#ef4444;"></div>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label class="text-text-light text-sm font-medium">Confirm New Password</label>
+              <div class="relative">
+                <input id="conf-pw" class="fancy-input px-4 py-2.5 pr-10 w-full rounded-lg bg-background-light border border-transparent text-text-light text-sm font-normal" placeholder="••••••••" type="password" oninput="checkMatch()"/>
+                <button class="absolute right-3 top-2.5 text-subtext-light hover:text-primary transition-colors" onclick="togglePw('conf-pw',this)">
+                  <span class="material-symbols-outlined" style="font-size:18px;">visibility</span>
+                </button>
+              </div>
+              <p id="match-msg" class="text-xs" style="min-height:16px;"></p>
+            </div>
+          </div>
+
+          <!-- Requirements panel -->
+          <div class="bg-background-light rounded-xl p-5 flex flex-col gap-3 h-fit border border-border-light">
+            <h4 class="text-text-light font-semibold text-sm flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary" style="font-size:18px;">shield</span>
+              Password Requirements
+            </h4>
+            <div class="flex flex-col gap-2 text-xs">
+              <div class="req-item" id="req-len">
+                <span class="material-symbols-outlined req-icon text-subtext-light">radio_button_unchecked</span>
+                <span>Minimum 8 characters long</span>
+              </div>
+              <div class="req-item" id="req-lower">
+                <span class="material-symbols-outlined req-icon text-subtext-light">radio_button_unchecked</span>
+                <span>At least one lowercase character</span>
+              </div>
+              <div class="req-item" id="req-upper">
+                <span class="material-symbols-outlined req-icon text-subtext-light">radio_button_unchecked</span>
+                <span>At least one uppercase character</span>
+              </div>
+              <div class="req-item" id="req-special">
+                <span class="material-symbols-outlined req-icon text-subtext-light">radio_button_unchecked</span>
+                <span>At least one number, symbol, or whitespace</span>
+              </div>
+            </div>
+            <button class="btn-secondary mt-2 w-full px-4 py-2 bg-surface-light border border-border-light text-text-light text-sm font-semibold rounded-lg hover:bg-black/5" onclick="triggerSave(this, 'Password updated!')">
+              Update Password
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+</div>
+</div>
+
+<script>
+  /* ─── Logo spin on load ─── */
+  const logoIcon = document.getElementById('logo-icon');
+  logoIcon.style.animation = 'spin-once 0.6s 0.1s cubic-bezier(0.34,1.56,0.64,1) both';
+
+  /* ─── Ripple on buttons ─── */
+  document.querySelectorAll('.btn-primary').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      const r = document.createElement('span');
+      r.className = 'ripple-el';
+      const rect = this.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height) * 2;
+      r.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px;`;
+      this.appendChild(r);
+      setTimeout(() => r.remove(), 700);
+    });
+  });
+
+  /* ─── Toggle animation ─── */
+  function animateToggle(input) {
+    const track = input.nextElementSibling;
+    const thumb = track.querySelector('.toggle-thumb');
+    if (input.checked) {
+      track.style.backgroundColor = 'var(--primary)';
+      thumb.style.transform = 'translateX(20px)';
+    } else {
+      track.style.backgroundColor = '#d1d5db';
+      thumb.style.transform = 'translateX(0)';
+    }
+    // Bounce the row
+    const row = input.closest('.setting-row');
+    row.style.transform = 'translateX(8px)';
+    setTimeout(() => { row.style.transform = ''; }, 200);
+    showToast(input.checked ? 'Setting enabled' : 'Setting disabled');
+  }
+
+  /* ─── Save button handler ─── */
+  function triggerSave(btn, msg) {
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;animation:spin-once 0.5s ease;">sync</span> Saving…';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;">check</span> Saved!';
+      btn.style.backgroundColor = '#22c55e';
+      showToast(msg);
+      setTimeout(() => {
+        btn.innerHTML = orig;
+        btn.style.backgroundColor = '';
+        btn.disabled = false;
+      }, 2000);
+    }, 900);
+  }
+
+  /* ─── Toast ─── */
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    const m = document.getElementById('toast-msg');
+    m.textContent = msg;
+    clearTimeout(toastTimer);
+    t.classList.remove('hide');
+    t.classList.add('show');
+    toastTimer = setTimeout(() => {
+      t.classList.remove('show');
+      t.classList.add('hide');
+    }, 3000);
+  }
+
+  /* ─── Avatar edit ─── */
+  function triggerAvatarEdit() {
+    document.getElementById('avatar-file').click();
+  }
+  function previewAvatar(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const img = document.getElementById('avatar-img');
+      img.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+      img.style.opacity = '0'; img.style.transform = 'scale(0.9)';
+      setTimeout(() => {
+        img.style.backgroundImage = `url("${ev.target.result}")`;
+        img.style.opacity = '1'; img.style.transform = 'scale(1)';
+      }, 300);
+      showToast('Avatar updated! Don\'t forget to save.');
+    };
+    reader.readAsDataURL(file);
+  }
+
+  /* ─── Password visibility toggle ─── */
+  function togglePw(id, btn) {
+    const inp = document.getElementById(id);
+    const icon = btn.querySelector('.material-symbols-outlined');
+    const isPass = inp.type === 'password';
+    inp.type = isPass ? 'text' : 'password';
+    icon.textContent = isPass ? 'visibility_off' : 'visibility';
+    icon.style.animation = 'spin-once 0.3s ease';
+    setTimeout(() => { icon.style.animation = ''; }, 300);
+  }
+
+  /* ─── Password strength ─── */
+  function checkStrength(val) {
+    const bar = document.getElementById('strength-bar');
+    const label = document.getElementById('strength-label');
+    const reqs = { len: val.length >= 8, lower: /[a-z]/.test(val), upper: /[A-Z]/.test(val), special: /[\d\W\s]/.test(val) };
+
+    // Update requirement items
+    Object.entries(reqs).forEach(([key, met]) => {
+      const el = document.getElementById('req-' + key);
+      if (!el) return;
+      const icon = el.querySelector('.req-icon');
+      el.classList.toggle('met', met);
+      icon.textContent = met ? 'check_circle' : 'radio_button_unchecked';
+      icon.style.color = met ? '#22c55e' : '';
+    });
+
+    const score = Object.values(reqs).filter(Boolean).length;
+    const levels = [
+      { w: '0%', c: '#ef4444', l: '—' },
+      { w: '25%', c: '#ef4444', l: 'Weak' },
+      { w: '50%', c: '#f97316', l: 'Fair' },
+      { w: '75%', c: '#eab308', l: 'Good' },
+      { w: '100%', c: '#22c55e', l: 'Strong' },
+    ];
+    const lv = levels[score];
+    bar.style.width = lv.w;
+    bar.style.backgroundColor = lv.c;
+    label.textContent = lv.l;
+    label.style.color = lv.c;
+
+    checkMatch();
+  }
+
+  /* ─── Password match check ─── */
+  function checkMatch() {
+    const nw = document.getElementById('new-pw').value;
+    const cf = document.getElementById('conf-pw').value;
+    const msg = document.getElementById('match-msg');
+    const confInput = document.getElementById('conf-pw');
+    if (!cf) { msg.textContent = ''; return; }
+    if (nw === cf) {
+      msg.textContent = '✓ Passwords match';
+      msg.style.color = '#22c55e';
+      confInput.style.borderColor = '#22c55e';
+      confInput.style.boxShadow = '0 0 0 3px rgba(34,197,94,0.15)';
+    } else {
+      msg.textContent = '✗ Passwords do not match';
+      msg.style.color = '#ef4444';
+      confInput.style.borderColor = '#ef4444';
+      confInput.style.boxShadow = '0 0 0 3px rgba(239,68,68,0.15)';
+    }
+  }
+
+  /* ─── Field stagger animation ─── */
+  document.querySelectorAll('.field-group').forEach((el, i) => {
+    el.style.animation = `fadeUp 0.4s ${0.35 + i * 0.07}s both`;
+    el.style.opacity = '0';
+  });
+
+  /* ─── Intersection Observer for setting rows ─── */
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.setting-row').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateX(-16px)';
+    el.style.transition = `opacity 0.4s ${i * 0.1}s ease, transform 0.4s ${i * 0.1}s ease, border-color 0.25s ease, box-shadow 0.25s ease`;
+    observer.observe(el);
+  });
+  // Quick trigger for items already in view
+  setTimeout(() => {
+    document.querySelectorAll('.setting-row').forEach(el => {
+      el.style.opacity = '1';
+      el.style.transform = '';
+    });
+  }, 500);
+</script>
+</body>
+</html>

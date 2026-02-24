@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Settings - Academia Student Portal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#137fec",
+          "background-light": "#f6f7f8",
+          "background-dark": "#101922",
+        },
+        fontFamily: { "display": ["Lexend", "sans-serif"] },
+        borderRadius: {
+          "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"
+        },
+      },
+    },
+  }
+</script>
+<style>
+  body { font-family: 'Lexend', sans-serif; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .active-nav { background-color: rgba(19,127,236,0.1); color: #137fec; border-left: 4px solid #137fec; }
+
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-28px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes popIn {
+    0%   { opacity: 0; transform: scale(0.88); }
+    70%  { transform: scale(1.04); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  @keyframes shimmer {
+    0%   { background-position: -400px 0; }
+    100% { background-position: 400px 0; }
+  }
+  @keyframes pulse-ring {
+    0%   { box-shadow: 0 0 0 0 rgba(19,127,236,0.35); }
+    70%  { box-shadow: 0 0 0 10px rgba(19,127,236,0); }
+    100% { box-shadow: 0 0 0 0 rgba(19,127,236,0); }
+  }
+  @keyframes checkPop {
+    0%   { transform: translateY(-50%) scale(0); opacity: 0; }
+    60%  { transform: translateY(-50%) scale(1.25); }
+    100% { transform: translateY(-50%) scale(1); opacity: 1; }
+  }
+  @keyframes gradientShift {
+    0%,100% { background-position: 0% 50%; }
+    50%      { background-position: 100% 50%; }
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes successPulse {
+    0%   { transform: scale(1); }
+    30%  { transform: scale(1.08); }
+    60%  { transform: scale(0.96); }
+    100% { transform: scale(1); }
+  }
+
+  aside { animation: slideInLeft 0.5s cubic-bezier(.22,.68,0,1.2) both; }
+  main  { animation: fadeIn 0.4s 0.2s ease both; }
+
+  .section-card {
+    animation: fadeSlideIn 0.55s cubic-bezier(.22,.68,0,1.2) both;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .section-card:hover { box-shadow: 0 8px 32px rgba(19,127,236,0.08); transform: translateY(-2px); }
+  .section-card:nth-child(1) { animation-delay: 0.1s; }
+  .section-card:nth-child(2) { animation-delay: 0.22s; }
+  .section-card:nth-child(3) { animation-delay: 0.34s; }
+
+  header { animation: fadeSlideIn 0.5s 0.05s cubic-bezier(.22,.68,0,1.2) both; }
+
+  .avatar-wrapper { animation: popIn 0.6s 0.3s cubic-bezier(.22,.68,0,1.2) both; }
+  .avatar-wrapper:hover .avatar-overlay { opacity: 1; }
+  .avatar-overlay {
+    position: absolute; inset: 0; border-radius: 9999px;
+    background: rgba(19,127,236,0.18);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.25s ease;
+    pointer-events: none;
+  }
+
+  .camera-btn {
+    transition: transform 0.2s cubic-bezier(.22,.68,0,1.2), box-shadow 0.2s ease;
+    animation: pulse-ring 2.5s 1.2s infinite;
+  }
+  .camera-btn:hover { transform: scale(1.18) !important; box-shadow: 0 4px 16px rgba(19,127,236,0.45); }
+  .camera-btn:active { transform: scale(0.95) !important; }
+
+  .fancy-input {
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    position: relative;
+  }
+  .fancy-input:focus {
+    border-color: #137fec !important;
+    box-shadow: 0 0 0 3px rgba(19,127,236,0.15);
+    background: white !important;
+  }
+  .dark .fancy-input:focus { background: #1e293b !important; }
+
+  .check-icon { animation: checkPop 0.4s 0.6s cubic-bezier(.22,.68,0,1.2) both; }
+
+  .save-btn, .update-btn {
+    position: relative; overflow: hidden;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  }
+  .save-btn::before, .update-btn::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.22) 50%, transparent 70%);
+    background-size: 400px 100%;
+    transform: translateX(-100%);
+    transition: transform 0s;
+  }
+  .save-btn:hover::before, .update-btn:hover::before {
+    animation: shimmer 0.7s ease forwards;
+  }
+  .save-btn:hover, .update-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(19,127,236,0.35);
+  }
+  .save-btn:active, .update-btn:active { transform: scale(0.97) translateY(0); }
+  .save-btn.success, .update-btn.success { animation: successPulse 0.4s ease; }
+
+  .toggle-wrapper input:checked + div { background-color: #137fec; }
+  .toggle-wrapper div {
+    transition: background-color 0.25s ease;
+  }
+  .toggle-wrapper div::after {
+    transition: transform 0.25s cubic-bezier(.22,.68,0,1.2), border-color 0.25s;
+  }
+  .toggle-wrapper input:checked + div::after { transform: translateX(100%); border-color: white; }
+  .toggle-wrapper label { cursor: pointer; }
+  .toggle-wrapper label:hover div { box-shadow: 0 0 0 3px rgba(19,127,236,0.18); }
+
+  .nav-link {
+    transition: background 0.2s, color 0.2s, transform 0.15s;
+  }
+  .nav-link:hover:not(.active-nav) {
+    background: rgba(19,127,236,0.06);
+    color: #137fec;
+    transform: translateX(3px);
+  }
+  .nav-link.active-nav { animation: fadeSlideIn 0.4s 0.2s both; }
+
+  .logout-btn {
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  }
+  .logout-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  .logout-btn:active { transform: scale(0.97); }
+
+  .section-header-icon {
+    transition: transform 0.3s cubic-bezier(.22,.68,0,1.2);
+  }
+  .section-card:hover .section-header-icon { transform: scale(1.15) rotate(-8deg); }
+
+  .tfa-row {
+    transition: background 0.25s, border-color 0.25s, transform 0.2s;
+  }
+  .tfa-row:hover { background: rgba(19,127,236,0.07); transform: scale(1.01); }
+
+  .notif-row {
+    transition: background 0.2s, transform 0.15s;
+  }
+  .notif-row:hover { background: rgba(19,127,236,0.04); border-radius: 0.5rem; transform: translateX(2px); }
+
+  .logo-icon {
+    transition: transform 0.3s cubic-bezier(.22,.68,0,1.2), box-shadow 0.3s;
+  }
+  .logo-icon:hover { transform: rotate(-8deg) scale(1.12); box-shadow: 0 4px 16px rgba(19,127,236,0.35); }
+
+  .spinner { display: none; animation: spin 0.7s linear infinite; }
+  .btn-loading .btn-label { display: none; }
+  .btn-loading .spinner { display: inline-block; }
+
+  @keyframes labelStagger {
+    from { opacity: 0; transform: translateX(-8px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  .form-label {
+    animation: labelStagger 0.35s cubic-bezier(.22,.68,0,1.2) both;
+  }
+  .form-group:nth-child(1) .form-label { animation-delay: 0.35s; }
+  .form-group:nth-child(2) .form-label { animation-delay: 0.42s; }
+  .form-group:nth-child(3) .form-label { animation-delay: 0.49s; }
+</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="flex min-h-screen">
+
+<aside class="w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col fixed h-full transition-colors duration-300">
+  <div class="p-6 flex items-center gap-3">
+    <div class="logo-icon w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white cursor-pointer">
+      <span class="material-symbols-outlined">person</span>
+    </div>
+    <div>
+      <h1 class="text-lg font-bold leading-tight">Academia</h1>
+      <p class="text-xs text-slate-500 dark:text-slate-400">Student Portal</p>
+    </div>
+  </div>
+  <nav class="flex-1 px-3 space-y-1">
+    <a class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400" href="StudDash.html">
+      <span class="material-symbols-outlined">dashboard</span>
+      <span class="text-sm font-medium">Dashboard</span>
+    </a>
+    <a class="nav-link flex items-center gap-3 px-4 py-3 active-nav rounded-lg transition-colors" href="#">
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">settings</span>
+      <span class="text-sm font-medium">Settings</span>
+    </a>
+  </nav>
+  <div class="p-4 mt-auto">
+    <button class="logout-btn flex w-full items-center justify-center gap-2 px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors">
+      <span class="material-symbols-outlined text-sm">logout</span>
+      Log Out
+    </button>
+  </div>
+</aside>
+
+<main class="flex-1 ml-64 p-8 lg:p-12 overflow-y-auto">
+  <div class="max-w-4xl mx-auto">
+
+    <header class="mb-10">
+      <h2 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">Settings</h2>
+      <p class="text-slate-500 dark:text-slate-400 mt-2">Manage your academic profile, security, and notification preferences.</p>
+    </header>
+
+    <div class="space-y-8">
+
+      <section class="section-card bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800">
+          <h3 class="text-lg font-bold flex items-center gap-2">
+            <span class="section-header-icon material-symbols-outlined text-primary">person</span>
+            Profile Settings
+          </h3>
+        </div>
+        <div class="p-8">
+          <div class="flex flex-col md:flex-row gap-8 items-start">
+            <div class="relative group avatar-wrapper">
+              <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-slate-50 dark:border-slate-800 shadow-md bg-gradient-to-br from-primary to-blue-400 flex items-center justify-center transition-transform duration-500 group-hover:scale-105">
+                <span class="material-symbols-outlined text-white select-none" style="font-size:4rem;font-variation-settings:'FILL' 1,'wght' 300;">person</span>
+              </div>
+              <div class="avatar-overlay"></div>
+              <button class="camera-btn absolute bottom-0 right-0 p-2 bg-primary text-white rounded-full shadow-lg border-2 border-white dark:border-slate-900">
+                <span class="material-symbols-outlined text-sm">photo_camera</span>
+              </button>
+            </div>
+            <div class="flex-1 w-full space-y-6">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="form-group space-y-2">
+                  <label class="form-label text-sm font-semibold text-slate-700 dark:text-slate-300">Full Name</label>
+                  <input class="fancy-input w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" type="text" value="Student Name"/>
+                </div>
+                <div class="form-group space-y-2">
+                  <label class="form-label text-sm font-semibold text-slate-700 dark:text-slate-300">Contact Email</label>
+                  <div class="relative">
+                    <input class="fancy-input w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" type="email" value="student.name@university.edu"/>
+                    <span class="check-icon absolute right-3 top-1/2 -translate-y-1/2 text-green-500 material-symbols-outlined text-lg" style="font-variation-settings:'FILL' 1;" title="Verified">check_circle</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex justify-end pt-2">
+                <button class="save-btn px-6 py-2.5 bg-primary text-white font-bold rounded-lg shadow-sm" onclick="handleSave(this)">
+                  <span class="btn-label">Save Changes</span>
+                  <span class="spinner material-symbols-outlined text-lg">autorenew</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800">
+          <h3 class="text-lg font-bold flex items-center gap-2">
+            <span class="section-header-icon material-symbols-outlined text-primary">security</span>
+            Security &amp; Password
+          </h3>
+        </div>
+        <div class="p-8 space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="form-group space-y-2">
+              <label class="form-label text-sm font-semibold text-slate-700 dark:text-slate-300">Current Password</label>
+              <input class="fancy-input w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary outline-none" placeholder="••••••••" type="password"/>
+            </div>
+            <div class="form-group space-y-2">
+              <label class="form-label text-sm font-semibold text-slate-700 dark:text-slate-300">New Password</label>
+              <input id="newPass" class="fancy-input w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary outline-none" placeholder="New password" type="password" oninput="updateStrength(this.value)"/>
+            </div>
+            <div class="form-group space-y-2">
+              <label class="form-label text-sm font-semibold text-slate-700 dark:text-slate-300">Confirm New Password</label>
+              <input class="fancy-input w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary outline-none" placeholder="Confirm new password" type="password"/>
+            </div>
+          </div>
+
+          <div id="strengthBar" class="hidden space-y-1">
+            <div class="flex justify-between text-xs text-slate-500 dark:text-slate-400">
+              <span>Password strength</span>
+              <span id="strengthLabel">Weak</span>
+            </div>
+            <div class="h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+              <div id="strengthFill" class="h-full rounded-full transition-all duration-500" style="width:0%;background:#ef4444;"></div>
+            </div>
+          </div>
+
+          <div class="tfa-row flex items-center justify-between p-4 bg-primary/5 dark:bg-primary/10 rounded-lg border border-primary/20">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-primary">phonelink_lock</span>
+              <div>
+                <p class="text-sm font-bold">Two-Factor Authentication</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Add an extra layer of security to your account.</p>
+              </div>
+            </div>
+            <label class="toggle-wrapper relative inline-flex items-center cursor-pointer">
+              <input class="sr-only peer" type="checkbox"/>
+              <div class="w-11 h-6 bg-slate-200 dark:bg-slate-700 rounded-full relative after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary peer-checked:after:translate-x-full peer-checked:after:border-white"></div>
+            </label>
+          </div>
+          <div class="flex justify-end pt-2">
+            <button class="update-btn px-6 py-2.5 bg-primary text-white font-bold rounded-lg shadow-sm" onclick="handleSave(this)">
+              <span class="btn-label">Update Password</span>
+              <span class="spinner material-symbols-outlined text-lg">autorenew</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden mb-12">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800">
+          <h3 class="text-lg font-bold flex items-center gap-2">
+            <span class="section-header-icon material-symbols-outlined text-primary">notifications</span>
+            Notification Preferences
+          </h3>
+        </div>
+        <div class="p-8">
+          <div class="space-y-6">
+            <div class="notif-row flex items-center justify-between py-2 px-2 -mx-2 transition-all">
+              <div class="space-y-0.5">
+                <p class="text-sm font-bold">New Assignments</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Get notified when a professor posts a new task.</p>
+              </div>
+              <label class="toggle-wrapper relative inline-flex items-center cursor-pointer">
+                <input checked class="sr-only peer" type="checkbox"/>
+                <div class="w-11 h-6 bg-slate-200 dark:bg-slate-700 rounded-full relative after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary peer-checked:after:translate-x-full peer-checked:after:border-white"></div>
+              </label>
+            </div>
+            <div class="notif-row flex items-center justify-between py-2 px-2 -mx-2 border-t border-slate-100 dark:border-slate-800 pt-4 transition-all">
+              <div class="space-y-0.5">
+                <p class="text-sm font-bold">Grade Postings</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Alerts when results for your exams or projects are out.</p>
+              </div>
+              <label class="toggle-wrapper relative inline-flex items-center cursor-pointer">
+                <input checked class="sr-only peer" type="checkbox"/>
+                <div class="w-11 h-6 bg-slate-200 dark:bg-slate-700 rounded-full relative after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary peer-checked:after:translate-x-full peer-checked:after:border-white"></div>
+              </label>
+            </div>
+            <div class="notif-row flex items-center justify-between py-2 px-2 -mx-2 border-t border-slate-100 dark:border-slate-800 pt-4 transition-all">
+              <div class="space-y-0.5">
+                <p class="text-sm font-bold">University Announcements</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Campus news, event invites, and emergency alerts.</p>
+              </div>
+              <label class="toggle-wrapper relative inline-flex items-center cursor-pointer">
+                <input class="sr-only peer" type="checkbox"/>
+                <div class="w-11 h-6 bg-slate-200 dark:bg-slate-700 rounded-full relative after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary peer-checked:after:translate-x-full peer-checked:after:border-white"></div>
+              </label>
+            </div>
+            <div class="notif-row flex items-center justify-between py-2 px-2 -mx-2 border-t border-slate-100 dark:border-slate-800 pt-4 transition-all">
+              <div class="space-y-0.5">
+                <p class="text-sm font-bold">AI Tutor Suggestions</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Personalized study tips and push notifications based on your performance.</p>
+              </div>
+              <label class="toggle-wrapper relative inline-flex items-center cursor-pointer">
+                <input checked class="sr-only peer" type="checkbox"/>
+                <div class="w-11 h-6 bg-slate-200 dark:bg-slate-700 rounded-full relative after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary peer-checked:after:translate-x-full peer-checked:after:border-white"></div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</main>
+</div>
+
+<div id="toast" style="display:none;position:fixed;bottom:2rem;right:2rem;z-index:9999;padding:0.85rem 1.5rem;background:#137fec;color:white;border-radius:0.75rem;font-weight:600;font-size:0.875rem;box-shadow:0 8px 24px rgba(19,127,236,0.35);animation:fadeSlideIn 0.35s cubic-bezier(.22,.68,0,1.2);display:flex;align-items:center;gap:0.5rem;">
+  <span class="material-symbols-outlined text-lg" style="font-variation-settings:'FILL' 1;">check_circle</span>
+  <span id="toastMsg">Changes saved!</span>
+</div>
+
+<script>
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    t.style.display = 'flex';
+    t.style.animation = 'none';
+    void t.offsetWidth;
+    t.style.animation = 'fadeSlideIn 0.35s cubic-bezier(.22,.68,0,1.2)';
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => { t.style.display = 'none'; }, 2800);
+  }
+
+  function handleSave(btn) {
+    btn.classList.add('btn-loading');
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.classList.remove('btn-loading');
+      btn.disabled = false;
+      btn.classList.add('success');
+      setTimeout(() => btn.classList.remove('success'), 500);
+      const msg = btn.querySelector('.btn-label').textContent === 'Save Changes'
+        ? 'Profile saved successfully!' : 'Password updated successfully!';
+      showToast(msg);
+    }, 1100);
+  }
+
+  function updateStrength(val) {
+    const bar = document.getElementById('strengthBar');
+    const fill = document.getElementById('strengthFill');
+    const label = document.getElementById('strengthLabel');
+    if (!val) { bar.classList.add('hidden'); return; }
+    bar.classList.remove('hidden');
+    let score = 0;
+    if (val.length >= 8) score++;
+    if (/[A-Z]/.test(val)) score++;
+    if (/[0-9]/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+    const levels = [
+      { w: '25%', c: '#ef4444', l: 'Weak' },
+      { w: '50%', c: '#f97316', l: 'Fair' },
+      { w: '75%', c: '#eab308', l: 'Good' },
+      { w: '100%', c: '#22c55e', l: 'Strong' },
+    ];
+    const lvl = levels[Math.max(0, score - 1)];
+    fill.style.width = lvl.w;
+    fill.style.background = lvl.c;
+    label.textContent = lvl.l;
+    label.style.color = lvl.c;
+  }
+
+  document.querySelectorAll('.toggle-wrapper input').forEach(toggle => {
+    toggle.addEventListener('change', function() {
+      const row = this.closest('.notif-row');
+      if (row) {
+        row.style.transition = 'background 0.2s, transform 0.15s';
+        row.style.background = 'rgba(19,127,236,0.07)';
+        setTimeout(v() => row.style.background = '', 400);
+      }
+      const label = this.closest('.toggle-wrapper').querySelector('div');
+      label.style.transform = 'scale(1.08)';
+      setTimeout(() => label.style.transform = '', 200);
+    });
+  });
+</script>
+</body>
+</html>

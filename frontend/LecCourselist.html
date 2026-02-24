@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lecturer Course List (Academia.)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          primary: "#137fec",
+          "background-light": "#f6f7f8",
+          "background-dark": "#101922",
+          "card-light": "#ffffff",
+          "card-dark": "#1a2734",
+          "text-primary-light": "#0d141b",
+          "text-primary-dark": "#f0f4f8",
+          "text-secondary-light": "#4c739a",
+          "text-secondary-dark": "#94a3b8",
+          "border-light": "#e7edf3",
+          "border-dark": "#2c3e50"
+        },
+        fontFamily: { display: ["Lexend", "sans-serif"] },
+        borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" }
+      }
+    }
+  };
+</script>
+<style>
+  :root { --primary: #137fec; --spring: cubic-bezier(0.16,1,0.3,1); }
+
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;
+    font-size: 24px;
+  }
+
+  @keyframes slideInLeft {
+    from { opacity:0; transform:translateX(-24px); }
+    to   { opacity:1; transform:translateX(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(18px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity:0; }
+    to   { opacity:1; }
+  }
+  @keyframes rowIn {
+    from { opacity:0; transform:translateX(-12px); }
+    to   { opacity:1; transform:translateX(0); }
+  }
+  @keyframes popIn {
+    0%   { opacity:0; transform:scale(0.9); }
+    70%  { transform:scale(1.04); }
+    100% { opacity:1; transform:scale(1); }
+  }
+  @keyframes shimmer {
+    0%   { background-position: -400px 0; }
+    100% { background-position: 400px 0; }
+  }
+  @keyframes badgePop {
+    0%   { transform:scale(0); opacity:0; }
+    70%  { transform:scale(1.15); }
+    100% { transform:scale(1); opacity:1; }
+  }
+  @keyframes underlineGrow {
+    from { width:0; }
+    to   { width:100%; }
+  }
+
+  .sidebar-anim { animation: slideInLeft 0.5s var(--spring) both; }
+  .heading-anim { animation: fadeUp 0.5s var(--spring) 0.1s both; }
+  .filter-anim  { animation: fadeUp 0.5s var(--spring) 0.18s both; }
+  .table-anim   { animation: fadeUp 0.5s var(--spring) 0.26s both; }
+
+  .row-item {
+    animation: rowIn 0.45s var(--spring) both;
+    transition: background 0.15s, box-shadow 0.2s, transform 0.18s var(--spring);
+  }
+  .row-item:hover {
+    background: rgba(19,127,236,0.04);
+    transform: translateX(3px);
+  }
+
+  .view-btn {
+    position: relative;
+    overflow: hidden;
+    transition: color 0.2s, background 0.2s, transform 0.15s;
+  }
+  .view-btn::after {
+    content:'';
+    position:absolute; bottom:2px; left:50%;
+    width:0; height:1.5px;
+    background: var(--primary);
+    transition: width 0.25s var(--spring), left 0.25s var(--spring);
+  }
+  .view-btn:hover::after { width:60%; left:20%; }
+  .view-btn:hover { background:rgba(19,127,236,0.1); transform:scale(1.03); }
+  .view-btn:active { transform:scale(0.97); }
+
+  .view-btn .btn-arrow {
+    display:inline-block;
+    transition: transform 0.2s var(--spring), opacity 0.2s;
+    opacity:0;
+    transform:translateX(-6px);
+  }
+  .view-btn:hover .btn-arrow { opacity:1; transform:translateX(0); }
+
+  .course-code {
+    display:inline-block;
+    transition: transform 0.18s var(--spring);
+  }
+  .row-item:hover .course-code { transform:scale(1.06); }
+
+  .search-wrap {
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+  .search-wrap:focus-within {
+    box-shadow: 0 0 0 3px rgba(19,127,236,0.15);
+    border-radius: 0.5rem;
+  }
+
+  .filter-select {
+    transition: box-shadow 0.2s;
+  }
+  .filter-select:focus { box-shadow: 0 0 0 3px rgba(19,127,236,0.15); }
+
+  .stat-badge {
+    animation: badgePop 0.5s var(--spring) 0.6s both;
+  }
+
+  .nav-link {
+    transition: background 0.15s, color 0.15s, transform 0.15s;
+  }
+  .nav-link:hover { transform: translateX(3px); }
+
+  .empty-state {
+    animation: fadeIn 0.4s ease both;
+  }
+
+  thead th {
+    position:relative;
+  }
+  thead th::after {
+    content:'';
+    position:absolute; bottom:0; left:0;
+    height:2px; width:0;
+    background:var(--primary);
+    opacity:0.3;
+    animation: underlineGrow 0.6s var(--spring) 0.5s both;
+  }
+
+  .tag-badge {
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .tag-badge:hover { transform:scale(1.08); box-shadow:0 2px 8px rgba(19,127,236,0.2); }
+
+  tr.hidden-row { display:none; }
+</style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-text-primary-light dark:text-text-primary-dark">
+<div class="relative flex h-auto min-h-screen w-full flex-col">
+<div class="flex h-full grow flex-row">
+
+  <aside class="sidebar-anim flex h-auto min-h-screen flex-col border-r border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark w-64 p-4">
+    <div class="flex flex-col justify-between h-full">
+      <div class="flex flex-col gap-4">
+        <div class="flex items-center gap-3 p-2">
+          <div class="size-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+            <span class="material-symbols-outlined" style="font-size:20px">person</span>
+          </div>
+          <div class="flex flex-col">
+            <h1 class="text-base font-medium leading-normal">Dr. Lecturer</h1>
+            <p class="text-sm font-normal leading-normal text-text-secondary-light dark:text-text-secondary-dark">Lecturer, CompEng.</p>
+          </div>
+        </div>
+
+        <nav class="flex flex-col gap-1 mt-2">
+          <a class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/10 text-text-secondary-light dark:text-text-secondary-dark" href="LecDASH.html" style="animation:slideInLeft 0.4s var(--spring) 0.05s both">
+            <span class="material-symbols-outlined">dashboard</span>
+            <p class="text-sm font-medium">Dashboard</p>
+          </a>
+          <a class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary" href="#" style="animation:slideInLeft 0.4s var(--spring) 0.1s both">
+            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">school</span>
+            <p class="text-sm font-medium">My Courses</p>
+          </a>
+          <a class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/10 text-text-secondary-light dark:text-text-secondary-dark" href="LecAttend.html" style="animation:slideInLeft 0.4s var(--spring) 0.15s both">
+            <span class="material-symbols-outlined">task_alt</span>
+            <p class="text-sm font-medium">Attendance</p>
+          </a>
+          <a class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/10 text-text-secondary-light dark:text-text-secondary-dark" href="LecCalendar.html" style="animation:slideInLeft 0.4s var(--spring) 0.2s both">
+            <span class="material-symbols-outlined">calendar_today</span>
+            <p class="text-sm font-medium">Calendar</p>
+          </a>
+        </nav>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <a class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/10 text-text-secondary-light dark:text-text-secondary-dark" href="#" style="animation:slideInLeft 0.4s var(--spring) 0.25s both">
+          <span class="material-symbols-outlined">settings</span>
+          <p class="text-sm font-medium">Settings</p>
+        </a>
+        <a class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/10 text-text-secondary-light dark:text-text-secondary-dark" href="#" style="animation:slideInLeft 0.4s var(--spring) 0.3s both">
+          <span class="material-symbols-outlined">help</span>
+          <p class="text-sm font-medium">Help &amp; Support</p>
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="flex-1 p-6 lg:p-8">
+    <div class="max-w-7xl mx-auto">
+
+      <div class="heading-anim flex flex-wrap justify-between items-center gap-4 mb-6">
+        <div>
+          <h1 class="text-4xl font-black leading-tight tracking-[-0.033em]">My Courses</h1>
+          <p class="text-text-secondary-light dark:text-text-secondary-dark text-sm mt-1">Manage and view all your assigned courses</p>
+        </div>
+        <div class="stat-badge flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-bold">
+          <span class="material-symbols-outlined" style="font-size:18px">school</span>
+          <span id="course-count">5 Courses</span>
+        </div>
+      </div>
+
+      <div class="filter-anim mb-5 bg-card-light dark:bg-card-dark p-4 rounded-xl border border-border-light dark:border-border-dark">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="md:col-span-2">
+            <div class="search-wrap flex w-full flex-1 items-stretch rounded-lg h-12 bg-background-light dark:bg-background-dark overflow-hidden">
+              <div class="flex items-center justify-center pl-4 text-text-secondary-light dark:text-text-secondary-dark">
+                <span class="material-symbols-outlined">search</span>
+              </div>
+              <input id="search-input" oninput="filterRows()"
+                class="flex w-full flex-1 bg-background-light dark:bg-background-dark h-full px-3 text-base font-normal focus:outline-none placeholder:text-text-secondary-light dark:placeholder:text-text-secondary-dark"
+                placeholder="Search by course code or title..."/>
+            </div>
+          </div>
+          <div class="md:col-span-1">
+            <div class="relative w-full h-12">
+              <select id="level-filter" onchange="filterRows()"
+                class="filter-select w-full h-full appearance-none rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-text-primary-light dark:text-text-primary-dark pl-4 pr-10 text-base font-normal focus:outline-none">
+                <option value="">All Levels</option>
+                <option value="100">100 Level</option>
+                <option value="200">200 Level</option>
+                <option value="300">300 Level</option>
+                <option value="400">400 Level</option>
+                <option value="500">500 Level</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-text-secondary-light dark:text-text-secondary-dark">
+                <span class="material-symbols-outlined">keyboard_arrow_down</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-anim bg-card-light dark:bg-card-dark rounded-xl border border-border-light dark:border-border-dark overflow-hidden shadow-sm">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <thead class="border-b border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark/50">
+              <tr>
+                <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-text-secondary-light dark:text-text-secondary-dark">#</th>
+                <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-text-secondary-light dark:text-text-secondary-dark">Course Code</th>
+                <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-text-secondary-light dark:text-text-secondary-dark">Course Title</th>
+                <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-text-secondary-light dark:text-text-secondary-dark">Level</th>
+                <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-text-secondary-light dark:text-text-secondary-dark text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="course-tbody" class="divide-y divide-border-light dark:divide-border-dark">
+
+              <tr class="row-item" data-code="ECE101" data-title="Introduction to Computer ENG" data-level="100" style="animation-delay:0.32s">
+                <td class="px-6 py-4 text-sm text-text-secondary-light dark:text-text-secondary-dark">1</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="course-code tag-badge inline-block bg-primary/10 text-primary text-xs font-bold px-2.5 py-1 rounded-full">ECE101</span>
+                </td>
+                <td class="px-6 py-4 text-sm font-medium">Introduction to Computer ENG</td>
+                <td class="px-6 py-4"><span class="text-[11px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 px-2 py-0.5 rounded-full">100 Level</span></td>
+                <td class="px-6 py-4 whitespace-nowrap text-right">
+                  <a class="view-btn inline-flex items-center gap-1.5 rounded-lg text-sm font-semibold py-2 px-4 text-primary" href="#">
+                    View Details
+                    <span class="material-symbols-outlined btn-arrow" style="font-size:16px">arrow_forward</span>
+                  </a>
+                </td>
+              </tr>
+
+              <tr class="row-item" data-code="ECE202" data-title="Data Structures and Algorithms" data-level="200" style="animation-delay:0.38s">
+                <td class="px-6 py-4 text-sm text-text-secondary-light dark:text-text-secondary-dark">2</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="course-code tag-badge inline-block bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 text-xs font-bold px-2.5 py-1 rounded-full">ECE202</span>
+                </td>
+                <td class="px-6 py-4 text-sm font-medium">Data Structures and Algorithms</td>
+                <td class="px-6 py-4"><span class="text-[11px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 px-2 py-0.5 rounded-full">200 Level</span></td>
+                <td class="px-6 py-4 whitespace-nowrap text-right">
+                  <a class="view-btn inline-flex items-center gap-1.5 rounded-lg text-sm font-semibold py-2 px-4 text-primary" href="#">
+                    View Details
+                    <span class="material-symbols-outlined btn-arrow" style="font-size:16px">arrow_forward</span>
+                  </a>
+                </td>
+              </tr>
+
+              <tr class="row-item" data-code="ECE310" data-title="Fundamentals of Artificial Intelligence" data-level="300" style="animation-delay:0.44s">
+                <td class="px-6 py-4 text-sm text-text-secondary-light dark:text-text-secondary-dark">3</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="course-code tag-badge inline-block bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 text-xs font-bold px-2.5 py-1 rounded-full">ECE310</span>
+                </td>
+                <td class="px-6 py-4 text-sm font-medium">Fundamentals of Artificial Intelligence</td>
+                <td class="px-6 py-4"><span class="text-[11px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 px-2 py-0.5 rounded-full">300 Level</span></td>
+                <td class="px-6 py-4 whitespace-nowrap text-right">
+                  <a class="view-btn inline-flex items-center gap-1.5 rounded-lg text-sm font-semibold py-2 px-4 text-primary" href="#">
+                    View Details
+                    <span class="material-symbols-outlined btn-arrow" style="font-size:16px">arrow_forward</span>
+                  </a>
+                </td>
+              </tr>
+
+              <tr class="row-item" data-code="ECE450" data-title="Software Engineering Principles" data-level="400" style="animation-delay:0.5s">
+                <td class="px-6 py-4 text-sm text-text-secondary-light dark:text-text-secondary-dark">4</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="course-code tag-badge inline-block bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-xs font-bold px-2.5 py-1 rounded-full">ECE450</span>
+                </td>
+                <td class="px-6 py-4 text-sm font-medium">Software Engineering Principles</td>
+                <td class="px-6 py-4"><span class="text-[11px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 px-2 py-0.5 rounded-full">400 Level</span></td>
+                <td class="px-6 py-4 whitespace-nowrap text-right">
+                  <a class="view-btn inline-flex items-center gap-1.5 rounded-lg text-sm font-semibold py-2 px-4 text-primary" href="#">
+                    View Details
+                    <span class="material-symbols-outlined btn-arrow" style="font-size:16px">arrow_forward</span>
+                  </a>
+                </td>
+              </tr>
+
+              <tr class="row-item" data-code="ECE520" data-title="Advanced Computer Networks" data-level="500" style="animation-delay:0.56s">
+                <td class="px-6 py-4 text-sm text-text-secondary-light dark:text-text-secondary-dark">5</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="course-code tag-badge inline-block bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 text-xs font-bold px-2.5 py-1 rounded-full">ECE520</span>
+                </td>
+                <td class="px-6 py-4 text-sm font-medium">Advanced Computer Networks</td>
+                <td class="px-6 py-4"><span class="text-[11px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 px-2 py-0.5 rounded-full">500 Level</span></td>
+                <td class="px-6 py-4 whitespace-nowrap text-right">
+                  <a class="view-btn inline-flex items-center gap-1.5 rounded-lg text-sm font-semibold py-2 px-4 text-primary" href="#">
+                    View Details
+                    <span class="material-symbols-outlined btn-arrow" style="font-size:16px">arrow_forward</span>
+                  </a>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+
+          <div id="empty-state" class="empty-state hidden text-center py-16 px-6">
+            <div class="flex flex-col items-center gap-4">
+              <div class="flex items-center justify-center h-16 w-16 rounded-full bg-primary/10 text-primary" style="animation:popIn 0.4s var(--spring) both">
+                <span class="material-symbols-outlined" style="font-size:32px">search_off</span>
+              </div>
+              <h3 class="text-lg font-semibold">No Courses Found</h3>
+              <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark max-w-sm">No courses match your search. Try a different keyword or filter.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+</div>
+
+<script>
+  function filterRows() {
+    const query  = document.getElementById('search-input').value.toLowerCase().trim();
+    const level  = document.getElementById('level-filter').value;
+    const rows   = document.querySelectorAll('#course-tbody .row-item');
+    let visible  = 0;
+    let idx      = 1;
+
+    rows.forEach(row => {
+      const code  = row.dataset.code.toLowerCase();
+      const title = row.dataset.title.toLowerCase();
+      const lvl   = row.dataset.level;
+      const matchQ = !query || code.includes(query) || title.includes(query);
+      const matchL = !level || lvl === level;
+
+      if (matchQ && matchL) {
+        row.style.display = '';
+        row.style.animation = `rowIn 0.35s var(--spring) ${(visible*40)}ms both`;
+        row.querySelector('td').textContent = idx++;
+        visible++;
+      } else {
+        row.style.display = 'none';
+      }
+    });
+
+    document.getElementById('empty-state').classList.toggle('hidden', visible > 0);
+    document.getElementById('course-count').textContent = visible + (visible===1 ? ' Course' : ' Courses');
+  }
+</script>
+</body>
+</html>

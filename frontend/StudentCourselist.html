@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Available Courses - Academia</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<style>
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+
+  
+  @keyframes fadeSlideDown {
+    from { opacity: 0; transform: translateY(-18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.92); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @keyframes logoSpin {
+    from { transform: rotate(0deg) scale(1); }
+    50%  { transform: rotate(180deg) scale(1.15); }
+    to   { transform: rotate(360deg) scale(1); }
+  }
+  @keyframes pulse-ring {
+    0%   { box-shadow: 0 0 0 0px rgba(19,127,236,0.35); }
+    70%  { box-shadow: 0 0 0 8px rgba(19,127,236,0); }
+    100% { box-shadow: 0 0 0 0px rgba(19,127,236,0); }
+  }
+  @keyframes shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @keyframes badgePop {
+    0%   { transform: scale(0); opacity: 0; }
+    70%  { transform: scale(1.2); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  @keyframes slideRight {
+    from { transform: translateX(-8px); opacity: 0; }
+    to   { transform: translateX(0); opacity: 1; }
+  }
+  @keyframes progressFill {
+    from { width: 0%; }
+  }
+
+  
+  header { animation: fadeSlideDown 0.55s cubic-bezier(.22,.68,0,1.2) both; }
+
+  
+  .logo-icon { transition: transform 0.6s cubic-bezier(.22,.68,0,1.2); }
+  .logo-icon:hover { animation: logoSpin 0.7s cubic-bezier(.22,.68,0,1.2) forwards; }
+
+  
+  .nav-link {
+    position: relative;
+    transition: color 0.2s;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -2px;
+    width: 0%; height: 2px;
+    background: #137fec;
+    border-radius: 99px;
+    transition: width 0.3s cubic-bezier(.22,.68,0,1.2);
+  }
+  .nav-link:hover::after { width: 100%; }
+
+  
+  .avatar-wrap {
+    transition: transform 0.25s;
+    border-radius: 9999px;
+  }
+  .avatar-wrap:hover {
+    animation: pulse-ring 1s ease-out infinite;
+    transform: scale(1.08);
+  }
+
+  
+  .page-heading { animation: fadeSlideUp 0.55s 0.1s cubic-bezier(.22,.68,0,1.2) both; }
+
+  
+  .search-area { animation: fadeSlideUp 0.55s 0.18s cubic-bezier(.22,.68,0,1.2) both; }
+
+  
+  .search-input {
+    transition: box-shadow 0.25s, border-color 0.25s;
+  }
+  .search-input:focus {
+    box-shadow: 0 0 0 3px rgba(19,127,236,0.18);
+  }
+
+  
+  .filter-chip {
+    transition: background 0.18s, transform 0.18s, box-shadow 0.18s;
+  }
+  .filter-chip:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  .filter-chip:active { transform: translateY(0); }
+
+  
+  .course-card {
+    animation: scaleIn 0.5s cubic-bezier(.22,.68,0,1.2) both;
+    transition: box-shadow 0.25s, transform 0.25s, border-color 0.25s;
+  }
+  .course-card:nth-child(1) { animation-delay: 0.25s; }
+  .course-card:nth-child(2) { animation-delay: 0.36s; }
+  .course-card:nth-child(3) { animation-delay: 0.47s; }
+  .course-card:hover {
+    transform: translateY(-3px) scale(1.005);
+    box-shadow: 0 12px 32px rgba(19,127,236,0.12), 0 2px 8px rgba(0,0,0,0.06);
+    border-color: rgba(19,127,236,0.35) !important;
+  }
+  .dark .course-card:hover {
+    box-shadow: 0 12px 32px rgba(19,127,236,0.18);
+  }
+
+  
+  .course-code {
+    display: inline-block;
+    animation: slideRight 0.4s cubic-bezier(.22,.68,0,1.2) both;
+  }
+  .course-card:nth-child(1) .course-code { animation-delay: 0.35s; }
+  .course-card:nth-child(2) .course-code { animation-delay: 0.46s; }
+  .course-card:nth-child(3) .course-code { animation-delay: 0.57s; }
+
+  
+  .register-btn {
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  }
+  .register-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.25) 50%, transparent 70%);
+    background-size: 200% 100%;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .register-btn:hover::before {
+    opacity: 1;
+    animation: shimmer 0.7s linear;
+  }
+  .register-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(19,127,236,0.35);
+  }
+  .register-btn:active { transform: scale(0.97); box-shadow: none; }
+
+  
+  .register-btn.registered {
+    background: #16a34a !important;
+    pointer-events: none;
+  }
+  .register-btn.registered .btn-text::before { content: '✓ '; }
+
+  
+  .pagination { animation: fadeIn 0.5s 0.6s both; }
+  .page-btn {
+    transition: background 0.18s, transform 0.15s, box-shadow 0.15s;
+  }
+  .page-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 10px rgba(19,127,236,0.2);
+  }
+  .page-btn:active { transform: scale(0.95); }
+
+  
+  .instructor-icon {
+    transition: transform 0.2s;
+  }
+  .course-card:hover .instructor-icon {
+    transform: scale(1.15) rotate(-5deg);
+  }
+
+  
+  .skeleton {
+    background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+    border-radius: 0.5rem;
+  }
+</style>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#137fec",
+          "background-light": "#f6f7f8",
+          "background-dark": "#101922",
+        },
+        fontFamily: { "display": ["Lexend", "sans-serif"] },
+        borderRadius: {
+          "DEFAULT": "0.25rem", "lg": "0.5rem",
+          "xl": "0.75rem", "full": "9999px"
+        },
+      },
+    },
+  }
+</script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-800 dark:text-slate-200">
+<div class="relative flex min-h-screen w-full flex-col">
+
+  
+  <header class="sticky top-0 z-10 flex h-16 w-full items-center justify-center border-b border-slate-200/80 bg-background-light/80 backdrop-blur-sm dark:border-slate-800/80 dark:bg-background-dark/80">
+    <div class="flex w-full max-w-7xl items-center justify-between px-4">
+      <div class="flex items-center gap-4 text-slate-900 dark:text-slate-50">
+        <svg class="logo-icon h-6 w-6 text-primary cursor-pointer" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <path clip-rule="evenodd" d="M12.0799 24L4 19.2479L9.95537 8.75216L18.04 13.4961L18.0446 4H29.9554L29.96 13.4961L38.0446 8.75216L44 19.2479L35.92 24L44 28.7521L38.0446 39.2479L29.96 34.5039L29.9554 44H18.0446L18.04 34.5039L9.95537 39.2479L4 28.7521L12.0799 24Z" fill="currentColor" fill-rule="evenodd"/>
+        </svg>
+        <h2 class="text-xl font-bold tracking-tight">Academia</h2>
+      </div>
+      <div class="hidden items-center gap-8 md:flex">
+        <a class="nav-link text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-400 dark:hover:text-primary" href="StudDash.html">Dashboard</a>
+        <a class="nav-link text-sm font-medium text-primary dark:text-primary" href="#">My Courses</a>
+        <a class="nav-link text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-400 dark:hover:text-primary" href="StudCalendar.html">Calendar</a>
+      </div>
+      <div class="flex items-center gap-4">
+        
+        <div class="avatar-wrap flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary border border-primary/20 cursor-pointer">
+          <span class="material-symbols-outlined text-xl">account_circle</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <main class="flex w-full flex-1 justify-center py-8">
+    <div class="flex w-full max-w-4xl flex-col gap-6 px-4">
+
+      
+      <div class="page-heading flex flex-wrap items-end justify-between gap-4">
+        <div class="flex flex-col gap-1">
+          <h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-50">Available Courses</h1>
+          <p class="text-slate-500 dark:text-slate-400">Browse and enroll in courses for the upcoming Fall 2024 semester.</p>
+        </div>
+        
+        <div id="enrolledBadge" class="hidden items-center gap-2 rounded-full bg-green-100 px-4 py-1.5 text-sm font-semibold text-green-700 dark:bg-green-900/30 dark:text-green-400" style="animation: badgePop 0.4s cubic-bezier(.22,.68,0,1.2) both;">
+          <span class="material-symbols-outlined text-base">check_circle</span>
+          <span id="enrolledCount">0</span> enrolled
+        </div>
+      </div>
+
+      
+      <div class="search-area flex flex-col gap-4 md:flex-row md:items-center">
+        <div class="flex-grow">
+          <label class="flex h-12 w-full flex-col">
+            <div class="flex h-full w-full flex-1 items-stretch rounded-lg">
+              <div class="flex items-center justify-center rounded-l-lg border border-r-0 border-slate-300 bg-slate-50 pl-4 text-slate-500 dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-400">
+                <span class="material-symbols-outlined text-2xl">search</span>
+              </div>
+              <input id="searchInput" class="search-input form-input h-full w-full min-w-0 flex-1 resize-none overflow-hidden rounded-r-lg border border-l-0 border-slate-300 bg-white px-4 text-base text-slate-900 placeholder:text-slate-400 focus:outline-none dark:border-slate-700 dark:bg-background-dark dark:text-slate-50 dark:placeholder:text-slate-500" placeholder="Search by course code, title, or lecturer..." value=""/>
+            </div>
+          </label>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button class="filter-chip flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg border border-slate-300 bg-white px-4 text-sm font-medium dark:border-slate-700 dark:bg-slate-800">
+            <span>Department</span>
+            <span class="material-symbols-outlined text-lg">expand_more</span>
+          </button>
+          <button class="filter-chip flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg border border-slate-300 bg-white px-4 text-sm font-medium dark:border-slate-700 dark:bg-slate-800">
+            <span>Course Level</span>
+            <span class="material-symbols-outlined text-lg">expand_more</span>
+          </button>
+        </div>
+      </div>
+
+      
+      <div class="flex flex-col gap-4" id="courseList">
+
+        
+        <div class="course-card rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900/50" data-code="CS101" data-title="Introduction to Computer Science" data-lecturer="Dr. Alan Turing, Dr. Grace Hopper">
+          <div class="flex flex-col gap-4 sm:flex-row">
+            <div class="flex flex-1 flex-col justify-between gap-4">
+              <div class="flex flex-col gap-1">
+                <p class="course-code text-sm font-medium text-primary dark:text-primary/90">CS101</p>
+                <p class="text-lg font-bold text-slate-900 dark:text-slate-50">Introduction to Computer Science</p>
+                <p class="text-sm text-slate-600 dark:text-slate-400">A foundational course covering the principles of programming, algorithms, and data structures. Perfect for beginners.</p>
+              </div>
+              <div class="flex flex-col gap-3">
+                <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+                  <span class="instructor-icon material-symbols-outlined text-lg">manage_accounts</span>
+                  <span>Dr. Alan Turing, Dr. Grace Hopper</span>
+                </div>
+                <button onclick="registerCourse(this)" class="register-btn flex h-10 w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-primary px-6 text-sm font-bold text-white sm:w-fit">
+                  <span class="btn-text">Register</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="course-card rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900/50" data-code="PHY205" data-title="Quantum Mechanics I" data-lecturer="Dr. Marie Curie">
+          <div class="flex flex-col gap-4 sm:flex-row">
+            <div class="flex flex-1 flex-col justify-between gap-4">
+              <div class="flex flex-col gap-1">
+                <p class="course-code text-sm font-medium text-primary dark:text-primary/90">PHY205</p>
+                <p class="text-lg font-bold text-slate-900 dark:text-slate-50">Quantum Mechanics I</p>
+                <p class="text-sm text-slate-600 dark:text-slate-400">Explore the fundamental concepts of quantum mechanics, including wave-particle duality and the Schrödinger equation.</p>
+              </div>
+              <div class="flex flex-col gap-3">
+                <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+                  <span class="instructor-icon material-symbols-outlined text-lg">manage_accounts</span>
+                  <span>Dr. Marie Curie</span>
+                </div>
+                <button onclick="registerCourse(this)" class="register-btn flex h-10 w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-primary px-6 text-sm font-bold text-white sm:w-fit">
+                  <span class="btn-text">Register</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="course-card rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900/50" data-code="ENG310" data-title="Modernist Literature" data-lecturer="Prof. Virginia Woolf">
+          <div class="flex flex-col gap-4 sm:flex-row">
+            <div class="flex flex-1 flex-col justify-between gap-4">
+              <div class="flex flex-col gap-1">
+                <p class="course-code text-sm font-medium text-primary dark:text-primary/90">ENG310</p>
+                <p class="text-lg font-bold text-slate-900 dark:text-slate-50">Modernist Literature</p>
+                <p class="text-sm text-slate-600 dark:text-slate-400">A survey of major literary works from the early 20th century, focusing on themes of alienation and innovation.</p>
+              </div>
+              <div class="flex flex-col gap-3">
+                <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+                  <span class="instructor-icon material-symbols-outlined text-lg">manage_accounts</span>
+                  <span>Prof. Virginia Woolf</span>
+                </div>
+                <button onclick="registerCourse(this)" class="register-btn flex h-10 w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-primary px-6 text-sm font-bold text-white sm:w-fit">
+                  <span class="btn-text">Register</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      
+      <div class="pagination flex items-center justify-center gap-2 pt-8">
+        <button class="page-btn flex h-9 w-9 items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">
+          <span class="material-symbols-outlined text-xl">chevron_left</span>
+        </button>
+        <button class="page-btn flex h-9 w-9 items-center justify-center rounded-lg border border-primary bg-primary text-sm font-medium text-white">1</button>
+        <button class="page-btn flex h-9 w-9 items-center justify-center rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">2</button>
+        <button class="page-btn flex h-9 w-9 items-center justify-center rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">3</button>
+        <span class="text-slate-400">...</span>
+        <button class="page-btn flex h-9 w-9 items-center justify-center rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">8</button>
+        <button class="page-btn flex h-9 w-9 items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">
+          <span class="material-symbols-outlined text-xl">chevron_right</span>
+        </button>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div id="toast" class="fixed bottom-6 right-6 z-50 hidden items-center gap-3 rounded-xl bg-slate-900 px-5 py-3.5 text-white shadow-2xl dark:bg-slate-100 dark:text-slate-900" style="animation: fadeSlideUp 0.35s cubic-bezier(.22,.68,0,1.2) both;">
+  <span class="material-symbols-outlined text-green-400 dark:text-green-600">check_circle</span>
+  <span id="toastMsg" class="text-sm font-semibold"></span>
+</div>
+
+<script>
+  let enrolled = 0;
+
+  
+  function registerCourse(btn) {
+    if (btn.classList.contains('registered')) return;
+
+    const card = btn.closest('.course-card');
+    const title = card.dataset.title;
+
+    
+    btn.classList.add('registered');
+    btn.querySelector('.btn-text').textContent = 'Enrolled';
+
+    
+    const ripple = document.createElement('span');
+    ripple.style.cssText = `
+      position:absolute; border-radius:50%; background:rgba(255,255,255,0.4);
+      width:120px; height:120px; transform:scale(0);
+      left:50%; top:50%; margin:-60px;
+      animation: ripple 0.5s ease-out forwards;
+    `;
+    const style = document.createElement('style');
+    style.textContent = '@keyframes ripple{to{transform:scale(2.5);opacity:0;}}';
+    document.head.appendChild(style);
+    btn.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+
+    
+    enrolled++;
+    updateBadge();
+
+    
+    showToast(`Successfully enrolled in "${title}"`);
+  }
+
+  function updateBadge() {
+    const badge = document.getElementById('enrolledBadge');
+    document.getElementById('enrolledCount').textContent = enrolled;
+    if (enrolled > 0) {
+      badge.classList.remove('hidden');
+      badge.classList.add('flex');
+      badge.style.animation = 'none';
+      void badge.offsetWidth;
+      badge.style.animation = 'badgePop 0.4s cubic-bezier(.22,.68,0,1.2) both';
+    }
+  }
+
+  
+  let toastTimer;
+  function showToast(msg) {
+    clearTimeout(toastTimer);
+    const toast = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    toast.style.animation = 'none';
+    void toast.offsetWidth;
+    toast.style.animation = 'fadeSlideUp 0.35s cubic-bezier(.22,.68,0,1.2) both';
+    toast.classList.remove('hidden');
+    toast.classList.add('flex');
+    toastTimer = setTimeout(() => {
+      toast.style.animation = 'fadeIn 0.3s reverse both';
+      setTimeout(() => {
+        toast.classList.add('hidden');
+        toast.classList.remove('flex');
+      }, 300);
+    }, 3000);
+  }
+
+  
+  document.getElementById('searchInput').addEventListener('input', function() {
+    const q = this.value.toLowerCase();
+    document.querySelectorAll('.course-card').forEach(card => {
+      const match =
+        card.dataset.code.toLowerCase().includes(q) ||
+        card.dataset.title.toLowerCase().includes(q) ||
+        card.dataset.lecturer.toLowerCase().includes(q);
+      card.style.transition = 'opacity 0.25s, transform 0.25s';
+      card.style.opacity = match ? '1' : '0.25';
+      card.style.transform = match ? '' : 'scale(0.97)';
+    });
+  });
+
+  
+  document.querySelectorAll('.page-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.page-btn').forEach(b => {
+        b.classList.remove('border-primary', 'bg-primary', 'text-white');
+        b.classList.add('border-slate-300', 'bg-white', 'text-slate-600', 'dark:border-slate-700', 'dark:bg-slate-800', 'dark:text-slate-400');
+      });
+      if (!this.querySelector('.material-symbols-outlined')) {
+        this.classList.remove('border-slate-300', 'bg-white', 'text-slate-600', 'dark:border-slate-700', 'dark:bg-slate-800', 'dark:text-slate-400');
+        this.classList.add('border-primary', 'bg-primary', 'text-white');
+      }
+    });
+  });
+</script>
+</body>
+</html>

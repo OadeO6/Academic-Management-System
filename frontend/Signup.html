@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Academia Signup</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries">
+  function showSuccess() {
+    const overlay = document.getElementById('successOverlay');
+    const modal = document.getElementById('successModal');
+    const circle = document.querySelector('#checkSvg circle');
+    const tick = document.querySelector('#checkSvg polyline');
+    const bar = document.getElementById('successBar');
+
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        modal.style.transform = 'scale(1)';
+        modal.style.opacity = '1';
+        circle.style.strokeDashoffset = '0';
+        tick.style.strokeDashoffset = '0';
+        setTimeout(() => { bar.style.width = '100%'; }, 100);
+      });
+    });
+
+    setTimeout(() => {
+      document.querySelector('.layout-container').classList.add('page-exit');
+      setTimeout(() => { window.location.href = 'LoginPage.html'; }, 350);
+    }, 1700);
+  }
+</script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --primary: #137fec;
+    --bg-light: #f6f7f8;
+    --bg-dark: #101922;
+    --anim-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  * { box-sizing: border-box; }
+
+  .material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  }
+
+  .form-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2394a3b8'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+    background-size: 1.25em 1.25em;
+    padding-right: 2.5rem;
+  }
+
+  
+  @keyframes orbFloat {
+    0%, 100% { transform: translateY(0) scale(1); opacity: 0.18; }
+    50%       { transform: translateY(-28px) scale(1.06); opacity: 0.28; }
+  }
+  @keyframes orbFloat2 {
+    0%, 100% { transform: translateY(0) scale(1); opacity: 0.12; }
+    50%       { transform: translateY(20px) scale(0.94); opacity: 0.22; }
+  }
+  @keyframes orbFloat3 {
+    0%, 100% { transform: translate(0,0) scale(1); opacity: 0.10; }
+    50%       { transform: translate(15px,-18px) scale(1.08); opacity: 0.20; }
+  }
+  .orb1 { animation: orbFloat  7s ease-in-out infinite; }
+  .orb2 { animation: orbFloat2 9s ease-in-out infinite 1s; }
+  .orb3 { animation: orbFloat3 11s ease-in-out infinite 2s; }
+
+  
+  @keyframes pulse-ring {
+    0%   { box-shadow: 0 0 0 0 rgba(19,127,236,0.5); }
+    70%  { box-shadow: 0 0 0 10px rgba(19,127,236,0); }
+    100% { box-shadow: 0 0 0 0 rgba(19,127,236,0); }
+  }
+  .logo-box { animation: pulse-ring 2.5s ease-out infinite; }
+
+  
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .anim-item {
+    opacity: 0;
+    animation: fadeSlideUp 0.65s var(--anim-ease) forwards;
+  }
+  .delay-1 { animation-delay: 0.08s; }
+  .delay-2 { animation-delay: 0.16s; }
+  .delay-3 { animation-delay: 0.24s; }
+  .delay-4 { animation-delay: 0.32s; }
+  .delay-5 { animation-delay: 0.40s; }
+  .delay-6 { animation-delay: 0.48s; }
+  .delay-7 { animation-delay: 0.56s; }
+
+  
+  @keyframes fadeSlideRight {
+    from { opacity: 0; transform: translateX(-24px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  .anim-left {
+    opacity: 0;
+    animation: fadeSlideRight 0.7s var(--anim-ease) forwards;
+  }
+  .ldel-1 { animation-delay: 0.2s; }
+  .ldel-2 { animation-delay: 0.4s; }
+  .ldel-3 { animation-delay: 0.6s; }
+  .ldel-4 { animation-delay: 0.8s; }
+
+  
+  @keyframes popIn {
+    0%   { opacity: 0; transform: scale(0.7) translateY(10px); }
+    70%  { transform: scale(1.05) translateY(-2px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .pill { animation: popIn 0.5s var(--anim-ease) forwards; opacity: 0; }
+  .pill-1 { animation-delay: 1.0s; }
+  .pill-2 { animation-delay: 1.2s; }
+  .pill-3 { animation-delay: 1.4s; }
+
+  
+  .form-input, .form-select {
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.2s ease;
+  }
+  .form-input:focus, .form-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(19,127,236,0.18);
+  }
+
+  
+  .input-icon {
+    transition: color 0.25s ease, transform 0.25s ease;
+  }
+  .form-input:focus ~ .input-icon,
+  .input-wrapper:focus-within .input-icon {
+    color: var(--primary);
+    transform: scale(1.15);
+  }
+
+  
+  .field-label {
+    transition: color 0.2s ease;
+  }
+  .input-wrapper:focus-within .field-label {
+    color: var(--primary);
+  }
+
+  
+  #continueBtn {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  }
+  #continueBtn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent 20%, rgba(255,255,255,0.2) 50%, transparent 80%);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+  }
+  #continueBtn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(19,127,236,0.35); }
+  #continueBtn:hover::after { transform: translateX(100%); }
+  #continueBtn:active { transform: translateY(0); box-shadow: 0 2px 8px rgba(19,127,236,0.2); }
+
+  
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.35);
+    transform: scale(0);
+    animation: ripple-anim 0.55s linear;
+    pointer-events: none;
+  }
+  @keyframes ripple-anim {
+    to { transform: scale(4); opacity: 0; }
+  }
+
+  
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20%      { transform: translateX(-6px); }
+    40%      { transform: translateX(6px); }
+    60%      { transform: translateX(-4px); }
+    80%      { transform: translateX(4px); }
+  }
+  .shake { animation: shake 0.4s ease; }
+
+  
+  @keyframes fadeOut {
+    to { opacity: 0; transform: scale(0.97); }
+  }
+  .page-exit { animation: fadeOut 0.35s var(--anim-ease) forwards; }
+
+  
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #cfdbe7; border-radius: 9999px; }
+</style>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#137fec",
+          "background-light": "#f6f7f8",
+          "background-dark": "#101922",
+        },
+        fontFamily: { "display": ["Lexend", "sans-serif"] },
+        borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+      },
+    },
+  }
+
+  function showSuccess() {
+    const overlay = document.getElementById('successOverlay');
+    const modal = document.getElementById('successModal');
+    const circle = document.querySelector('#checkSvg circle');
+    const tick = document.querySelector('#checkSvg polyline');
+    const bar = document.getElementById('successBar');
+
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        modal.style.transform = 'scale(1)';
+        modal.style.opacity = '1';
+        circle.style.strokeDashoffset = '0';
+        tick.style.strokeDashoffset = '0';
+        setTimeout(() => { bar.style.width = '100%'; }, 100);
+      });
+    });
+
+    setTimeout(() => {
+      document.querySelector('.layout-container').classList.add('page-exit');
+      setTimeout(() => { window.location.href = 'LoginPage.html'; }, 350);
+    }, 1700);
+  }
+</script>
+</head>
+<body class="font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-x-hidden">
+  <div class="layout-container flex h-full grow flex-col">
+    <div class="flex flex-1 justify-center">
+      <div class="layout-content-container flex flex-col w-full flex-1">
+        <div class="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
+
+          
+          <div class="relative hidden lg:flex flex-col justify-center items-center bg-[#101922] p-12 text-white overflow-hidden">
+
+            
+            <div class="orb1 absolute -top-24 -left-24 w-96 h-96 rounded-full bg-primary opacity-20 blur-3xl"></div>
+            <div class="orb2 absolute bottom-0 right-0 w-80 h-80 rounded-full bg-blue-400 opacity-15 blur-3xl"></div>
+            <div class="orb3 absolute top-1/2 left-1/3 w-64 h-64 rounded-full bg-cyan-400 opacity-10 blur-2xl"></div>
+
+            
+            <div class="absolute inset-0 opacity-5" style="background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 40px 40px;"></div>
+
+            <div class="relative z-10 flex flex-col items-start w-full max-w-md space-y-8">
+              
+              <div class="anim-left ldel-1 flex items-center space-x-3">
+                <div class="logo-box flex items-center justify-center rounded-lg bg-white p-2">
+                  <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7V17L12 22L22 17V7L12 2ZM19.98 8.13L12 12.51L4.02 8.13L12 3.87L19.98 8.13ZM4 15.93V9.58L11.25 13.97V19.82L4 15.93Z" fill="#137fec"></path>
+                  </svg>
+                </div>
+                <span class="text-xl font-bold text-white">Academia</span>
+              </div>
+
+              <h2 class="anim-left ldel-2 text-4xl font-bold tracking-tight text-white leading-tight">AI-Powered Academic Excellence.</h2>
+
+              <p class="anim-left ldel-3 text-lg text-slate-300">Experience the future of education with instant grading feedback and personalized AI tutoring, designed to help you succeed.</p>
+
+              
+              <div class="anim-left ldel-4 flex flex-wrap gap-3 pt-2">
+                <span class="pill pill-1 inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/20 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm">
+                  <span class="material-symbols-outlined text-primary" style="font-size:18px;">bolt</span>
+                  Instant Feedback
+                </span>
+                <span class="pill pill-2 inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/20 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm">
+                  <span class="material-symbols-outlined text-primary" style="font-size:18px;">psychology</span>
+                  AI Tutoring
+                </span>
+                <span class="pill pill-3 inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/20 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm">
+                  <span class="material-symbols-outlined text-primary" style="font-size:18px;">trending_up</span>
+                  Track Progress
+                </span>
+              </div>
+            </div>
+          </div>
+
+          
+          <div class="flex w-full flex-col justify-center bg-background-light dark:bg-background-dark p-6 sm:p-12 lg:p-16">
+            <div class="flex flex-col items-center justify-center h-full w-full">
+              <div class="w-full max-w-sm">
+
+                
+                <div class="anim-item delay-1 flex flex-col items-center text-center lg:items-start lg:text-left mb-10">
+                  <h1 class="text-[#0d141b] dark:text-slate-100 tracking-tight text-[32px] font-bold leading-tight">Join Academia</h1>
+                  <p class="text-slate-600 dark:text-slate-400 mt-2">Let's get you started. Please provide your details.</p>
+                </div>
+
+                <div class="flex flex-col space-y-5">
+
+                  
+                  <div class="anim-item delay-2">
+                    <label class="flex flex-col w-full input-wrapper">
+                      <p class="field-label text-[#0d141b] dark:text-slate-200 text-base font-medium leading-normal pb-2">University Email</p>
+                      <div class="flex w-full flex-1 items-stretch rounded-lg">
+                        <input id="emailInput" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141b] dark:text-slate-100 border border-[#cfdbe7] dark:border-slate-700 bg-background-light dark:bg-background-dark h-14 placeholder:text-slate-500 dark:placeholder:text-slate-500 p-[15px] rounded-r-none border-r-0 pr-2 text-base font-normal leading-normal" placeholder="e.g., your.name@university.edu" type="email"/>
+                        <div class="input-icon text-slate-500 dark:text-slate-400 flex border border-[#cfdbe7] dark:border-slate-700 bg-background-light dark:bg-background-dark items-center justify-center px-4 rounded-r-lg border-l-0 transition-colors duration-200">
+                          <span class="material-symbols-outlined" style="font-size: 24px;">school</span>
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+
+                  
+                  <div class="anim-item delay-3">
+                    <label class="flex flex-col w-full input-wrapper">
+                      <p class="field-label text-[#0d141b] dark:text-slate-200 text-base font-medium leading-normal pb-2">Phone Number</p>
+                      <div class="flex w-full flex-1 items-stretch rounded-lg">
+                        <input id="phoneInput" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141b] dark:text-slate-100 border border-[#cfdbe7] dark:border-slate-700 bg-background-light dark:bg-background-dark h-14 placeholder:text-slate-500 dark:placeholder:text-slate-500 p-[15px] rounded-r-none border-r-0 pr-2 text-base font-normal leading-normal" placeholder="e.g., +234 000 000 000" type="tel"/>
+                        <div class="input-icon text-slate-500 dark:text-slate-400 flex border border-[#cfdbe7] dark:border-slate-700 bg-background-light dark:bg-background-dark items-center justify-center px-4 rounded-r-lg border-l-0 transition-colors duration-200">
+                          <span class="material-symbols-outlined" style="font-size: 24px;">phone</span>
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+
+                  
+                  <div class="anim-item delay-4">
+                    <label class="flex flex-col w-full">
+                      <p class="text-[#0d141b] dark:text-slate-200 text-base font-medium leading-normal pb-2">I am a...</p>
+                      <div class="relative flex w-full flex-1 items-stretch rounded-lg">
+                        <select id="userRole" class="form-select flex w-full appearance-none min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141b] dark:text-slate-100 border border-[#cfdbe7] dark:border-slate-700 bg-background-light dark:bg-background-dark h-14 p-[15px] pl-12 text-base font-normal">
+                          <option value="" disabled selected>Select your role</option>
+                          <option value="student">Student</option>
+                          
+                          <option value="lecturer">Lecturer</option>
+                          <option value="hod">HOD</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center justify-center px-4 text-slate-500 dark:text-slate-400">
+                          <span class="material-symbols-outlined" style="font-size: 24px;">person</span>
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+
+                  
+                  <div class="anim-item delay-5">
+                    <label class="flex flex-col w-full">
+                      <p class="text-[#0d141b] dark:text-slate-200 text-base font-medium leading-normal pb-2">Department</p>
+                      <div class="relative flex w-full flex-1 items-stretch rounded-lg">
+                        <select id="deptSelect" class="form-select flex w-full appearance-none min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141b] dark:text-slate-100 border border-[#cfdbe7] dark:border-slate-700 bg-background-light dark:bg-background-dark h-14 placeholder:text-slate-500 p-[15px] pl-12 text-base font-normal leading-normal">
+                          <option disabled selected>Select your department</option>
+                          <option>Aerospace Engineering</option>
+                          <option>Chemical Engineering</option>
+                          <option>Mechanical Engineering</option>
+                          <option>Electronics &amp; Computer Engineering</option>
+                        </select>
+                        <div class="text-slate-500 dark:text-slate-400 absolute inset-y-0 left-0 flex items-center justify-center px-4">
+                          <span class="material-symbols-outlined" style="font-size: 24px;">apartment</span>
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+
+                </div>
+
+                
+                <div class="anim-item delay-6 flex flex-col space-y-4 mt-8">
+                  <button id="continueBtn" type="button" class="flex w-full items-center justify-center rounded-lg h-12 px-5 bg-primary text-white text-base font-bold">
+                    <span class="truncate">Continue</span>
+                    <span class="material-symbols-outlined ml-2 transition-transform duration-300" id="btnArrow" style="font-size:20px;">arrow_forward</span>
+                  </button>
+                </div>
+
+                
+                <div class="anim-item delay-7 mt-8 text-center text-sm text-slate-600 dark:text-slate-400">
+                  <p>Already have an account? <a class="font-medium text-primary hover:underline transition-colors" href="LoginPage.html">Sign In</a></p>
+                </div>
+                <div class="anim-item delay-7 mt-4 text-center">
+                  <a class="text-slate-600 dark:text-slate-400 hover:text-primary text-sm font-normal leading-normal underline transition-colors" href="#">Need Help? Contact Support</a>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const btn = document.getElementById('continueBtn');
+  const arrow = document.getElementById('btnArrow');
+
+  btn.addEventListener('mouseenter', () => { arrow.style.transform = 'translateX(4px)'; });
+  btn.addEventListener('mouseleave', () => { arrow.style.transform = 'translateX(0)'; });
+
+  btn.addEventListener('click', function (e) {
+    const rect = btn.getBoundingClientRect();
+    const ripple = document.createElement('span');
+    ripple.classList.add('ripple');
+    const size = Math.max(rect.width, rect.height);
+    ripple.style.width = ripple.style.height = size + 'px';
+    ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+    ripple.style.top  = (e.clientY - rect.top  - size / 2) + 'px';
+    btn.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+
+    const role = document.getElementById('userRole').value.trim().toLowerCase();
+
+    if (!role) {
+      const roleWrapper = document.getElementById('userRole').closest('label') || document.getElementById('userRole').parentElement.parentElement;
+      roleWrapper.classList.add('shake');
+      setTimeout(() => roleWrapper.classList.remove('shake'), 400);
+      return;
+    }
+
+    if (role === 'student') {
+      document.querySelector('.layout-container').classList.add('page-exit');
+      setTimeout(() => { window.location.href = 'signup2.html'; }, 350);
+    } else {
+      showSuccess();
+    }
+  });
+
+  document.querySelectorAll('.form-input, .form-select').forEach(el => {
+    el.addEventListener('focus', () => {
+      const wrapper = el.closest('.input-wrapper');
+      if (wrapper) {
+        const icon = wrapper.querySelector('.input-icon');
+        if (icon) icon.style.color = 'var(--primary)';
+      }
+    });
+    el.addEventListener('blur', () => {
+      const wrapper = el.closest('.input-wrapper');
+      if (wrapper) {
+        const icon = wrapper.querySelector('.input-icon');
+        if (icon) icon.style.color = '';
+      }
+    });
+  });
+
+  function showSuccess() {
+    const overlay = document.getElementById('successOverlay');
+    const modal = document.getElementById('successModal');
+    const circle = document.querySelector('#checkSvg circle');
+    const tick = document.querySelector('#checkSvg polyline');
+    const bar = document.getElementById('successBar');
+
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        modal.style.transform = 'scale(1)';
+        modal.style.opacity = '1';
+        circle.style.strokeDashoffset = '0';
+        tick.style.strokeDashoffset = '0';
+        setTimeout(() => { bar.style.width = '100%'; }, 100);
+      });
+    });
+
+    setTimeout(() => {
+      document.querySelector('.layout-container').classList.add('page-exit');
+      setTimeout(() => { window.location.href = 'LoginPage.html'; }, 350);
+    }, 1700);
+  }
+</script>
+
+  <div id="successOverlay" class="fixed inset-0 z-50 flex items-center justify-center p-4" style="display:none !important;">
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+    <div id="successModal" class="relative z-10 w-full max-w-sm rounded-2xl bg-white dark:bg-slate-900 shadow-2xl p-8 flex flex-col items-center text-center" style="transform: scale(0.8); opacity: 0; transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), opacity 0.4s ease;">
+      <div class="mb-5 flex items-center justify-center rounded-full bg-primary/10" style="width:80px;height:80px;">
+        <svg id="checkSvg" viewBox="0 0 52 52" width="48" height="48">
+          <circle cx="26" cy="26" r="24" fill="none" stroke="#137fec" stroke-width="3" stroke-dasharray="151" stroke-dashoffset="151" style="transition: stroke-dashoffset 0.6s ease 0.2s; transform-origin: center; transform: rotate(-90deg);"/>
+          <polyline points="14,27 22,35 38,19" fill="none" stroke="#137fec" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="40" stroke-dashoffset="40" style="transition: stroke-dashoffset 0.4s ease 0.7s;"/>
+        </svg>
+      </div>
+      <h2 class="text-2xl font-black text-slate-900 dark:text-white mb-2">Registration Successful!</h2>
+      <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Your account has been created. Redirecting you to login...</p>
+      <div class="w-full rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden h-1.5">
+        <div id="successBar" class="h-full rounded-full bg-primary" style="width:0%; transition: width 1.5s linear;"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

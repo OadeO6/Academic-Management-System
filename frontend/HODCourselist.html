@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HOD Course List (Academia.)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<style>
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    font-size: 24px;
+  }
+
+  @keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-28px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes slideInDown {
+    from { opacity: 0; transform: translateY(-18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slideInUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeScaleIn {
+    from { opacity: 0; transform: scale(0.97); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @keyframes rowReveal {
+    from { opacity: 0; transform: translateX(-8px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes shimmer {
+    0%   { background-position: -400% center; }
+    100% { background-position: 400% center; }
+  }
+  @keyframes iconBounce {
+    0%, 100% { transform: translateY(0); }
+    40%       { transform: translateY(-4px); }
+    70%       { transform: translateY(-1px); }
+  }
+  @keyframes pulseRing {
+    0%   { box-shadow: 0 0 0 0 rgba(19,127,236,0.35); }
+    70%  { box-shadow: 0 0 0 8px rgba(19,127,236,0); }
+    100% { box-shadow: 0 0 0 0 rgba(19,127,236,0); }
+  }
+  @keyframes checkPop {
+    0%   { transform: scale(0) rotate(-10deg); opacity: 0; }
+    70%  { transform: scale(1.2) rotate(3deg); }
+    100% { transform: scale(1) rotate(0); opacity: 1; }
+  }
+  @keyframes dropdownOpen {
+    from { opacity: 0; transform: translateY(-8px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .anim-sidebar  { animation: slideInLeft  0.48s cubic-bezier(.22,.68,0,1.15) both; }
+  .anim-heading  { animation: slideInDown  0.42s cubic-bezier(.22,.68,0,1.15) 0.12s both; }
+  .anim-btns     { animation: slideInDown  0.42s cubic-bezier(.22,.68,0,1.15) 0.2s both; }
+  .anim-filters  { animation: slideInUp    0.42s cubic-bezier(.22,.68,0,1.15) 0.28s both; }
+  .anim-table    { animation: fadeScaleIn  0.45s cubic-bezier(.22,.68,0,1.15) 0.38s both; }
+
+  .table-row { animation: rowReveal 0.38s cubic-bezier(.22,.68,0,1.15) both; opacity: 0; }
+  .table-row:nth-child(1) { animation-delay: 0.52s; }
+  .table-row:nth-child(2) { animation-delay: 0.63s; }
+  .table-row:nth-child(3) { animation-delay: 0.74s; }
+  .table-row:nth-child(4) { animation-delay: 0.85s; }
+  .table-row:nth-child(5) { animation-delay: 0.96s; }
+
+  aside nav a {
+    transition: background 0.18s, color 0.18s, transform 0.15s;
+  }
+  aside nav a:not(.active-nav):hover { transform: translateX(3px); }
+
+  .sidebar-util-link {
+    transition: background 0.18s, transform 0.15s;
+  }
+  .sidebar-util-link:hover { transform: translateX(3px); }
+
+  .profile-avatar { transition: box-shadow 0.25s; cursor: pointer; }
+  .profile-avatar:hover { animation: pulseRing 0.8s ease; }
+
+  .stat-card {
+    transition: transform 0.2s, box-shadow 0.22s;
+  }
+  .stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(19,127,236,0.1);
+  }
+
+  button { transition: transform 0.12s, box-shadow 0.15s, background 0.15s; }
+  button:active { transform: scale(0.94) !important; }
+
+  .btn-primary-action {
+    position: relative; overflow: hidden;
+    transition: transform 0.12s, box-shadow 0.18s, background 0.15s;
+  }
+  .btn-primary-action::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.28), transparent);
+    background-size: 200% auto;
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .btn-primary-action:hover { box-shadow: 0 4px 16px rgba(19,127,236,0.38); transform: translateY(-1px); }
+  .btn-primary-action:hover::after { opacity: 1; animation: shimmer 0.55s linear; }
+
+  .btn-secondary-action {
+    transition: transform 0.12s, box-shadow 0.15s, background 0.15s;
+  }
+  .btn-secondary-action:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+
+  .table-row {
+    transition: background 0.14s;
+    cursor: pointer;
+  }
+
+  .more-btn {
+    transition: transform 0.15s, color 0.15s, background 0.15s;
+    border-radius: 50%;
+    padding: 4px;
+  }
+  .more-btn:hover {
+    transform: rotate(90deg);
+    background: rgba(0,0,0,0.06);
+  }
+  .dark .more-btn:hover { background: rgba(255,255,255,0.08); }
+
+  .filter-btn {
+    transition: border-color 0.18s, box-shadow 0.18s, background 0.15s;
+  }
+  .filter-btn:hover {
+    border-color: #137fec;
+    box-shadow: 0 0 0 3px rgba(19,127,236,0.12);
+  }
+
+  .search-wrap {
+    transition: box-shadow 0.2s;
+  }
+  .search-wrap:focus-within {
+    box-shadow: 0 0 0 3px rgba(19,127,236,0.15);
+    border-radius: 0.5rem;
+  }
+
+  input[type="checkbox"] {
+    transition: transform 0.12s, box-shadow 0.12s;
+  }
+  input[type="checkbox"]:checked {
+    animation: checkPop 0.25s cubic-bezier(.22,.68,0,1.3);
+  }
+  input[type="checkbox"]:hover { transform: scale(1.1); }
+
+  .unassigned-badge {
+    animation: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  .unassigned-badge:hover { background: #fed7aa; color: #9a3412; }
+  .dark .unassigned-badge:hover { background: rgba(234,88,12,0.3); color: #fdba74; }
+
+  .lecturer-chip {
+    transition: background 0.15s, transform 0.15s;
+  }
+  .lecturer-chip:hover { transform: scale(1.04); background: #dbeafe; }
+  .dark .lecturer-chip:hover { background: rgba(19,127,236,0.2); }
+
+  .view-all-link {
+    position: relative; transition: color 0.2s;
+  }
+  .view-all-link::after {
+    content: '';
+    position: absolute; left: 0; bottom: -1px;
+    width: 0; height: 1.5px;
+    background: #137fec;
+    transition: width 0.22s;
+  }
+  .view-all-link:hover::after { width: 100%; }
+
+  .dropdown-menu {
+    animation: dropdownOpen 0.2s cubic-bezier(.22,.68,0,1.15) both;
+    transform-origin: top right;
+  }
+
+  .select-all-bar {
+    animation: slideInDown 0.25s cubic-bezier(.22,.68,0,1.15) both;
+  }
+</style>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#137fec",
+          "background-light": "#f6f7f8",
+          "background-dark": "#101922",
+        },
+        fontFamily: { "display": ["Lexend", "sans-serif"] },
+        borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+      },
+    },
+  }
+</script>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark">
+<div class="relative flex min-h-screen w-full flex-col">
+<div class="flex h-full w-full flex-1">
+
+  <aside class="anim-sidebar flex w-64 flex-shrink-0 flex-col justify-between border-r border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-background-dark">
+    <div class="flex flex-col gap-4">
+      <div class="flex items-center gap-3">
+        <div class="profile-avatar flex items-center justify-center rounded-full size-10 bg-primary/10 shrink-0">
+          <span class="material-symbols-outlined text-primary" style="font-size:22px;font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;">account_circle</span>
+        </div>
+        <div class="flex flex-col">
+          <h1 class="text-slate-900 dark:text-slate-100 text-base font-medium leading-normal">Dr. Yussuff Abayomi</h1>
+          <p class="text-slate-500 dark:text-slate-400 text-sm font-normal leading-normal">HOD, ECE</p>
+        </div>
+      </div>
+      <nav class="mt-4 flex flex-col gap-2">
+        <a class="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800" href="HODDashboard.html">
+          <span class="material-symbols-outlined text-slate-800 dark:text-slate-200">dashboard</span>
+          <p class="text-slate-800 dark:text-slate-200 text-sm font-medium leading-normal">Dashboard</p>
+        </a>
+        <a class="active-nav flex items-center gap-3 rounded-lg bg-primary/10 px-3 py-2" href="#">
+          <span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;">menu_book</span>
+          <p class="text-primary text-sm font-medium leading-normal">Courses</p>
+        </a>
+      </nav>
+    </div>
+    <div class="flex flex-col gap-1">
+      <a class="sidebar-util-link flex items-center gap-3 rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800" href="HODSets.html">
+        <span class="material-symbols-outlined text-slate-800 dark:text-slate-200">settings</span>
+        <p class="text-slate-800 dark:text-slate-200 text-sm font-medium leading-normal">Settings</p>
+      </a>
+      <a class="sidebar-util-link flex items-center gap-3 rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800" href="#">
+        <span class="material-symbols-outlined text-slate-800 dark:text-slate-200">logout</span>
+        <p class="text-slate-800 dark:text-slate-200 text-sm font-medium leading-normal">Logout</p>
+      </a>
+    </div>
+  </aside>
+
+  <main class="flex flex-1 flex-col p-6 overflow-hidden">
+    <div class="mx-auto w-full max-w-7xl flex flex-col gap-6">
+
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <div class="anim-heading flex flex-col gap-1">
+          <h1 class="text-slate-900 dark:text-white text-3xl font-bold tracking-tight">Department Courses</h1>
+          <p class="text-slate-500 dark:text-slate-400 text-base font-normal leading-normal">Manage all courses within the Computer Eng. department.</p>
+        </div>
+        <div class="anim-btns flex gap-2">
+         
+          <a href="HODCreatecourse.html"
+   class="btn-primary-action flex h-10 cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg bg-primary px-4 text-white text-sm font-bold leading-normal">
+    
+    <span class="material-symbols-outlined" style="font-size: 20px;">add</span>
+    <span class="truncate">Create New Course</span>
+</a>
+        </div>
+      </div>
+
+      <div class="anim-filters flex flex-col gap-4 md:flex-row md:items-center">
+        <div class="flex-1">
+          <div class="search-wrap flex h-12 w-full min-w-40 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 focus-within:border-primary transition-colors duration-200">
+            <div class="flex items-center justify-center bg-white pl-4 text-slate-500 dark:bg-slate-900 dark:text-slate-400">
+              <span class="material-symbols-outlined" style="font-size:20px;">search</span>
+            </div>
+            <input id="search-input" class="form-input h-full min-w-0 flex-1 resize-none overflow-hidden border-0 bg-white px-4 text-base font-normal leading-normal text-slate-900 placeholder:text-slate-400 focus:outline-0 focus:ring-0 dark:bg-slate-900 dark:text-white dark:placeholder:text-slate-500" placeholder="Search by course code, title, lecturer..." value=""/>
+          </div>
+        </div>
+        <div class="flex gap-3">
+          <button class="filter-btn flex h-12 shrink-0 items-center justify-center gap-x-2 rounded-lg border border-slate-200 bg-white pl-4 pr-3 dark:border-slate-700 dark:bg-slate-900">
+            <p class="text-slate-700 dark:text-slate-300 text-sm font-medium leading-normal">Status: All</p>
+            <span class="material-symbols-outlined text-slate-500 dark:text-slate-400" style="font-size: 20px;">arrow_drop_down</span>
+          </button>
+          <button class="filter-btn flex h-12 shrink-0 items-center justify-center gap-x-2 rounded-lg border border-slate-200 bg-white pl-4 pr-3 dark:border-slate-700 dark:bg-slate-900">
+            <p class="text-slate-700 dark:text-slate-300 text-sm font-medium leading-normal">Lecturer: All</p>
+            <span class="material-symbols-outlined text-slate-500 dark:text-slate-400" style="font-size: 20px;">arrow_drop_down</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="bulk-bar" class="hidden select-all-bar items-center justify-between px-4 py-2.5 rounded-lg bg-primary/10 border border-primary/20">
+        <p class="text-primary text-sm font-semibold" id="bulk-count">0 selected</p>
+        <div class="flex gap-2">
+          <button class="text-xs font-semibold px-3 py-1.5 rounded-md bg-primary text-white hover:bg-primary/90">Assign Lecturer</button>
+          <button id="bulk-delete-btn" class="text-xs font-semibold px-3 py-1.5 rounded-md bg-red-100 text-red-600 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400">Remove Selected</button>
+        </div>
+      </div>
+
+      <div class="anim-table overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-[800px] text-sm" id="course-table">
+            <thead class="border-b border-slate-200 bg-slate-50 text-left text-slate-600 dark:border-slate-800 dark:bg-slate-900/50 dark:text-slate-400">
+              <tr>
+                <th class="p-4 font-medium"><input id="select-all" class="form-checkbox rounded border-slate-300 text-primary focus:ring-primary/50 dark:border-slate-700 dark:bg-slate-800" type="checkbox"/></th>
+                <th class="p-4 font-medium cursor-pointer hover:text-primary transition-colors select-none" data-sort="code">
+                  <div class="flex items-center gap-1">Course Code <span class="material-symbols-outlined" style="font-size:16px;">unfold_more</span></div>
+                </th>
+                <th class="p-4 font-medium">Course Title</th>
+                <th class="p-4 font-medium">Assigned Lecturer(s)</th>
+                <th class="p-4 font-medium text-center cursor-pointer hover:text-primary transition-colors select-none" data-sort="count">
+                  <div class="flex items-center justify-center gap-1">Student Count <span class="material-symbols-outlined" style="font-size:16px;">unfold_more</span></div>
+                </th>
+                <th class="p-4 font-medium"></th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-800" id="table-body">
+              <tr class="table-row hover:bg-slate-50 dark:hover:bg-slate-800/50" data-code="ECE101" data-title="Introduction to Computer Eng" data-lecturer="Dr. Ajasa" data-count="128">
+                <td class="p-4"><input class="row-check form-checkbox rounded border-slate-300 text-primary focus:ring-primary/50 dark:border-slate-700 dark:bg-slate-800" type="checkbox"/></td>
+                <td class="p-4 text-slate-800 dark:text-slate-200 font-mono text-xs font-semibold">ECE101</td>
+                <td class="p-4 font-medium text-slate-900 dark:text-white">Introduction to Computer Eng</td>
+                <td class="p-4">
+                  <div class="lecturer-chip inline-flex items-center gap-2 rounded-full bg-slate-100 py-1 pl-2.5 pr-3 dark:bg-slate-800">
+                    <div class="flex items-center justify-center h-5 w-5 rounded-full bg-primary/20"><span class="material-symbols-outlined text-primary" style="font-size:13px;font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;">person</span></div>
+                    <span class="text-slate-700 dark:text-slate-300 text-xs">Dr. Ajasa</span>
+                  </div>
+                </td>
+                <td class="p-4 text-center"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-primary/10 text-primary">128</span></td>
+                <td class="p-4 text-right relative">
+                  <button class="more-btn text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"><span class="material-symbols-outlined">more_vert</span></button>
+                </td>
+              </tr>
+              <tr class="table-row hover:bg-slate-50 dark:hover:bg-slate-800/50" data-code="ECE212" data-title="Data Structures & Algorithms" data-lecturer="Dr. Mary Engr. L.A" data-count="95">
+                <td class="p-4"><input class="row-check form-checkbox rounded border-slate-300 text-primary focus:ring-primary/50 dark:border-slate-700 dark:bg-slate-800" type="checkbox"/></td>
+                <td class="p-4 text-slate-800 dark:text-slate-200 font-mono text-xs font-semibold">ECE 212</td>
+                <td class="p-4 font-medium text-slate-900 dark:text-white">Data Structures &amp; Algorithms</td>
+                <td class="p-4">
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <div class="lecturer-chip inline-flex items-center gap-2 rounded-full bg-slate-100 py-1 pl-2.5 pr-3 dark:bg-slate-800">
+                      <div class="flex items-center justify-center h-5 w-5 rounded-full bg-primary/20"><span class="material-symbols-outlined text-primary" style="font-size:13px;font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;">person</span></div>
+                      <span class="text-slate-700 dark:text-slate-300 text-xs">Dr. Mary</span>
+                    </div>
+                    <div class="lecturer-chip inline-flex items-center gap-2 rounded-full bg-slate-100 py-1 pl-2.5 pr-3 dark:bg-slate-800">
+                      <div class="flex items-center justify-center h-5 w-5 rounded-full bg-primary/20"><span class="material-symbols-outlined text-primary" style="font-size:13px;font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;">person</span></div>
+                      <span class="text-slate-700 dark:text-slate-300 text-xs">Engr. L.A</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="p-4 text-center"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-primary/10 text-primary">95</span></td>
+                <td class="p-4 text-right relative">
+                  <button class="more-btn text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"><span class="material-symbols-outlined">more_vert</span></button>
+                </td>
+              </tr>
+              <tr class="table-row hover:bg-slate-50 dark:hover:bg-slate-800/50" data-code="ECE350" data-title="Operating Systems" data-lecturer="" data-count="64">
+                <td class="p-4"><input class="row-check form-checkbox rounded border-slate-300 text-primary focus:ring-primary/50 dark:border-slate-700 dark:bg-slate-800" type="checkbox"/></td>
+                <td class="p-4 text-slate-800 dark:text-slate-200 font-mono text-xs font-semibold">ECE 350</td>
+                <td class="p-4 font-medium text-slate-900 dark:text-white">Operating Systems</td>
+                <td class="p-4"><span class="unassigned-badge inline-block rounded-md bg-orange-100 px-2 py-1 text-xs font-medium text-orange-700 cursor-pointer dark:bg-orange-900/50 dark:text-orange-300">Unassigned</span></td>
+                <td class="p-4 text-center"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">64</span></td>
+                <td class="p-4 text-right relative">
+                  <button class="more-btn text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"><span class="material-symbols-outlined">more_vert</span></button>
+                </td>
+              </tr>
+              <tr class="table-row hover:bg-slate-50 dark:hover:bg-slate-800/50" data-code="ECE461" data-title="Artificial Intelligence" data-lecturer="Dr. Ajasa" data-count="42">
+                <td class="p-4"><input class="row-check form-checkbox rounded border-slate-300 text-primary focus:ring-primary/50 dark:border-slate-700 dark:bg-slate-800" type="checkbox"/></td>
+                <td class="p-4 text-slate-800 dark:text-slate-200 font-mono text-xs font-semibold">ECE 461</td>
+                <td class="p-4 font-medium text-slate-900 dark:text-white">Artificial Intelligence</td>
+                <td class="p-4">
+                  <div class="lecturer-chip inline-flex items-center gap-2 rounded-full bg-slate-100 py-1 pl-2.5 pr-3 dark:bg-slate-800">
+                    <div class="flex items-center justify-center h-5 w-5 rounded-full bg-primary/20"><span class="material-symbols-outlined text-primary" style="font-size:13px;font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;">person</span></div>
+                    <span class="text-slate-700 dark:text-slate-300 text-xs">Dr. Ajasa</span>
+                  </div>
+                </td>
+                <td class="p-4 text-center"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-primary/10 text-primary">42</span></td>
+                <td class="p-4 text-right relative">
+                  <button class="more-btn text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"><span class="material-symbols-outlined">more_vert</span></button>
+                </td>
+              </tr>
+              <tr class="table-row hover:bg-slate-50 dark:hover:bg-slate-800/50" data-code="CS499" data-title="Senior Thesis Project" data-lecturer="Dr. Ajasa" data-count="15">
+                <td class="p-4"><input class="row-check form-checkbox rounded border-slate-300 text-primary focus:ring-primary/50 dark:border-slate-700 dark:bg-slate-800" type="checkbox"/></td>
+                <td class="p-4 text-slate-800 dark:text-slate-200 font-mono text-xs font-semibold">CS499</td>
+                <td class="p-4 font-medium text-slate-900 dark:text-white">Senior Thesis Project</td>
+                <td class="p-4">
+                  <div class="lecturer-chip inline-flex items-center gap-2 rounded-full bg-slate-100 py-1 pl-2.5 pr-3 dark:bg-slate-800">
+                    <div class="flex items-center justify-center h-5 w-5 rounded-full bg-primary/20"><span class="material-symbols-outlined text-primary" style="font-size:13px;font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;">person</span></div>
+                    <span class="text-slate-700 dark:text-slate-300 text-xs">Dr. Ajasa</span>
+                  </div>
+                </td>
+                <td class="p-4 text-center"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400">15</span></td>
+                <td class="p-4 text-right relative">
+                  <button class="more-btn text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"><span class="material-symbols-outlined">more_vert</span></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+</div>
+
+<div id="context-menu" class="hidden fixed z-50 min-w-[160px] rounded-xl border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900 overflow-hidden dropdown-menu">
+  <button class="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+    <span class="material-symbols-outlined" style="font-size:18px;">edit</span> Edit Course
+  </button>
+  <button class="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+    <span class="material-symbols-outlined" style="font-size:18px;">assignment_ind</span> Assign Lecturer
+  </button>
+  <button class="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+    <span class="material-symbols-outlined" style="font-size:18px;">visibility</span> View Details
+  </button>
+  <div class="border-t border-slate-100 dark:border-slate-800"></div>
+  <button class="ctx-delete w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+    <span class="material-symbols-outlined" style="font-size:18px;">delete</span> Remove Course
+  </button>
+</div>
+
+<script>
+  const searchInput = document.getElementById('search-input');
+  const tableBody   = document.getElementById('table-body');
+  const selectAll   = document.getElementById('select-all');
+  const bulkBar     = document.getElementById('bulk-bar');
+  const bulkCount   = document.getElementById('bulk-count');
+  const bulkDelete  = document.getElementById('bulk-delete-btn');
+  const ctxMenu     = document.getElementById('context-menu');
+  let ctxTargetRow  = null;
+
+  function getRows() { return [...tableBody.querySelectorAll('tr.table-row')]; }
+
+  function updateBulkBar() {
+    const checked = tableBody.querySelectorAll('.row-check:checked');
+    if (checked.length > 0) {
+      bulkBar.classList.remove('hidden');
+      bulkBar.classList.add('flex');
+      bulkCount.textContent = checked.length + ' selected';
+    } else {
+      bulkBar.classList.add('hidden');
+      bulkBar.classList.remove('flex');
+    }
+  }
+
+  selectAll.addEventListener('change', () => {
+    getRows().forEach(row => {
+      if (!row.classList.contains('hidden')) {
+        row.querySelector('.row-check').checked = selectAll.checked;
+      }
+    });
+    updateBulkBar();
+  });
+
+  tableBody.addEventListener('change', e => {
+    if (e.target.classList.contains('row-check')) updateBulkBar();
+  });
+
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.toLowerCase();
+    getRows().forEach(row => {
+      const match = (row.dataset.code + row.dataset.title + row.dataset.lecturer).toLowerCase().includes(q);
+      if (match) {
+        row.classList.remove('hidden');
+        row.style.animation = 'rowReveal 0.25s cubic-bezier(.22,.68,0,1.15) both';
+      } else {
+        row.classList.add('hidden');
+      }
+    });
+  });
+
+  function collapseRow(row) {
+    row.style.transition = 'transform 0.2s, opacity 0.2s';
+    row.style.transform  = 'translateX(10px) scale(0.98)';
+    row.style.opacity    = '0';
+    setTimeout(() => {
+      const h = row.offsetHeight;
+      row.style.transition = 'max-height 0.28s ease, padding 0.28s ease, opacity 0.1s';
+      row.style.maxHeight  = h + 'px';
+      row.style.overflow   = 'hidden';
+      requestAnimationFrame(() => {
+        row.style.maxHeight = '0';
+        row.style.padding   = '0';
+      });
+      setTimeout(() => row.remove(), 300);
+    }, 180);
+  }
+
+  bulkDelete.addEventListener('click', () => {
+    tableBody.querySelectorAll('.row-check:checked').forEach(cb => collapseRow(cb.closest('tr')));
+    selectAll.checked = false;
+    updateBulkBar();
+  });
+
+  document.querySelectorAll('.more-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      ctxTargetRow = btn.closest('tr');
+      const rect = btn.getBoundingClientRect();
+      ctxMenu.classList.remove('hidden');
+      ctxMenu.style.animation = 'none';
+      requestAnimationFrame(() => { ctxMenu.style.animation = ''; });
+      let top = rect.bottom + 4;
+      let left = rect.right - ctxMenu.offsetWidth;
+      if (left < 8) left = 8;
+      ctxMenu.style.top  = top + 'px';
+      ctxMenu.style.left = left + 'px';
+    });
+  });
+
+  document.querySelector('.ctx-delete').addEventListener('click', () => {
+    if (ctxTargetRow) collapseRow(ctxTargetRow);
+    ctxMenu.classList.add('hidden');
+  });
+
+  document.addEventListener('click', () => ctxMenu.classList.add('hidden'));
+
+  document.querySelectorAll('th[data-sort]').forEach(th => {
+    let asc = true;
+    th.addEventListener('click', () => {
+      const key   = th.dataset.sort;
+      const rows  = getRows();
+      rows.sort((a, b) => {
+        const av = key === 'count' ? +a.dataset.count : a.dataset.code;
+        const bv = key === 'count' ? +b.dataset.count : b.dataset.code;
+        return asc ? (av > bv ? 1 : -1) : (av < bv ? 1 : -1);
+      });
+      asc = !asc;
+      rows.forEach((r, i) => {
+        tableBody.appendChild(r);
+        r.style.animation = 'none';
+        requestAnimationFrame(() => {
+          r.style.animation = `rowReveal 0.3s cubic-bezier(.22,.68,0,1.15) ${i * 0.04}s both`;
+        });
+      });
+    });
+  });
+
+  document.querySelectorAll('.table-row').forEach(row => {
+    row.addEventListener('click', e => {
+      if (e.target.closest('input') || e.target.closest('button')) return;
+      const cb = row.querySelector('.row-check');
+      cb.checked = !cb.checked;
+      updateBulkBar();
+    });
+  });
+</script>
+</body>
+</html>

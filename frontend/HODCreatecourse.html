@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Create New Course - Academia HOD Portal</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Lexend', sans-serif;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        @keyframes checkmark {
+            0% {
+                transform: scale(0) rotate(45deg);
+            }
+            50% {
+                transform: scale(1.2) rotate(45deg);
+            }
+            100% {
+                transform: scale(1) rotate(45deg);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .sidebar-animate {
+            animation: slideInLeft 0.6s ease-out;
+        }
+
+        .main-animate {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .card-animate-1 {
+            animation: fadeInUp 0.6s ease-out 0.1s both;
+        }
+
+        .card-animate-2 {
+            animation: fadeInUp 0.6s ease-out 0.2s both;
+        }
+
+        .card-animate-3 {
+            animation: fadeInUp 0.6s ease-out 0.3s both;
+        }
+
+        .input-focus {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .input-focus:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(19, 127, 236, 0.15);
+        }
+
+        .button-animate {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .button-animate::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .button-animate:hover::before {
+            left: 100%;
+        }
+
+        .button-animate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(19, 127, 236, 0.3);
+        }
+
+        .button-animate:active {
+            transform: translateY(0);
+        }
+
+        .lecturer-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .lecturer-card:hover {
+            transform: translateX(5px);
+        }
+
+        .checkbox-animate {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .checkbox-animate.checked {
+            background-color: #137fec;
+            border-color: #137fec;
+        }
+
+        .checkbox-animate.checked .checkmark {
+            animation: checkmark 0.4s ease-out;
+        }
+
+        .nav-link {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: #137fec;
+            border-radius: 0 3px 3px 0;
+            transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-link:hover::before,
+        .nav-link.active::before {
+            height: 100%;
+        }
+
+        .search-animate {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .search-animate:focus {
+            transform: scale(1.02);
+        }
+
+        .profile-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .profile-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .badge-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .icon-bounce:hover {
+            animation: bounce 0.5s ease-in-out;
+        }
+
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(100, 116, 139, 0.3);
+            border-radius: 3px;
+            transition: background 0.3s;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(100, 116, 139, 0.5);
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .float-animate {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .ripple {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ripple::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .ripple:active::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        .glow-focus:focus {
+            box-shadow: 0 0 0 4px rgba(19, 127, 236, 0.1);
+        }
+
+        .breadcrumb-item {
+            animation: slideInRight 0.5s ease-out backwards;
+        }
+
+        .breadcrumb-item:nth-child(1) { animation-delay: 0.1s; }
+        .breadcrumb-item:nth-child(2) { animation-delay: 0.2s; }
+        .breadcrumb-item:nth-child(3) { animation-delay: 0.3s; }
+
+        .status-badge {
+            animation: scaleIn 0.5s ease-out 0.4s both;
+        }
+
+        .form-field {
+            animation: fadeInUp 0.5s ease-out backwards;
+        }
+
+        .form-field:nth-child(1) { animation-delay: 0.1s; }
+        .form-field:nth-child(2) { animation-delay: 0.15s; }
+        .form-field:nth-child(3) { animation-delay: 0.2s; }
+        .form-field:nth-child(4) { animation-delay: 0.25s; }
+        .form-field:nth-child(5) { animation-delay: 0.3s; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen fade-in">
+    <div class="flex h-screen overflow-hidden">
+        <aside class="w-64 flex-shrink-0 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col sidebar-animate">
+            <div class="p-6 flex items-center gap-3">
+                <div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white float-animate">
+                    <span class="material-symbols-outlined">school</span>
+                </div>
+                <h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Academia</h2>
+            </div>
+            <nav class="flex-1 px-4 space-y-1 overflow-y-auto">
+                <a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg" href="HODDashboard.html">
+                    <span class="material-symbols-outlined text-lg icon-bounce">dashboard</span>
+                    <span class="text-sm font-medium">Dashboard</span>
+                </a>
+                <a class="nav-link active flex items-center gap-3 px-3 py-2 bg-primary/10 text-primary rounded-lg" href="HODCourselist.html">
+                    <span class="material-symbols-outlined text-lg icon-bounce">auto_stories</span>
+                    <span class="text-sm font-medium">Courses</span>
+                </a>
+                <div class="pt-4 mt-4 border-t border-slate-200 dark:border-slate-800">
+                    <a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg" href="HODSets.html">
+                        <span class="material-symbols-outlined text-lg icon-bounce">settings</span>
+                        <span class="text-sm font-medium">Settings</span>
+                    </a>
+                </div>
+            </nav>
+            <div class="p-4 border-t border-slate-200 dark:border-slate-800">
+                <div class="profile-card flex items-center gap-3 p-2 bg-slate-50 dark:bg-slate-800 rounded-xl cursor-pointer">
+                    <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary text-xl">account_circle</span>
+                    </div>
+                    <div class="flex-1 overflow-hidden">
+                        <p class="text-xs font-bold truncate">HOD NAME</p>
+                        <p class="text-[10px] text-slate-500">HOD NAME</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col overflow-hidden main-animate">
+            <header class="h-16 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex items-center justify-between px-8">
+                <div class="flex items-center gap-4 flex-1">
+                    <div class="relative w-full max-w-md">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                        <input class="search-animate w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm transition-all glow-focus" placeholder="Search resources, students..." type="text"/>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="size-10 rounded-full flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all icon-bounce">
+                        <span class="material-symbols-outlined">help_outline</span>
+                    </button>
+                </div>
+            </header>
+
+            <div class="flex-1 overflow-y-auto p-8 bg-background-light dark:bg-background-dark custom-scrollbar">
+                <div class="max-w-4xl mx-auto">
+                    <div class="flex items-center gap-2 text-sm text-slate-500 mb-6">
+                        <span class="breadcrumb-item"><a href="HODCourselist.html" class="hover:text-primary transition-colors">Courses</a></span>
+                        <span class="breadcrumb-item material-symbols-outlined text-xs">chevron_right</span>
+                        <span class="breadcrumb-item text-slate-900 dark:text-slate-300 font-medium">Create New Course</span>
+                    </div>
+
+                    <div class="mb-8 card-animate-1">
+                        <h1 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Create New Course</h1>
+                        <p class="text-slate-600 dark:text-slate-400 mt-1">Initialize a new academic module within the Computer Science department curriculum.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-2 space-y-6">
+                            <div class="bg-white dark:bg-slate-900 p-8 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm card-animate-2">
+                                <form class="space-y-6" id="courseForm">
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                        <div class="form-field space-y-2">
+                                            <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Course Code</label>
+                                            <input class="input-focus w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none glow-focus" placeholder="e.g. CS101" type="text" id="courseCode"/>
+                                        </div>
+                                        <div class="form-field space-y-2">
+                                            <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Units</label>
+                                            <select class="input-focus w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none glow-focus">
+                                                <option>1 Unit</option>
+                                                <option>2 Units</option>
+                                                <option>3 Units</option>
+                                                <option>6 Units</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-field space-y-2">
+                                        <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Course Title</label>
+                                        <input class="input-focus w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none glow-focus" placeholder="e.g. Introduction to Artificial Intelligence" type="text" id="courseTitle"/>
+                                    </div>
+                                    <div class="form-field space-y-2">
+                                        <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Course Description</label>
+                                        <textarea class="input-focus w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none resize-none glow-focus" placeholder="Detailed curriculum overview, learning objectives, and prerequisites..." rows="5" id="courseDescription"></textarea>
+                                    </div>
+                                    <div class="form-field pt-4 flex flex-col sm:flex-row gap-4">
+                                        <button class="button-animate ripple flex-1 bg-primary text-white px-6 py-3 rounded-lg font-bold hover:bg-primary/90 shadow-lg shadow-primary/25" type="submit">Create Course</button>
+                                        <button class="button-animate flex-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-6 py-3 rounded-lg font-bold hover:bg-slate-200 dark:hover:bg-slate-700" type="button" onclick="resetForm()">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm card-animate-3">
+                                <h3 class="font-bold text-slate-900 dark:text-white mb-4">Assign Lecturers</h3>
+                                <div class="relative mb-4">
+                                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">person_search</span>
+                                    <input class="search-animate w-full pl-9 pr-4 py-2 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none glow-focus" placeholder="Search lecturers..." type="text" id="lecturerSearch" oninput="filterLecturers()"/>
+                                </div>
+                                <div class="space-y-3 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar" id="lecturersList">
+                                    <div class="lecturer-card flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 group cursor-pointer border border-transparent hover:border-slate-200 dark:hover:border-slate-700" onclick="toggleLecturer(this, 'Dr. Lecturer')">
+                                        <div class="flex items-center gap-3">
+                                            <div class="size-8 rounded-full bg-primary/10 flex items-center justify-center">
+                                                <span class="material-symbols-outlined text-primary text-base">person</span>
+                                            </div>
+                                            <div>
+                                                <p class="text-xs font-bold">Dr.Lecturer</p>
+                                                <p class="text-[10px] text-slate-500">Cloud Computing</p>
+                                            </div>
+                                        </div>
+                                        <div class="checkbox-animate size-5 rounded border-2 border-slate-300 dark:border-slate-600 flex items-center justify-center">
+                                            <span class="checkmark material-symbols-outlined text-xs text-white opacity-0">check</span>
+                                        </div>
+                                    </div>
+                                    <div class="lecturer-card flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 group cursor-pointer border border-transparent hover:border-slate-200 dark:hover:border-slate-700" onclick="toggleLecturer(this, 'Prof. Lecturer')">
+                                        <div class="flex items-center gap-3">
+                                            <div class="size-8 rounded-full bg-primary/10 flex items-center justify-center">
+                                                <span class="material-symbols-outlined text-primary text-base">person</span>
+                                            </div>
+                                            <div>
+                                                <p class="text-xs font-bold">Prof. Lecturer</p>
+                                                <p class="text-[10px] text-slate-500">Discrete Math</p>
+                                            </div>
+                                        </div>
+                                        <div class="checkbox-animate size-5 rounded border-2 border-slate-300 dark:border-slate-600 flex items-center justify-center">
+                                            <span class="checkmark material-symbols-outlined text-xs text-white opacity-0">check</span>
+                                        </div>
+                                    </div>
+                                    <div class="lecturer-card flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 group cursor-pointer border border-transparent hover:border-slate-200 dark:hover:border-slate-700" onclick="toggleLecturer(this, 'Dr. Lecturer')">
+                                        <div class="flex items-center gap-3">
+                                            <div class="size-8 rounded-full bg-primary/10 flex items-center justify-center">
+                                                <span class="material-symbols-outlined text-primary text-base">person</span>
+                                            </div>
+                                            <div>
+                                                <p class="text-xs font-bold">Dr. Lecturer</p>
+                                                <p class="text-[10px] text-slate-500">Machine Learning</p>
+                                            </div>
+                                        </div>
+                                        <div class="checkbox-animate size-5 rounded border-2 border-slate-300 dark:border-slate-600 flex items-center justify-center">
+                                            <span class="checkmark material-symbols-outlined text-xs text-white opacity-0">check</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4 pt-4 border-t border-slate-200 dark:border-slate-800">
+                                    <p class="text-[10px] text-slate-500 uppercase font-bold tracking-widest mb-2">Assigned (<span id="assignedCount">0</span>)</p>
+                                    <div class="flex flex-wrap gap-2" id="assignedLecturers">
+                                        <p class="text-[11px] text-slate-400 italic">No lecturers selected yet.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-primary/5 dark:bg-primary/10 p-6 rounded-xl border border-primary/20 card-animate-3">
+                                <h3 class="font-bold text-primary mb-3 text-sm flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-lg icon-bounce">info</span>
+                                    Course Preview
+                                </h3>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between items-center text-xs">
+                                        <span class="text-slate-500">Status</span>
+                                        <span class="status-badge badge-pulse px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 font-bold uppercase tracking-tighter">Draft</span>
+                                    </div>
+                                    <div class="flex justify-between items-center text-xs">
+                                        <span class="text-slate-500">Visibility</span>
+                                        <span class="text-slate-700 dark:text-slate-300">Department Only</span>
+                                    </div>
+                                    <div class="flex justify-between items-center text-xs">
+                                        <span class="text-slate-500">Last Modified</span>
+                                        <span class="text-slate-700 dark:text-slate-300" id="lastModified">Just now</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let selectedLecturers = [];
+
+        function toggleLecturer(element, name) {
+            const checkbox = element.querySelector('.checkbox-animate');
+            const checkmark = element.querySelector('.checkmark');
+            
+            if (checkbox.classList.contains('checked')) {
+                checkbox.classList.remove('checked');
+                checkmark.style.opacity = '0';
+                selectedLecturers = selectedLecturers.filter(l => l !== name);
+            } else {
+                checkbox.classList.add('checked');
+                checkmark.style.opacity = '1';
+                selectedLecturers.push(name);
+            }
+            
+            updateAssignedLecturers();
+        }
+
+        function updateAssignedLecturers() {
+            const container = document.getElementById('assignedLecturers');
+            const countElement = document.getElementById('assignedCount');
+            
+            countElement.textContent = selectedLecturers.length;
+            
+            if (selectedLecturers.length === 0) {
+                container.innerHTML = '<p class="text-[11px] text-slate-400 italic">No lecturers selected yet.</p>';
+            } else {
+                container.innerHTML = selectedLecturers.map(name => `
+                    <span class="px-2 py-1 bg-primary/10 text-primary text-[10px] rounded-md font-medium" style="animation: scaleIn 0.3s ease-out;">
+                        ${name}
+                    </span>
+                `).join('');
+            }
+        }
+
+        function filterLecturers() {
+            const searchTerm = document.getElementById('lecturerSearch').value.toLowerCase();
+            const lecturerCards = document.querySelectorAll('.lecturer-card');
+            
+            lecturerCards.forEach(card => {
+                const name = card.querySelector('p.font-bold').textContent.toLowerCase();
+                const specialty = card.querySelector('p.text-slate-500').textContent.toLowerCase();
+                
+                if (name.includes(searchTerm) || specialty.includes(searchTerm)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        document.getElementById('courseForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const courseCode = document.getElementById('courseCode').value;
+            const courseTitle = document.getElementById('courseTitle').value;
+            const courseDescription = document.getElementById('courseDescription').value;
+            
+            if (!courseCode || !courseTitle || !courseDescription) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            
+            submitBtn.textContent = 'Creating...';
+            submitBtn.style.transform = 'scale(0.95)';
+            
+            setTimeout(() => {
+                submitBtn.textContent = '✓ Course Created!';
+                submitBtn.style.background = '#10b981';
+                
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.style.background = '';
+                    submitBtn.style.transform = '';
+                    resetForm();
+                }, 2000);
+            }, 1500);
+        });
+
+        function resetForm() {
+            document.getElementById('courseForm').reset();
+            selectedLecturers = [];
+            
+            document.querySelectorAll('.checkbox-animate.checked').forEach(checkbox => {
+                checkbox.classList.remove('checked');
+                checkbox.querySelector('.checkmark').style.opacity = '0';
+            });
+            
+            updateAssignedLecturers();
+        }
+
+        function updateLastModified() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { 
+                hour: 'numeric', 
+                minute: '2-digit',
+                hour12: true 
+            });
+            document.getElementById('lastModified').textContent = `Today at ${timeString}`;
+        }
+
+        document.querySelectorAll('input, textarea, select').forEach(element => {
+            element.addEventListener('input', updateLastModified);
+        });
+
+        document.querySelectorAll('.ripple').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const rect = this.getBoundingClientRect();
+                const ripple = document.createElement('span');
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.6);
+                    width: 100px;
+                    height: 100px;
+                    margin-top: -50px;
+                    margin-left: -50px;
+                    top: ${e.clientY - rect.top}px;
+                    left: ${e.clientX - rect.left}px;
+                    animation: ripple-animation 0.6s;
+                    pointer-events: none;
+                `;
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Academia HOD Portal - Create Course Page Loaded');
+            updateLastModified();
+        });
+    </script>
+</body>
+</html>
