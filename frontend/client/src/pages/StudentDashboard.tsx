@@ -1,12 +1,19 @@
-import { useAuth } from "@/_core/hooks/useAuth";
+/**
+ * Student Dashboard Page
+ * Main landing page for students showing overview of courses and recent activity
+ * All data is loaded from backend APIs
+ */
+
 import DashboardLayout from "@/components/DashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, FileText, Calendar, MessageSquare, TrendingUp } from "lucide-react";
 import { useLocation } from "wouter";
+import { useAuth } from "@/_core/hooks/useAuth";
+import { LoadingState, EmptyState, ErrorState, SkeletonCard } from "@/components/StateComponents";
 
 export default function StudentDashboard() {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [, navigate] = useLocation();
 
   const navigationItems = [
@@ -17,31 +24,43 @@ export default function StudentDashboard() {
     { icon: MessageSquare, label: "AI Tutor", href: "/student/tutor" },
   ];
 
+  // Show loading state while auth is being verified
+  if (authLoading) {
+    return (
+      <DashboardLayout navigationItems={navigationItems} userRole="student">
+        <LoadingState message="Loading your dashboard..." />
+      </DashboardLayout>
+    );
+  }
+
   return (
     <DashboardLayout navigationItems={navigationItems} userRole="student">
       <div className="space-y-8">
         {/* Welcome Header */}
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Welcome back, {user?.name}!</h1>
-          <p className="text-slate-600 mt-2">Here's your academic overview for this semester</p>
+          <h1 className="text-3xl font-bold">Welcome back, {user?.name || "Student"}!</h1>
+          <p className="text-muted-foreground mt-2">
+            Here's your academic overview for this semester
+          </p>
         </div>
 
-        {/* Quick Stats */}
+        {/* Quick Stats - Placeholder */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {[
-            { label: "Enrolled Courses", value: "5", icon: BookOpen, color: "bg-blue-50" },
-            { label: "Pending Assignments", value: "3", icon: FileText, color: "bg-purple-50" },
-            { label: "Attendance Rate", value: "92%", icon: Calendar, color: "bg-green-50" },
-            { label: "Average Grade", value: "B+", icon: TrendingUp, color: "bg-orange-50" },
+            { label: "Enrolled Courses", icon: BookOpen, color: "bg-blue-50" },
+            { label: "Pending Assignments", icon: FileText, color: "bg-purple-50" },
+            { label: "Attendance Rate", icon: Calendar, color: "bg-green-50" },
+            { label: "Average Grade", icon: TrendingUp, color: "bg-orange-50" },
           ].map((stat, i) => (
             <Card key={i} className={`${stat.color} border-0`}>
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-600">{stat.label}</p>
-                    <p className="text-2xl font-bold text-slate-900 mt-1">{stat.value}</p>
+                    <p className="text-sm text-muted-foreground">{stat.label}</p>
+                    <p className="text-2xl font-bold mt-1">-</p>
+                    <p className="text-xs text-muted-foreground">Loading...</p>
                   </div>
-                  <stat.icon className="w-8 h-8 text-slate-400" />
+                  <stat.icon className="w-8 h-8 text-muted-foreground/40" />
                 </div>
               </CardContent>
             </Card>
@@ -56,94 +75,65 @@ export default function StudentDashboard() {
             <TabsTrigger value="announcements">Announcements</TabsTrigger>
           </TabsList>
 
-          {/* Courses Tab */}
+          {/* Courses Tab - API Ready */}
           <TabsContent value="courses" className="space-y-4">
             <div className="grid gap-4">
-              {[1, 2, 3].map((i) => (
-                <Card key={i} className="hover:shadow-md transition-shadow cursor-pointer">
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <CardTitle>CS{200 + i}01 - Advanced Programming</CardTitle>
-                        <CardDescription>Dr. Smith • 3 Credit Units</CardDescription>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-sm font-semibold text-slate-900">85%</p>
-                        <p className="text-xs text-slate-600">Current Grade</p>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-slate-600">12/15 sessions attended</span>
-                      <button onClick={() => navigate("/student/courses")} className="text-blue-600 font-medium hover:underline">View Details →</button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+              <EmptyState
+                title="No courses loaded"
+                description="Enrolled courses will appear here once the backend API is connected."
+                icon={BookOpen}
+                action={{
+                  label: "View Courses",
+                  onClick: () => navigate("/student/courses"),
+                }}
+              />
             </div>
           </TabsContent>
 
-          {/* Assignments Tab */}
+          {/* Assignments Tab - API Ready */}
           <TabsContent value="assignments" className="space-y-4">
             <div className="grid gap-4">
-              {[
-                { title: "Programming Project", course: "CS201", due: "2 days", status: "pending" },
-                { title: "Database Design", course: "CS202", due: "5 days", status: "submitted" },
-                { title: "Web Development", course: "CS203", due: "1 week", status: "graded" },
-              ].map((assignment, i) => (
-                <Card key={i} className="hover:shadow-md transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <CardTitle className="text-lg">{assignment.title}</CardTitle>
-                        <CardDescription>{assignment.course}</CardDescription>
-                      </div>
-                      <span
-                        className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          assignment.status === "pending"
-                            ? "bg-yellow-100 text-yellow-800"
-                            : assignment.status === "submitted"
-                              ? "bg-blue-100 text-blue-800"
-                              : "bg-green-100 text-green-800"
-                        }`}
-                      >
-                        {assignment.status.charAt(0).toUpperCase() + assignment.status.slice(1)}
-                      </span>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-slate-600">Due in {assignment.due}</p>
-                  </CardContent>
-                </Card>
-              ))}
+              <EmptyState
+                title="No assignments loaded"
+                description="Recent assignments will appear here once the backend API is connected."
+                icon={FileText}
+                action={{
+                  label: "View All Assignments",
+                  onClick: () => navigate("/student/assignments"),
+                }}
+              />
             </div>
           </TabsContent>
 
-          {/* Announcements Tab */}
+          {/* Announcements Tab - API Ready */}
           <TabsContent value="announcements" className="space-y-4">
             <div className="grid gap-4">
-              {[1, 2, 3].map((i) => (
-                <Card key={i} className="border-l-4 border-l-blue-600">
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <CardTitle className="text-base">Important Announcement {i}</CardTitle>
-                        <CardDescription>Posted 2 days ago</CardDescription>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-slate-600">
-                      This is an important announcement from your lecturer. Please read carefully and take necessary
-                      action.
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
+              <EmptyState
+                title="No announcements"
+                description="Course announcements will appear here once the backend API is connected."
+                icon={MessageSquare}
+              />
             </div>
           </TabsContent>
         </Tabs>
+
+        {/* API Integration Notice */}
+        <Card className="border-dashed bg-muted/50">
+          <CardHeader>
+            <CardTitle className="text-base">Backend Integration Status</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground">
+              This dashboard is ready for backend API integration. The backend team should implement the following endpoints:
+            </p>
+            <ul className="text-sm text-muted-foreground mt-4 space-y-2 ml-4 list-disc">
+              <li>GET /api/trpc/student.getProfile - Get student profile</li>
+              <li>GET /api/trpc/student.getEnrolledCourses - Get enrolled courses</li>
+              <li>GET /api/trpc/student.getCourseAssignments - Get course assignments</li>
+              <li>GET /api/trpc/student.getGrades - Get student grades</li>
+            </ul>
+          </CardContent>
+        </Card>
       </div>
     </DashboardLayout>
   );

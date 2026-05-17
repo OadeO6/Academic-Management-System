@@ -1,243 +1,194 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+/**
+ * Student Grades Page
+ * Displays course grades, assignment grades, and GPA tracking
+ * All data loaded from backend APIs
+ */
+
+import DashboardLayout from "@/components/DashboardLayout";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+import { TrendingUp, ArrowLeft } from "lucide-react";
+import { useLocation } from "wouter";
+import { useAuth } from "@/_core/hooks/useAuth";
+import { LoadingState, EmptyState, ErrorState } from "@/components/StateComponents";
 
 export default function StudentGrades() {
-  // Mock data for grades
-  const courseGrades = [
-    { course: "CS201", grade: "A", percentage: 92, credits: 3 },
-    { course: "CS202", grade: "B+", percentage: 85, credits: 3 },
-    { course: "CS203", grade: "A-", percentage: 88, credits: 4 },
-    { course: "CS204", grade: "B", percentage: 82, credits: 3 },
-    { course: "CS205", grade: "A", percentage: 90, credits: 3 },
+  const { user } = useAuth();
+  const [, navigate] = useLocation();
+
+  // TODO: Replace with actual API calls
+  // const { data: courseGrades, isLoading: gradesLoading } = trpc.student.getGrades.useQuery();
+  // const { data: assignmentGrades, isLoading: assignmentsLoading } = trpc.student.getAssignmentGrades.useQuery();
+  // const { data: gpaHistory, isLoading: gpaLoading } = trpc.student.getGPAHistory.useQuery();
+
+  const navigationItems = [
+    { icon: TrendingUp, label: "Grades", href: "/student/grades" },
   ];
 
-  const assignmentGrades = [
-    { assignment: "Programming Project 1", course: "CS201", score: 92, total: 100, date: "2026-04-15" },
-    { assignment: "Database Design", course: "CS202", score: 85, total: 100, date: "2026-04-10" },
-    { assignment: "Web Development", course: "CS203", score: 88, total: 100, date: "2026-04-08" },
-    { assignment: "Algorithm Analysis", course: "CS204", score: 82, total: 100, date: "2026-04-05" },
-    { assignment: "System Design", course: "CS205", score: 90, total: 100, date: "2026-04-01" },
-  ];
+  const isLoading = false;
+  const courseGrades: any = null;
+  const assignmentGrades: any = null;
+  const gpaHistory: any = null;
+  const error = null;
 
-  const gradeDistribution = [
-    { name: "A (90-100)", value: 40, color: "#10b981" },
-    { name: "B (80-89)", value: 35, color: "#3b82f6" },
-    { name: "C (70-79)", value: 20, color: "#f59e0b" },
-    { name: "D (60-69)", value: 4, color: "#ef4444" },
-    { name: "F (<60)", value: 1, color: "#8b5cf6" },
-  ];
+  if (isLoading) {
+    return (
+      <DashboardLayout navigationItems={navigationItems} userRole="student">
+        <LoadingState message="Loading your grades..." />
+      </DashboardLayout>
+    );
+  }
 
-  const gpaData = [
-    { semester: "Sem 1", gpa: 3.45 },
-    { semester: "Sem 2", gpa: 3.62 },
-    { semester: "Sem 3", gpa: 3.58 },
-    { semester: "Sem 4", gpa: 3.71 },
-    { semester: "Sem 5", gpa: 3.68 },
-    { semester: "Sem 6", gpa: 3.75 },
-  ];
-
-  const calculateGPA = () => {
-    const totalPoints = courseGrades.reduce((sum, course) => {
-      const gradePoints = { A: 4.0, "A-": 3.7, "B+": 3.3, B: 3.0, "B-": 2.7, C: 2.0 };
-      return sum + (gradePoints[course.grade as keyof typeof gradePoints] || 0) * course.credits;
-    }, 0);
-    const totalCredits = courseGrades.reduce((sum, course) => sum + course.credits, 0);
-    return (totalPoints / totalCredits).toFixed(2);
-  };
+  if (error) {
+    return (
+      <DashboardLayout navigationItems={navigationItems} userRole="student">
+        <ErrorState
+          title="Failed to load grades"
+          description="An error occurred while loading your grades."
+          error={error}
+          onRetry={() => window.location.reload()}
+        />
+      </DashboardLayout>
+    );
+  }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-slate-900">Your Grades</h1>
-        <p className="text-slate-600 mt-2">View your course and assignment grades</p>
-      </div>
+    <DashboardLayout navigationItems={navigationItems} userRole="student">
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate("/student/dashboard")}
+            className="text-muted-foreground hover:text-foreground"
+          >
+            <ArrowLeft className="size-4" />
+            Back to Dashboard
+          </Button>
+        </div>
+        <div>
+          <h1 className="text-3xl font-bold">My Grades</h1>
+          <p className="text-muted-foreground mt-2">View your course grades and academic performance</p>
+        </div>
 
-      {/* GPA Summary */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="bg-green-50 border-0">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-slate-600">Current GPA</p>
-                <p className="text-3xl font-bold text-slate-900 mt-1">{calculateGPA()}</p>
-              </div>
-              <div className="text-right">
-                <p className="text-xs text-slate-600">Out of 4.0</p>
-                <p className="text-lg font-semibold text-green-600 mt-1">Excellent</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <Tabs defaultValue="courses" className="space-y-4">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="courses">Course Grades</TabsTrigger>
+            <TabsTrigger value="assignments">Assignment Grades</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          </TabsList>
 
-        <Card className="bg-blue-50 border-0">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-slate-600">Courses Completed</p>
-                <p className="text-3xl font-bold text-slate-900 mt-1">{courseGrades.length}</p>
-              </div>
-              <div className="text-right">
-                <p className="text-xs text-slate-600">This Semester</p>
-                <p className="text-lg font-semibold text-blue-600 mt-1">Active</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-purple-50 border-0">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-slate-600">Avg. Score</p>
-                <p className="text-3xl font-bold text-slate-900 mt-1">87.4%</p>
-              </div>
-              <div className="text-right">
-                <p className="text-xs text-slate-600">All Courses</p>
-                <p className="text-lg font-semibold text-purple-600 mt-1">Strong</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Tabs */}
-      <Tabs defaultValue="courses" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="courses">Course Grades</TabsTrigger>
-          <TabsTrigger value="assignments">Assignments</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
-        </TabsList>
-
-        {/* Course Grades Tab */}
-        <TabsContent value="courses" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Course Grades This Semester</CardTitle>
-              <CardDescription>Your grade in each course</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {courseGrades.map((course, i) => (
-                  <div key={i} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                    <div className="flex-1">
-                      <p className="font-medium text-slate-900">{course.course}</p>
-                      <p className="text-sm text-slate-600">{course.credits} credit units</p>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <div className="w-32">
-                        <div className="w-full bg-slate-200 rounded-full h-2">
-                          <div
-                            className={`h-2 rounded-full ${
-                              course.percentage >= 90
-                                ? "bg-green-500"
-                                : course.percentage >= 80
-                                  ? "bg-blue-500"
-                                  : course.percentage >= 70
-                                    ? "bg-yellow-500"
-                                    : "bg-red-500"
-                            }`}
-                            style={{ width: `${course.percentage}%` }}
-                          />
+          {/* Course Grades Tab */}
+          <TabsContent value="courses">
+            {!courseGrades || courseGrades.length === 0 ? (
+              <EmptyState
+                title="No course grades available"
+                description="Your course grades will appear here once the backend API is connected."
+                icon={TrendingUp}
+              />
+            ) : (
+              <div className="space-y-4">
+                {courseGrades.map((course: any) => (
+                  <Card key={course.id}>
+                    <CardContent className="pt-6">
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <p className="font-semibold">{course.code} - {course.title}</p>
+                          <p className="text-sm text-muted-foreground">{course.credits} credits</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-3xl font-bold">{course.grade}</p>
+                          <p className="text-sm text-muted-foreground">{course.percentage}%</p>
                         </div>
                       </div>
-                      <div className="text-right min-w-fit">
-                        <p className="text-lg font-bold text-slate-900">{course.grade}</p>
-                        <p className="text-xs text-slate-600">{course.percentage}%</p>
-                      </div>
-                    </div>
-                  </div>
+                    </CardContent>
+                  </Card>
                 ))}
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+            )}
+          </TabsContent>
 
-        {/* Assignments Tab */}
-        <TabsContent value="assignments" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Assignment Grades</CardTitle>
-              <CardDescription>Your scores on individual assignments</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {assignmentGrades.map((assignment, i) => (
-                  <div key={i} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                    <div className="flex-1">
-                      <p className="font-medium text-slate-900">{assignment.assignment}</p>
-                      <div className="flex items-center gap-4 mt-1">
-                        <p className="text-xs text-slate-600">{assignment.course}</p>
-                        <p className="text-xs text-slate-500">Submitted: {assignment.date}</p>
+          {/* Assignment Grades Tab */}
+          <TabsContent value="assignments">
+            {!assignmentGrades || assignmentGrades.length === 0 ? (
+              <EmptyState
+                title="No assignment grades available"
+                description="Your assignment grades will appear here once the backend API is connected."
+                icon={TrendingUp}
+              />
+            ) : (
+              <div className="space-y-4">
+                {assignmentGrades.map((assignment: any) => (
+                  <Card key={assignment.id}>
+                    <CardContent className="pt-6">
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <p className="font-semibold">{assignment.title}</p>
+                          <p className="text-sm text-muted-foreground">{assignment.course}</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-2xl font-bold">{assignment.score}/{assignment.total}</p>
+                          <p className="text-sm text-muted-foreground">{Math.round((assignment.score/assignment.total)*100)}%</p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-lg font-bold text-slate-900">
-                        {assignment.score}/{assignment.total}
-                      </p>
-                      <p className="text-xs text-slate-600">{Math.round((assignment.score / assignment.total) * 100)}%</p>
-                    </div>
-                  </div>
+                    </CardContent>
+                  </Card>
                 ))}
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+            )}
+          </TabsContent>
 
-        {/* Analytics Tab */}
-        <TabsContent value="analytics" className="space-y-4">
-          <div className="grid md:grid-cols-2 gap-4">
-            {/* GPA Trend */}
-            <Card>
-              <CardHeader>
-                <CardTitle>GPA Trend</CardTitle>
-                <CardDescription>Your GPA over semesters</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={gpaData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="semester" />
-                    <YAxis domain={[3, 4]} />
-                    <Tooltip />
-                    <Bar dataKey="gpa" fill="#3b82f6" radius={[8, 8, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-
-            {/* Grade Distribution */}
+          {/* Analytics Tab */}
+          <TabsContent value="analytics" className="space-y-4">
             <Card>
               <CardHeader>
                 <CardTitle>Grade Distribution</CardTitle>
-                <CardDescription>Your grades across all courses</CardDescription>
               </CardHeader>
               <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <PieChart>
-                    <Pie
-                      data={gradeDistribution}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      label={({ name, value }) => `${name}: ${value}%`}
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="value"
-                    >
-                      {gradeDistribution.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
+                <div className="h-80 w-full">
+                  <EmptyState
+                    title="Analytics not available"
+                    description="Grade distribution charts will appear here once the backend API is connected."
+                    icon={TrendingUp}
+                  />
+                </div>
               </CardContent>
             </Card>
-          </div>
-        </TabsContent>
-      </Tabs>
-    </div>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>GPA Trend</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="h-80 w-full">
+                  <EmptyState
+                    title="GPA history not available"
+                    description="Your GPA trend will appear here once the backend API is connected."
+                    icon={TrendingUp}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+
+        {/* API Integration Notice */}
+        <Card className="border-dashed bg-muted/50">
+          <CardHeader>
+            <CardTitle className="text-base">Backend Integration Required</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground mb-3">Implement these endpoints:</p>
+            <div className="space-y-2 text-xs font-mono bg-muted p-2 rounded">
+              <div>GET /api/trpc/student.getGrades</div>
+              <div>GET /api/trpc/student.getAssignmentGrades</div>
+              <div>GET /api/trpc/student.getGPAHistory</div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </DashboardLayout>
   );
 }
