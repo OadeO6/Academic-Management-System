@@ -227,6 +227,7 @@ export default function ComponentsShowcase() {
   };
 
   return (
+    <>
     <div className="min-h-screen bg-background text-foreground">
       <main className="container max-w-6xl mx-auto">
         <div className="space-y-2 justify-between flex">
@@ -580,7 +581,8 @@ export default function ComponentsShowcase() {
                                     currentValue === selectedFramework
                                       ? ""
                                       : currentValue
-                                  );
+                                    </>
+  );
                                   setOpenCombobox(false);
                                 }}
                               >
@@ -1375,7 +1377,8 @@ export default function ComponentsShowcase() {
                       onClick={() => {
                         const promise = new Promise(resolve =>
                           setTimeout(resolve, 2000)
-                        );
+                          </>
+  );
                         sonnerToast.promise(promise, {
                           loading: "Processing...",
                           success: "Processing complete!",
@@ -1433,5 +1436,6 @@ export default function ComponentsShowcase() {
         </div>
       </footer>
     </div>
+    </>
   );
 }

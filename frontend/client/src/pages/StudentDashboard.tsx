@@ -4,7 +4,6 @@
  * All data is loaded from backend APIs
  */
 
-import DashboardLayout from "@/components/DashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, FileText, Calendar, MessageSquare, TrendingUp } from "lucide-react";
@@ -26,16 +25,11 @@ export default function StudentDashboard() {
 
   // Show loading state while auth is being verified
   if (authLoading) {
-    return (
-      <DashboardLayout navigationItems={navigationItems} userRole="student">
-        <LoadingState message="Loading your dashboard..." />
-      </DashboardLayout>
-    );
+    return <LoadingState message="Loading your dashboard..." />;
   }
 
   return (
-    <DashboardLayout navigationItems={navigationItems} userRole="student">
-      <div className="space-y-8">
+    <div className="space-y-8">
         {/* Welcome Header */}
         <div>
           <h1 className="text-3xl font-bold">Welcome back, {user?.name || "Student"}!</h1>
@@ -135,6 +129,5 @@ export default function StudentDashboard() {
           </CardContent>
         </Card>
       </div>
-    </DashboardLayout>
   );
 }

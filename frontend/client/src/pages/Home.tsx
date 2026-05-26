@@ -8,8 +8,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, Users, BarChart3, Settings } from "lucide-react";
-import { useLocation } from "wouter";
-import { getLoginUrl } from "@/const";
+import { useLocation, Link } from "wouter";
 import { LoadingState } from "@/components/StateComponents";
 
 export default function Home() {
@@ -29,7 +28,7 @@ export default function Home() {
       hod: "/hod/dashboard",
       admin: "/admin/dashboard",
     };
-    const dashboard = dashboardMap[user.role] || "/student/dashboard";
+    const dashboard = dashboardMap[user.role.toLowerCase()] || "/student/dashboard";
     navigate(dashboard);
     return <LoadingState message="Redirecting to dashboard..." />;
   }
@@ -44,9 +43,14 @@ export default function Home() {
             <BookOpen className="w-6 h-6 text-blue-600" />
             <h1 className="text-xl font-bold">Academic Management System</h1>
           </div>
-          <Button onClick={() => (window.location.href = getLoginUrl())} size="sm">
-            Sign In
+          <div className="flex items-center gap-2">
+          <Button asChild variant="outline" size="sm">
+            <Link href="/login">Sign In</Link>
           </Button>
+          <Button asChild size="sm">
+            <Link href="/register">Register</Link>
+          </Button>
+        </div>
         </div>
       </nav>
 
@@ -60,10 +64,10 @@ export default function Home() {
         </p>
         <Button
           size="lg"
-          onClick={() => (window.location.href = getLoginUrl())}
+          asChild
           className="gap-2"
         >
-          Get Started
+          <Link href="/login">Get Started</Link>
         </Button>
       </section>
 
@@ -120,9 +124,9 @@ export default function Home() {
           <CardContent>
             <Button
               size="lg"
-              onClick={() => (window.location.href = getLoginUrl())}
+              asChild
             >
-              Sign In Now
+              <Link href="/login">Sign In Now</Link>
             </Button>
           </CardContent>
         </Card>

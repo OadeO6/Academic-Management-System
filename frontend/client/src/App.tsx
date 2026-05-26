@@ -3,76 +3,152 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
-import { useAuth } from "@/_core/hooks/useAuth";
-import { Loader2 } from "lucide-react";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 // Pages
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import StudentDashboard from "./pages/StudentDashboard";
 import StudentCourses from "./pages/StudentCourses";
 import StudentGrades from "./pages/StudentGrades";
 import StudentAttendance from "./pages/StudentAttendance";
 import StudentAssignments from "./pages/StudentAssignments";
 import StudentTutor from "./pages/StudentTutor";
+import StudentMaterials from "./pages/StudentMaterials";
+import StudentAnnouncements from "./pages/StudentAnnouncements";
+import StudentSessions from "./pages/StudentSessions";
 import LecturerDashboard from "./pages/LecturerDashboard";
-import LecturerCourseManagement from "./pages/LecturerCourseManagement";
-import LecturerGrading from "./pages/LecturerGrading";
-import LecturerAttendance from "./pages/LecturerAttendance";
+import LecturerCourses from "./pages/LecturerCourses";
+import LecturerCourseStudents from "./pages/LecturerCourseStudents";
+import LecturerCourseMaterials from "./pages/LecturerCourseMaterials";
+import LecturerCourseTasks from "./pages/LecturerCourseTasks";
+import LecturerTaskSubmissions from "./pages/LecturerTaskSubmissions";
+import LecturerCourseSessions from "./pages/LecturerCourseSessions";
+import LecturerSessionAttendance from "./pages/LecturerSessionAttendance";
+import LecturerGradebook from "./pages/LecturerGradebook";
+import LecturerAnnouncements from "./pages/LecturerAnnouncements";
 import HodDashboard from "./pages/HodDashboard";
 import HodStudentManagement from "./pages/HodStudentManagement";
+import HodLecturerManagement from "./pages/HodLecturerManagement";
+import HodCourseDefinitions from "./pages/HodCourseDefinitions";
+import HodCourseOfferings from "./pages/HodCourseOfferings";
 import HodCourseManagement from "./pages/HodCourseManagement";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminUserManagement from "./pages/AdminUserManagement";
 import AdminSystemSettings from "./pages/AdminSystemSettings";
 import Notifications from "./pages/Notifications";
+import SettingsPage from "./pages/settings/SettingsPage";
+import ScaffoldPage from "./pages/ScaffoldPage";
 
 function Router() {
-  const { user, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="flex flex-col items-center gap-4">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
-          <p className="text-muted-foreground">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Role-based routing
-  if (user) {
-    return (
-      <Switch>
-        <Route path="/student/dashboard" component={StudentDashboard} />
-        <Route path="/student/courses" component={StudentCourses} />
-        <Route path="/student/grades" component={StudentGrades} />
-        <Route path="/student/attendance" component={StudentAttendance} />
-        <Route path="/student/assignments" component={StudentAssignments} />
-        <Route path="/student/tutor" component={StudentTutor} />
-        <Route path="/lecturer/dashboard" component={LecturerDashboard} />
-        <Route path="/lecturer/management" component={LecturerCourseManagement} />
-        <Route path="/lecturer/grading" component={LecturerGrading} />
-        <Route path="/lecturer/attendance" component={LecturerAttendance} />
-        <Route path="/hod/dashboard" component={HodDashboard} />
-        <Route path="/hod/students" component={HodStudentManagement} />
-        <Route path="/hod/courses" component={HodCourseManagement} />
-        <Route path="/admin/dashboard" component={AdminDashboard} />
-        <Route path="/admin/users" component={AdminUserManagement} />
-        <Route path="/admin/settings" component={AdminSystemSettings} />
-        <Route path="/notifications" component={Notifications} />
-        <Route path="/" component={Home} />
-        <Route path="/404" component={NotFound} />
-        <Route component={NotFound} />
-      </Switch>
-    );
-  }
-
-  // Public routes
   return (
     <Switch>
+      {/* Public Routes */}
       <Route path="/" component={Home} />
+      <Route path="/register" component={Register} />
+      <Route path="/login" component={Login} />
+      <Route path="/forgot-password" component={ForgotPassword} />
+      <Route path="/reset-password" component={ResetPassword} />
+
+      {/* Student Protected Routes */}
+      <Route path="/student/:rest*">
+        <ProtectedRoute allowedRoles={["student"]}>
+          <Switch>
+            <Route path="/student/dashboard" component={StudentDashboard} />
+            <Route path="/student/courses" component={StudentCourses} />
+            <Route path="/student/grades" component={StudentGrades} />
+            <Route path="/student/attendance" component={StudentAttendance} />
+            <Route path="/student/assignments" component={StudentAssignments} />
+            <Route path="/student/tutor" component={StudentTutor} />
+            <Route path="/student/courses/:courseOfferingId/materials" component={StudentMaterials} />
+            <Route path="/student/courses/:courseOfferingId/assignments" component={StudentAssignments} />
+            <Route path="/student/courses/:courseOfferingId/grades" component={StudentGrades} />
+            <Route path="/student/courses/:courseOfferingId/announcements" component={StudentAnnouncements} />
+            <Route path="/student/courses/:courseOfferingId/attendance" component={StudentAttendance} />
+            <Route path="/student/courses/:courseOfferingId/sessions" component={StudentSessions} />
+            <Route component={NotFound} />
+          </Switch>
+        </ProtectedRoute>
+      </Route>
+
+      {/* Lecturer Protected Routes */}
+      <Route path="/lecturer/:rest*">
+        <ProtectedRoute allowedRoles={["lecturer"]}>
+          <Switch>
+            <Route path="/lecturer/dashboard" component={LecturerDashboard} />
+            <Route path="/lecturer/courses" component={LecturerCourses} />
+            <Route path="/lecturer/courses/:courseId/students" component={LecturerCourseStudents} />
+            <Route path="/lecturer/courses/:courseId/materials" component={LecturerCourseMaterials} />
+            <Route path="/lecturer/courses/:courseId/tasks" component={LecturerCourseTasks} />
+            <Route path="/lecturer/courses/:courseId/tasks/:taskId/submissions" component={LecturerTaskSubmissions} />
+            <Route path="/lecturer/courses/:courseId/sessions" component={LecturerCourseSessions} />
+            <Route path="/lecturer/courses/:courseId/sessions/:sessionId/attendance" component={LecturerSessionAttendance} />
+            <Route path="/lecturer/courses/:courseId/gradebook" component={LecturerGradebook} />
+            <Route path="/lecturer/courses/:courseId/announcements" component={LecturerAnnouncements} />
+            <Route component={NotFound} />
+          </Switch>
+        </ProtectedRoute>
+      </Route>
+
+      {/* HOD Protected Routes */}
+      <Route path="/hod/:rest*">
+        <ProtectedRoute allowedRoles={["hod"]}>
+          <Switch>
+            <Route path="/hod/dashboard" component={HodDashboard} />
+            <Route path="/hod/students" component={HodStudentManagement} />
+            <Route path="/hod/lecturers" component={HodLecturerManagement} />
+            <Route path="/hod/courses" component={HodCourseDefinitions} />
+            <Route path="/hod/offerings" component={HodCourseOfferings} />
+            <Route path="/hod/course-management" component={HodCourseManagement} />
+            <Route path="/hod/overview">
+              <ScaffoldPage title="Department Overview" description="Detailed overview of department performance and metrics." />
+            </Route>
+            <Route path="/hod/reports">
+              <ScaffoldPage title="Department Reports" description="Generate and view academic and administrative reports." />
+            </Route>
+            <Route component={NotFound} />
+          </Switch>
+        </ProtectedRoute>
+      </Route>
+
+      {/* Admin Protected Routes */}
+      <Route path="/admin/:rest*">
+        <ProtectedRoute allowedRoles={["admin"]}>
+          <Switch>
+            <Route path="/admin/dashboard" component={AdminDashboard} />
+            <Route path="/admin/users" component={AdminUserManagement} />
+            <Route path="/admin/settings" component={AdminSystemSettings} />
+            <Route path="/admin/faculties">
+              <ScaffoldPage title="Faculty Management" description="Manage university faculties and their metadata." />
+            </Route>
+            <Route path="/admin/departments">
+              <ScaffoldPage title="Department Management" description="Configure and manage academic departments." />
+            </Route>
+            <Route path="/admin/academic-sessions">
+              <ScaffoldPage title="Academic Sessions" description="Manage academic calendars, sessions, and semesters." />
+            </Route>
+            <Route component={NotFound} />
+          </Switch>
+        </ProtectedRoute>
+      </Route>
+
+      {/* Shared Protected Routes */}
+      <Route path="/settings">
+        <ProtectedRoute>
+          <SettingsPage />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/notifications">
+        <ProtectedRoute>
+          <Notifications />
+        </ProtectedRoute>
+      </Route>
+
+      {/* Fallback */}
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

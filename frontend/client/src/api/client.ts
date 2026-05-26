@@ -292,6 +292,25 @@ export function createAPIClient() {
       return response.json();
     },
 
+    async patch<T>(url: string, data?: unknown, init?: RequestInit): Promise<T> {
+      const response = await fetchWithTimeout(
+        `${API_CONFIG.BASE_URL}${url}`,
+        requestInterceptor({
+          ...init,
+          method: "PATCH",
+          body: data ? JSON.stringify(data) : undefined,
+        })
+      );
+
+      await createResponseInterceptor(response);
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      return response.json();
+    },
+
     async upload<T>(
       url: string,
       file: File,
@@ -330,3 +349,5 @@ export function createAPIClient() {
  * Singleton API Client Instance
  */
 export const apiClient = createAPIClient();
+
+

@@ -1,17 +1,22 @@
-import { jsxLocPlugin } from "@builder.io/vite-plugin-jsx-loc";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import fs from "node:fs";
 import path from "node:path";
 import { defineConfig, type Plugin, type ViteDevServer } from "vite";
-import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
+
+// =============================================================================
+// Root resolution — use process.cwd() for cross-platform stability.
+// import.meta.dirname can be undefined on Windows / older Node versions,
+// which causes "Could not resolve entry module index.html" and
+// "0 modules transformed" errors.
+// =============================================================================
+const PROJECT_ROOT = process.cwd();
 
 // =============================================================================
 // Manus Debug Collector - Vite Plugin
 // Writes browser logs directly to files, trimmed when exceeding size limit
 // =============================================================================
 
-const PROJECT_ROOT = import.meta.dirname;
 const LOG_DIR = path.join(PROJECT_ROOT, ".manus-logs");
 const MAX_LOG_SIZE_BYTES = 1 * 1024 * 1024; // 1MB per log file
 const TRIM_TARGET_BYTES = Math.floor(MAX_LOG_SIZE_BYTES * 0.6); // Trim to 60% to avoid constant re-trimming
@@ -150,22 +155,54 @@ function vitePluginManusDebugCollector(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector()];
+// ---------------------------------------------------------------------------
+// Optional Manus-specific plugins — loaded only when available so that a
+// clean production build environment (without these packages installed) does
+// not fail at import time.
+// ---------------------------------------------------------------------------
+async function loadOptionalPlugins(): Promise<Plugin[]> {
+  const optional: Plugin[] = [];
+
+  try {
+    const { jsxLocPlugin } = await import("@builder.io/vite-plugin-jsx-loc");
+    optional.push(jsxLocPlugin());
+  } catch {
+    /* not installed — skip */
+  }
+
+  try {
+    const { vitePluginManusRuntime } = await import("vite-plugin-manus-runtime");
+    optional.push(vitePluginManusRuntime());
+  } catch {
+    /* not installed — skip */
+  }
+
+  return optional;
+}
+
+const optionalPlugins = await loadOptionalPlugins();
+
+const plugins: Plugin[] = [
+  react(),
+  tailwindcss(),
+  ...optionalPlugins,
+  vitePluginManusDebugCollector(),
+];
 
 export default defineConfig({
   plugins,
   resolve: {
     alias: {
-      "@": path.resolve(import.meta.dirname, "client", "src"),
-      "@shared": path.resolve(import.meta.dirname, "shared"),
-      "@assets": path.resolve(import.meta.dirname, "attached_assets"),
+      "@": path.resolve(PROJECT_ROOT, "client", "src"),
+      "@shared": path.resolve(PROJECT_ROOT, "shared"),
+      "@assets": path.resolve(PROJECT_ROOT, "attached_assets"),
     },
   },
-  envDir: path.resolve(import.meta.dirname),
-  root: path.resolve(import.meta.dirname, "client"),
-  publicDir: path.resolve(import.meta.dirname, "client", "public"),
+  envDir: path.resolve(PROJECT_ROOT),
+  root: path.resolve(PROJECT_ROOT, "client"),
+  publicDir: path.resolve(PROJECT_ROOT, "client", "public"),
   build: {
-    outDir: path.resolve(import.meta.dirname, "dist/public"),
+    outDir: path.resolve(PROJECT_ROOT, "dist/public"),
     emptyOutDir: true,
   },
   server: {
