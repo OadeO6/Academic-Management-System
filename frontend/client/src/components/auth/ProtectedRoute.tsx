@@ -1,7 +1,5 @@
 import React from "react";
-import { useLocation } from "wouter";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { Loader2 } from "lucide-react";
 import RoleLayout from "@/layouts/RoleLayout";
 
 interface ProtectedRouteProps {
@@ -9,35 +7,61 @@ interface ProtectedRouteProps {
   allowedRoles?: Array<"student" | "lecturer" | "hod" | "admin">;
 }
 
-export default function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
-  const { user, loading, isAuthenticated } = useAuth();
-  const [, setLocation] = useLocation();
+/**
+ * DEVELOPMENT AUTH BYPASS
+ *
+ * Enables:
+ * - unrestricted navigation
+ * - all dashboard pages
+ * - sidebar rendering
+ * - nested routes
+ * - role layouts
+ *
+ * Disable before production.
+ */
+const DEV_BYPASS_AUTH = true;
 
-  React.useEffect(() => {
-    if (!loading && !isAuthenticated) {
-      setLocation("/login");
-    }
-  }, [loading, isAuthenticated, setLocation]);
+export default function ProtectedRoute({
+  children,
+  allowedRoles,
+}: ProtectedRouteProps) {
+  const auth = useAuth();
+
+  // DEVELOPMENT MODE
+  if (DEV_BYPASS_AUTH) {
+    const devRole: "student" | "lecturer" | "hod" | "admin" = "admin";
+
+    return (
+      <RoleLayout role={devRole}>
+        {children}
+      </RoleLayout>
+    );
+  }
+
+  // PRODUCTION MODE
+  const { user, loading, isAuthenticated } = auth;
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
-      </div>
-    );
+    return null;
   }
 
   if (!isAuthenticated || !user) {
     return null;
   }
 
-  // Normalize role to lowercase
-  const userRole = user.role.toLowerCase() as "student" | "lecturer" | "hod" | "admin";
+  const userRole = user.role.toLowerCase() as
+    | "student"
+    | "lecturer"
+    | "hod"
+    | "admin";
 
   if (allowedRoles && !allowedRoles.includes(userRole)) {
-    setLocation("/"); // Redirect to home or unauthorized page
     return null;
   }
 
-  return <RoleLayout role={userRole}>{children}</RoleLayout>;
+  return (
+    <RoleLayout role={userRole}>
+      {children}
+    </RoleLayout>
+  );
 }

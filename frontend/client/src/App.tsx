@@ -3,7 +3,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
-import ProtectedRoute from "./components/auth/ProtectedRoute";
+import RoleLayout from "./layouts/RoleLayout";
 
 // Pages
 import Home from "./pages/Home";
@@ -54,9 +54,9 @@ function Router() {
       <Route path="/forgot-password" component={ForgotPassword} />
       <Route path="/reset-password" component={ResetPassword} />
 
-      {/* Student Protected Routes */}
+      {/* Student Routes */}
       <Route path="/student/:rest*">
-        <ProtectedRoute allowedRoles={["student"]}>
+        <RoleLayout role="student">
           <Switch>
             <Route path="/student/dashboard" component={StudentDashboard} />
             <Route path="/student/courses" component={StudentCourses} />
@@ -70,14 +70,15 @@ function Router() {
             <Route path="/student/courses/:courseOfferingId/announcements" component={StudentAnnouncements} />
             <Route path="/student/courses/:courseOfferingId/attendance" component={StudentAttendance} />
             <Route path="/student/courses/:courseOfferingId/sessions" component={StudentSessions} />
+            <Route path="/student/settings" component={SettingsPage} />
             <Route component={NotFound} />
           </Switch>
-        </ProtectedRoute>
+        </RoleLayout>
       </Route>
 
-      {/* Lecturer Protected Routes */}
+      {/* Lecturer Routes */}
       <Route path="/lecturer/:rest*">
-        <ProtectedRoute allowedRoles={["lecturer"]}>
+        <RoleLayout role="lecturer">
           <Switch>
             <Route path="/lecturer/dashboard" component={LecturerDashboard} />
             <Route path="/lecturer/courses" component={LecturerCourses} />
@@ -89,14 +90,20 @@ function Router() {
             <Route path="/lecturer/courses/:courseId/sessions/:sessionId/attendance" component={LecturerSessionAttendance} />
             <Route path="/lecturer/courses/:courseId/gradebook" component={LecturerGradebook} />
             <Route path="/lecturer/courses/:courseId/announcements" component={LecturerAnnouncements} />
+            <Route path="/lecturer/gradebook" component={LecturerGradebook} />
+            <Route path="/lecturer/sessions" component={LecturerCourseSessions} />
+            <Route path="/lecturer/attendance" component={LecturerSessionAttendance} />
+            <Route path="/lecturer/submissions" component={LecturerTaskSubmissions} />
+            <Route path="/lecturer/grading" component={LecturerGradebook} />
+            <Route path="/lecturer/settings" component={SettingsPage} />
             <Route component={NotFound} />
           </Switch>
-        </ProtectedRoute>
+        </RoleLayout>
       </Route>
 
-      {/* HOD Protected Routes */}
+      {/* HOD Routes */}
       <Route path="/hod/:rest*">
-        <ProtectedRoute allowedRoles={["hod"]}>
+        <RoleLayout role="hod">
           <Switch>
             <Route path="/hod/dashboard" component={HodDashboard} />
             <Route path="/hod/students" component={HodStudentManagement} />
@@ -104,6 +111,7 @@ function Router() {
             <Route path="/hod/courses" component={HodCourseDefinitions} />
             <Route path="/hod/offerings" component={HodCourseOfferings} />
             <Route path="/hod/course-management" component={HodCourseManagement} />
+            <Route path="/hod/settings" component={SettingsPage} />
             <Route path="/hod/overview">
               <ScaffoldPage title="Department Overview" description="Detailed overview of department performance and metrics." />
             </Route>
@@ -112,16 +120,16 @@ function Router() {
             </Route>
             <Route component={NotFound} />
           </Switch>
-        </ProtectedRoute>
+        </RoleLayout>
       </Route>
 
-      {/* Admin Protected Routes */}
+      {/* Admin Routes */}
       <Route path="/admin/:rest*">
-        <ProtectedRoute allowedRoles={["admin"]}>
+        <RoleLayout role="admin">
           <Switch>
             <Route path="/admin/dashboard" component={AdminDashboard} />
             <Route path="/admin/users" component={AdminUserManagement} />
-            <Route path="/admin/settings" component={AdminSystemSettings} />
+            <Route path="/admin/settings" component={SettingsPage} />
             <Route path="/admin/faculties">
               <ScaffoldPage title="Faculty Management" description="Manage university faculties and their metadata." />
             </Route>
@@ -133,19 +141,12 @@ function Router() {
             </Route>
             <Route component={NotFound} />
           </Switch>
-        </ProtectedRoute>
+        </RoleLayout>
       </Route>
 
-      {/* Shared Protected Routes */}
-      <Route path="/settings">
-        <ProtectedRoute>
-          <SettingsPage />
-        </ProtectedRoute>
-      </Route>
+      {/* Shared Routes */}
       <Route path="/notifications">
-        <ProtectedRoute>
-          <Notifications />
-        </ProtectedRoute>
+        <Notifications />
       </Route>
 
       {/* Fallback */}

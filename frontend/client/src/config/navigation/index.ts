@@ -28,7 +28,7 @@ export const studentNavigation: NavItem[] = [
   { label: "Attendance", icon: Calendar, path: "/student/attendance" },
   { label: "Grades", icon: Award, path: "/student/grades" },
   { label: "AI Tutor", icon: Sparkles, path: "/student/tutor" },
-  { label: "Settings", icon: Settings, path: "/settings" },
+  { label: "Settings", icon: Settings, path: "/student/settings" },
 ];
 
 export const lecturerNavigation: NavItem[] = [
@@ -39,7 +39,7 @@ export const lecturerNavigation: NavItem[] = [
   { label: "Grading", icon: Award, path: "/lecturer/grading" },
   { label: "Gradebook", icon: FileText, path: "/lecturer/gradebook" },
   { label: "Submissions", icon: ClipboardList, path: "/lecturer/submissions" },
-  { label: "Settings", icon: Settings, path: "/settings" },
+  { label: "Settings", icon: Settings, path: "/lecturer/settings" },
 ];
 
 export const hodNavigation: NavItem[] = [
@@ -49,7 +49,7 @@ export const hodNavigation: NavItem[] = [
   { label: "Lecturers", icon: Users, path: "/hod/lecturers" },
   { label: "Students", icon: GraduationCap, path: "/hod/students" },
   { label: "Reports", icon: FileText, path: "/hod/reports" },
-  { label: "Settings", icon: Settings, path: "/settings" },
+  { label: "Settings", icon: Settings, path: "/hod/settings" },
 ];
 
 export const adminNavigation: NavItem[] = [
